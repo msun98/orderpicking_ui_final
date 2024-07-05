@@ -1,0 +1,22 @@
+[
+    {
+        "obj_id": "cheese",
+        "ready_Gripping": "g,g",
+        "real_Gripping": "R,g,0,ON"
+    },
+    {
+        "obj_id": "pringles",
+        "ready_Gripping": "g,g",
+        "real_Gripping": "R,g,0,ON"
+    },
+    {
+        "obj_id": "hair wax",
+        "ready_Gripping": "g,g",
+        "real_Gripping": "R,g,0,ON"
+    },
+    {
+        "obj_id": "filter",
+        "ready_Gripping": "g,g",
+        "real_Gripping": "R,g,0,ON"
+    }
+]
