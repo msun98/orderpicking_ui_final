@@ -5,6 +5,7 @@
 websocket::websocket(QObject *parent) : QObject(parent)
 {
     open();
+
 }
 
 websocket::~websocket()
@@ -21,7 +22,7 @@ void websocket::open()
     }
 
     timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(SEND_NOTICE()));
     // 주기 맞춰 보다가
     connect(timer, SIGNAL(timeout()), this, SLOT(moveCheck()));
     timer->start(500);
@@ -80,12 +81,13 @@ void websocket::CMD_RESULT(QString result)
         QJsonObject json;
         json["msg_type"] = "cmd_result";
         json["result"] = result;
-        qDebug()<<"result : "<<result;
+        //        qDebug()<<"result : "<<result;
 
         if (result == "failure")
         {
             QJsonObject json_error_info;
             json_error_info["error_code"] = "dddd";
+            // about error description
             json_error_info["description"] = "dddd";
             json_error_info["debug_msg"] = "dddd";
             json["error"] = json_error_info;
@@ -99,16 +101,10 @@ void websocket::CMD_RESULT(QString result)
             json_data["success_count"] = 1;
             json_data["failure_count"] = 0;
             json["data"]=json_data;
-            //            json["data"]=;
-
-            //            json_out["uuid"]=uuid;
-
-            //            QJsonDocument doc_json(json_out);
-            //            QString str_json(doc_json.toJson(QJsonDocument::Indented));
         }
+
         if (action == "set_position")
         {
-            qDebug()<<"zzzzzzzzzzzz";
             json["msg_type"] = "cmd_result";
             json["do"] = action;
             json["result"] = "success";
@@ -117,12 +113,20 @@ void websocket::CMD_RESULT(QString result)
             //QString str_json(doc_json.toJson(QJsonDocument::Compact));
             QString str_json(doc_json.toJson(QJsonDocument::Indented));
             emit msgSendSignal(str_json);
-
-            //            qDebug()<<str_json;
-            //    client_socket->sendTextMessage("notice");
             pSocket->sendTextMessage(str_json);
             mb->map_changed = false;
+        }
 
+        if (action == "set_nodes_info")
+        {
+            json["msg_type"] = "cmd_result";
+            json["do"] = action;
+            json["result"] = "success";
+
+            QJsonDocument doc_json(json);
+            QString str_json(doc_json.toJson(QJsonDocument::Indented));
+            emit msgSendSignal(str_json);
+            pSocket->sendTextMessage(str_json);
         }
 
         json["uuid"] = uuid;
@@ -137,8 +141,9 @@ void websocket::CMD_RESULT(QString result)
     }
 }
 
-void websocket::onTimeout()
+void websocket::SEND_NOTICE()
 {
+    //send notice every 500[ms]
     static int cnt = 0;
     cnt++;
 
@@ -277,15 +282,11 @@ void websocket::Feedback()
             //    client_socket->sendTextMessage("notice");
             pSocket->sendTextMessage(str_json);
         }
-
-
-
-
     }
-
 }
 
-void websocket::onBinaryMessageReceived(QByteArray message){
+void websocket::onBinaryMessageReceived(QByteArray message)
+{
     QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
     if(pClient){
         pClient->sendBinaryMessage(message);
@@ -295,7 +296,7 @@ void websocket::onBinaryMessageReceived(QByteArray message){
 //static bool move_status = false;
 void websocket::moveCheck()
 {
-//    qDebug()<<"action : "<<action;
+    //    qDebug()<<"action : "<<action;
     if(move_flag && mb->status==2)
     {
         //        qDebug()<<"robot is running!";
@@ -321,16 +322,13 @@ void websocket::moveCheck()
 
     if (action == "set_position")
     {
-//        qDebug()<<"ssssss";
+        //        qDebug()<<"ssssss";
         if(mb->map_changed == true)
         {
-//            qDebug()<<"sssssssssssss";
+            //            qDebug()<<"sssssssssssss";
             CMD_RESULT("success");
         }
     }
-
-
-
 }
 
 void websocket::onTextMessageReceived(QString message)
@@ -351,7 +349,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
     if(!yujin_json_msg.empty())
     {
         message = yujin_json_msg.front();
-        qDebug()<<message;
+//        qDebug()<<message;
         yujin_json_msg.pop();
 
         if(pClient)
@@ -672,8 +670,6 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                             qDebug()<<"path : "<<map_config_path;
                             file->open(QFile::ReadOnly);
                             fileData_byte = file->readAll();
-
-
                             //    qDebug()<<fileData_byte;
 
                             image_file_size = fileData_byte.size();
@@ -685,12 +681,14 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                             fileName = map_id+".tar.xz";
                             json_data["filename"] = map_id+".tar.xz";
                             map_config_path = QDir::homePath()+"/maps/"+map_id+".tar.xz";
+
                             file = new QFile(map_config_path);
                             //                    qDebug()<<"path : "<<map_config_path;
                             file->open(QFile::ReadOnly);
                             fileData_byte = file->readAll();
                             image_file_size = fileData_byte.size();
                         }
+
                         json_data["filesize"] = image_file_size;
                         qDebug()<<"image : "<<image_file_size;
 
@@ -702,7 +700,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
 
                         emit msgSendSignal(str_json); //for debuging
                         pClient->sendTextMessage(str_json);
-                        qDebug()<<"map_config_path 1 : "<<map_config_path;
+                        qDebug()<<"map_config_path : "<<map_config_path;
                         send_img_package(map_config_path,image_file_size,params["data_type"].toString(),fileName);
                     }
 
@@ -904,54 +902,13 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                 {
                     //4.13 pick item
 
-                    QJsonObject json_out;
-                    QString map_id;
 
-                    int item_id = params["item_id"].toInt();
-                    item_count = params["item_count"].toInt();
-                    double shelve_height = params["shelve_height"].toDouble();//yujin [m] -> rainbow [mm]
-                    double shelve_degree = params["shelve_degree"].toDouble();
-
-                    //                    md_mot->move_position(600);
-                    scene_yujin.clear();
-                    scene_yujin.append("lift_down");//리프트 이동
-                    scene_yujin.append(QString::number(shelve_height));//리프트 이동
-                    scene_yujin.append("robot mid vision");
-                    scene_yujin.append("wait");
-                    scene_yujin.append("vision");
-                    scene_yujin.append("wait");
-                    scene_yujin.append("robot approach");
-                    scene_yujin.append("robot pick");
-
-                    scene_yujin.append("robot push");
-                    scene_yujin.append("wait");
-                    scene_yujin.append("robot pump on");
-                    scene_yujin.append("robot pop");
-
-                    scene_yujin.append("robot mid left");
-
-                    QString lift_down = "lift_high,5";
-                    scene_yujin.append(lift_down);//리프트 이동
-                    scene_yujin.append("robot pump off");
-
-                    if (item_id!=1)
-                    {
-                        QStringList msg;
-                        for(int i=0;i<item_id;i++)
-                        {
-                            msg+=scene_yujin;
-                        }
-                        scene_yujin=msg;
-                    }
-
-                    //                    if(item_count>0)
-                    //                    {
-                    //                        flag_circle_yj = true;
-                    //                    }
-                    //                qDebug()<<scene_yujin;
-                    cur_step = ROBOT_STATE_START;
+                    main_json = json;
+                    emit order_pass(main_json);
+                    // temporary annotation
+//                    cur_step = FMS_ROBOT_STATE_START;
                     //                    emit msgSendSignal(scene_yujin);
-                    emit scene(scene_yujin);
+
                 }
 
                 else if(action == "set_position")
@@ -1003,7 +960,6 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
 
                     emit msgSendSignal(str_json); //for debuging
                     pClient->sendTextMessage(str_json);
-
                 }
 
                 else if(action == "ready_to_pick_item")
@@ -1060,7 +1016,6 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     pClient->sendTextMessage(str_json);
                 }
             }
-            //    }
         }
     }
 }
@@ -1098,7 +1053,6 @@ void websocket::MissionCheck(QString uuid){
 void websocket::send_img_package(QString map_config_path,int image_file_size,QString signature,QString fileName)
 {
     QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
-//    qDebug()<<"ssssssssssssss : "<<pClient;
     //for get map info
 
     file = new QFile(map_config_path);
@@ -1169,13 +1123,11 @@ void websocket::send_img_package(QString map_config_path,int image_file_size,QSt
     }
 }
 
-void websocket::sendNotice(QWebSocket *client_socket){
+void websocket::sendNotice(QWebSocket *client_socket)
+{
     QJsonObject json;
     json["msg_type"] = "notice";
     int mobile_status = mb->status;
-    //    qDebug()<<mobile_status;
-    //    QString mb_status;
-    int old_mb_status ;
 
     if (mobile_status == 0)
     {
@@ -1185,7 +1137,7 @@ void websocket::sendNotice(QWebSocket *client_socket){
     }
     else if(mobile_status == 1)
     {
-        if (old_mb_status!=mobile_status){
+        if (old_mb_status != mobile_status){
             mb_status="READY";
             json_mb_status= "ready";
             //            qDebug()<<"UI_AUTO_READY";
@@ -1219,7 +1171,6 @@ void websocket::sendNotice(QWebSocket *client_socket){
 
     if(rb_status == "moving")
     {
-        //            qDebug()<<"mmmmmmmmmmmmmmmm";
         json_mb_status= "running";
     }
     else if(rb_status == "not moving")
@@ -1238,26 +1189,26 @@ void websocket::sendNotice(QWebSocket *client_socket){
         //
     }
 
-    old_mobile_status=mb_status;
+    old_mobile_status = mb_status;
 
     json["robot_state"] = json_mb_status;
     json["navi_mode"] = "navigate";
 
-    QString config_path = QDir::homePath()+"/robot_config.ini";
-    QFileInfo config_info(config_path);
-    if(config_info.exists() && config_info.isFile())
+    QString static_config_path = "/home/rainbow/RB_MOBILE/config/static_config.ini";
+    QFileInfo static_config_info(static_config_path);
+    if(static_config_info.exists() && static_config_info.isFile())
     {
         QSettings settings(config_path, QSettings::IniFormat);
-        //        QString robot_id = settings.value("ROBOT_SW/robot_id").toString();
-        map_id = settings.value("FLOOR/map_name").toString();
+        json["robot_width"] = settings.value("robot_length_x").toString();
+        json["robot_length"] = settings.value("robot_length_y").toString();
+    }
 
-        //        QString robot_width = settings.value("ROBOT_HW/robot_width").toString();
-        //        QString robot_length = settings.value("ROBOT_HW/robot_length").toString();
-        //        json["robot_width"] = robot_width.toFloat();
-        //        json["robot_length"] = robot_length.toFloat();
-
-        json["robot_width"] = 0.6;
-        json["robot_length"] = 0.8;
+    QString setting_config_path = "/home/rainbow/RB_MOBILE/config/setiing_config.ini";
+    QFileInfo setting_config_info(setting_config_path);
+    if(setting_config_info.exists() && setting_config_info.isFile())
+    {
+        QSettings settings(config_path, QSettings::IniFormat);
+        map_id = settings.value("MAP/map_name").toString();
     }
 
     //    json["robot_op_type"] = "real_robot";
@@ -1277,7 +1228,7 @@ void websocket::sendNotice(QWebSocket *client_socket){
 
     QJsonObject json_battery;
     json_battery["level"] = mb->battery;
-    json_battery["in_charging"] = false;
+    json_battery["in_charging"] = mb->charge_state;
     json["battery"] = json_battery;
 
     json["robot_op_type"] = "real_robot";
@@ -1310,4 +1261,27 @@ void websocket::sendAck(QString uuid)
     pClient->sendTextMessage(str_json);
 
     //    client_socket->sendTextMessage(json);
+}
+
+
+void websocket::load()
+{
+    for(auto& it: shelf_infos) // get from saved json
+    {
+        if(it.second == nullptr)
+        {
+            continue;
+        }
+
+        //        QJsonDocument doc_json = QJsonDocument::fromJson(new_msg.toUtf8());
+        //        QJsonObject json = doc_json.object();
+        //        QVariantMap json_pa = json.toVariantMap();
+        //        QVariantMap json_parm = json_pa["params"].toMap();
+        qDebug()<<"dddddd: "<<it.second->shelf_id;
+        //        qDebug()<<json_parm["shelve_name"].toString()+"_"+QString::number(shelve_height);
+        //        if (it.second->shelf_id == json_parm["shelve_name"].toString()+"_"+QString::number(shelve_height))
+        //        {
+        //            qDebug()<<it.second->shelf_id;
+        //        }
+    }
 }

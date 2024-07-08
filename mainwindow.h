@@ -233,6 +233,7 @@ public:
     // for yj msg
     std::mutex mtx;
     std::queue<QString> order_json_msg;
+    std::queue<QString> order_yj_json_msg;
 
     // for stack qstringlist order msg
     std::queue<QStringList> order_list_msg;
@@ -265,6 +266,11 @@ public:
     bool grip = false;
     void save_log(QString log);
     bool lift_working = false;
+
+
+
+//    void yujin_order();
+//    void yujin_order_check();
 
 private:
     Ui::MainWindow *ui;
@@ -338,6 +344,10 @@ public slots:
     void LE_KETI_IMG(cv::Mat map_img);
     void auto_homming_seq();
 
+
+    void yujin_order(QJsonObject json);
+    void yujin_order_check();
+
     //    void sendData();
 
 private slots:
@@ -396,7 +406,6 @@ private slots:
     void on_BTN_MOTION_HALT_clicked();
     void on_BTN_COLLISION_RESUME_clicked();
     void on_BTN_MOVE_JOINT_HIGH_clicked();
-    void on_BTN_MOVE_JOINT_VISION_clicked();
     void on_BTN_MOVE_JOINT_READY_GRIPPER_clicked();
     void on_BTN_MOVE_JOINT_GRAPS_GRIPPER_clicked();
     void on_HS_BASE_SPEED_valueChanged(int value);
@@ -406,10 +415,6 @@ private slots:
     void on_BTN_MOVE_JOINT_INIT_3_clicked();
     void on_BTN_MOVE_JOINT_INIT_4_clicked();
     void on_BTN_MOVE_JOINT_INIT_5_clicked();
-    void on_BTN_GET_JOINT_AND_TCP_PD1_clicked();
-    void on_BTN_GET_JOINT_AND_TCP_PD2_clicked();
-    void on_BTN_GET_JOINT_AND_TCP_RG2_clicked();
-    void on_BTN_GET_JOINT_AND_TCP_G2_clicked();
 
     //for img change
     void bt_png_change();
@@ -459,13 +464,11 @@ private slots:
     void on_BTN_MOVE_TOTAL_2_clicked();
     void on_BTN_MOVE_TOTAL_3_clicked();
     void on_BTN_MOVE_TOTAL_4_clicked();
-    void on_bt_get_map_from_mobile_2_clicked();
     void on_pb_file_choose_clicked();
     void on_bt_rb5_pause_clicked();
     void on_bt_rb5_resume_clicked();
     void on_bt_rb5_halt_clicked();
 
-    void seqLoop_yujin(QStringList msg);
     void yujin_loop();
     void on_bt_sn_cmd_set_clicked();
 

@@ -102,7 +102,6 @@ void update_order_config()
 
 int main(int argc, char *argv[])
 {
-
     qRegisterMetaType<std::vector<double>>();
 
     // read config
@@ -111,9 +110,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.setWindowIcon(QIcon(":/img/resource/rb.png"));
-
-//    w.setGeometry(300, 300, 400, 400);
-
     w.show();
     return a.exec();
 }

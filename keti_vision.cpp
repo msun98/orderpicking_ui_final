@@ -309,6 +309,7 @@ void Keti_vision::c_p2c_tcp(QString str)
         double ty = list[1].toDouble();
         double tz = list[2].toDouble();
 
+        //for using normal vector!!
 //        double rx = list[3].toDouble();
 //        double ry = list[4].toDouble();
 //        double rz = list[5].toDouble();

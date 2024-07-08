@@ -31,6 +31,17 @@ public:
     ~websocket();
     explicit websocket(QObject *parent = nullptr);
 
+    //little endian
+    typedef union{
+        int     data_i;
+        char    data_c[4];
+    }U_INT_CHAR;
+
+    typedef union{
+        short   data_s;
+        char    data_c[2];
+    }U_SHORT_CHAR;
+
     // ipc
     //    IPC ipc;
 
@@ -99,11 +110,20 @@ public:
 
     QString lift_status;
 
-     bool flag_circle_yj = false;
+    bool flag_circle_yj = false;
 
-     bool seqLoop_done_flag = false;
+    bool seqLoop_done_flag = false;
 
-     std::queue<QString> yujin_json_msg;
+    std::queue<QString> yujin_json_msg;
+
+    std::map<std::string, SHELF_INFO*> shelf_infos;
+    std::map<std::string, OBJECT_INFO*> object_infos;
+
+    int old_mb_status;
+
+    void load();
+
+    QJsonObject main_json;
 
 signals:
 
@@ -115,9 +135,7 @@ signals:
 
     void check_robot_connected(bool connected);
 
-    void scene(QStringList);
-
-
+    void order_pass(QJsonObject);
 
 
 public slots:
@@ -126,7 +144,7 @@ public slots:
 
     void Feedback();
 
-    void onTimeout();
+    void SEND_NOTICE();
 
     void onNewConnection();
 
@@ -141,7 +159,6 @@ public slots:
     void onDisconnected();
 
     void send_img_package(QString map_config_path,int image_file_size,QString signature,QString fileName);
-
 
     void moveCheck();
 
@@ -159,24 +176,13 @@ private:
 
     void sendCommandAck(QWebSocket *client_socket, QString result, QJsonObject error_info, QString uuid);
 
-//    void sendCommandResult(QWebSocket *client_socket, QString result, QJsonObject error_info, QString uuid);
+    //    void sendCommandResult(QWebSocket *client_socket, QString result, QJsonObject error_info, QString uuid);
 
     QJsonObject data(QString robot_manufacture, QString action,QString robot_type, QString map_id, QString map_name);
 
-//    void sendCommandResult(QWebSocket *client_socket, QString action, QString result, QJsonObject data, QJsonObject error_info, QString uuid);
+    //    void sendCommandResult(QWebSocket *client_socket, QString action, QString result, QJsonObject data, QJsonObject error_info, QString uuid);
 
     void sendAck(QString uuid);
-
-    //little endian
-    typedef union{
-        int     data_i;
-        char    data_c[4];
-    }U_INT_CHAR;
-
-    typedef union{
-        short   data_s;
-        char    data_c[2];
-    }U_SHORT_CHAR;
 
     mobile_robot *mb=NULL;
     MD_MOTOR *md_mot = NULL;

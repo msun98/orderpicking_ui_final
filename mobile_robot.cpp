@@ -307,7 +307,7 @@ void mobile_robot::on_read_mobile_status() //get map data
         // JSON 객체에서 원하는 데이터에 접근
         QJsonObject jsonObject = jsonDoc.object();
         QString msgType = jsonObject["MSG_TYPE"].toString();
-        qDebug() << "MSG_TYPE:" << msgType;
+//        qDebug() << "MSG_TYPE:" << msgType;
 
         if (msgType == "MOBILE_POSE")
         {
