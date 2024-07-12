@@ -9,6 +9,7 @@ Q_DECLARE_METATYPE(std::vector<double>)
 
 motor_cmd MD_CMD;
 ROBOT_CONFIG robot_config;
+AMR_CONFIG amr_config;
 CAM_CONFIG cam_config;
 
 Eigen::Matrix4d string_to_TF(QString str);
@@ -85,6 +86,10 @@ void update_order_config()
         robot_config.object = settings.value("OBJECT/object").toString();
         robot_config.shelves_list = robot_config.shelves_name.split(",");
         robot_config.object_list = robot_config.object.split(",");
+
+        amr_config.AMR_ip = settings.value("CLIENT/AMR_ip").toString();
+        amr_config.AMR_id = settings.value("CLIENT/AMR_id").toString();
+        amr_config.AMR_pw = settings.value("CLIENT/AMR_pw").toString();
     }
 
     QString cam2tcp_tf_path = QDir::currentPath() + "/cam_config.ini";
@@ -94,9 +99,13 @@ void update_order_config()
     {
         QSettings settings(cam2tcp_tf_path, QSettings::IniFormat);
 
-        QString TF_SENSOR;
-        TF_SENSOR = settings.value("CALIB/TF_SENSOR").toString();
-        cam_config.T_sensor = string_to_TF(TF_SENSOR);
+        QString RB_TF_SENSOR;
+        RB_TF_SENSOR = settings.value("CALIB/RB_TF_SENSOR").toString();
+        cam_config.RB_TF_SENSOR = string_to_TF(RB_TF_SENSOR);
+
+        QString KITECH_TF_SENSOR;
+        KITECH_TF_SENSOR = settings.value("CALIB/KITECH_TF_SENSOR").toString();
+        cam_config.KITECH_TF_SENSOR = string_to_TF(KITECH_TF_SENSOR);
     }
 }
 

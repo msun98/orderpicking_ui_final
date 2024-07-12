@@ -444,12 +444,14 @@ public:
     int h = 0;
     int exp = 0;
 
-    Eigen::Matrix4d T_sensor;
+    Eigen::Matrix4d RB_TF_SENSOR;
+    Eigen::Matrix4d KITECH_TF_SENSOR;
 
     CAM_CONFIG()
     {
         sn = "";
-        T_sensor.setIdentity();
+        RB_TF_SENSOR.setIdentity();
+        KITECH_TF_SENSOR.setIdentity();
         exp = 0;
     }
     CAM_CONFIG(const CAM_CONFIG& p)
@@ -457,7 +459,8 @@ public:
         w = p.w;
         h = p.h;
         sn = p.sn;
-        T_sensor = p.T_sensor;
+        RB_TF_SENSOR = p.RB_TF_SENSOR;
+        KITECH_TF_SENSOR = p.KITECH_TF_SENSOR;
         exp = p.exp;
     }
 
@@ -466,12 +469,24 @@ public:
         w = p.w;
         h = p.h;
         sn = p.sn;
-        T_sensor = p.T_sensor;
+        RB_TF_SENSOR = p.RB_TF_SENSOR;
+        KITECH_TF_SENSOR = p.KITECH_TF_SENSOR;
         exp = p.exp;
         return *this;
     }
 };
 extern CAM_CONFIG cam_config;
+
+
+struct AMR_CONFIG
+{
+    // server
+    QString AMR_ip = "";
+    QString AMR_id = "";
+    QString AMR_pw = "";
+};
+extern AMR_CONFIG amr_config;
+
 
 #endif // GLOBAL_DEFINES_H
 

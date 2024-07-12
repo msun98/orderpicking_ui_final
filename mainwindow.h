@@ -77,15 +77,15 @@ public:
     //    int moveCmdFlag;
     //    int moveCmdCnt;
 
-//    posInfo initPos;
-//    posInfo visionPos;
-//    posInfo readyGripperPos;
-//    posInfo grapsGripperPos;
+    //    posInfo initPos;
+    //    posInfo visionPos;
+    //    posInfo readyGripperPos;
+    //    posInfo grapsGripperPos;
 
-//    posInfo putdown1Pos;
-//    posInfo putdown2Pos;
-//    posInfo readyGripper2Pos;
-//    posInfo grapsGripper2Pos;
+    //    posInfo putdown1Pos;
+    //    posInfo putdown2Pos;
+    //    posInfo readyGripper2Pos;
+    //    posInfo grapsGripper2Pos;
 
     QByteArray recvBuf;
     QTimer timer;
@@ -267,10 +267,10 @@ public:
     void save_log(QString log);
     bool lift_working = false;
 
+    bool old_connect_flag=false;
 
-
-//    void yujin_order();
-//    void yujin_order_check();
+    //    void yujin_order();
+    //    void yujin_order_check();
 
 private:
     Ui::MainWindow *ui;

@@ -8,7 +8,7 @@ Kitech_gripper::Kitech_gripper(QObject *parent) : QObject(parent)
     IP_GRIPPER.ip = "192.168.2.73";
     IP_GRIPPER.port = 7003;
 
-    /*connect(Kitech_Client, SIGNAL(connected()), this, SLOT(onKitechConnected()));
+    connect(Kitech_Client, SIGNAL(connected()), this, SLOT(onKitechConnected()));
     connect(Kitech_Client, SIGNAL(disconnected()), this, SLOT(onKitechdisConnected()));
 
     //    connect(this, SIGNAL(Gripper_Connect()), this, SLOT(msgSignal(bool connect_flag)));
@@ -19,7 +19,7 @@ Kitech_gripper::Kitech_gripper(QObject *parent) : QObject(parent)
     connect_flag = false;
     emit msgSignal(connect_flag);
 
-    Gripper_Connect();*/
+    Gripper_Connect();
 }
 
 
@@ -34,7 +34,7 @@ void Kitech_gripper::Gripper_Connect()
         connect(Kitech_Client, SIGNAL(readyRead()), this, SLOT(onReadyCmdRead()));
         //        qDebug()<<"gripper connect!!!!!!!!!!!!!!!!";
         //        Integrated_info.init_gripper =false;
-        connect_flag = true;
+        connect_flag = false;
         emit msgSignal(connect_flag);
     }
 

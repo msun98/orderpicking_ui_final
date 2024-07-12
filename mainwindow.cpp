@@ -63,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     Q_FOREACH(QSerialPortInfo port, QSerialPortInfo::availablePorts())
     {
+        qDebug()<<"port : "<<port.portName();
         bool lift = port.portName().contains("USB", Qt::CaseInsensitive);//이름이 바코드로 정해놓은 것만 들어오도록
         if (lift)
         {
@@ -231,6 +232,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     init();
 
+    // 기본
+    vision.TCP2cam = cam_config.RB_TF_SENSOR;
 }
 
 MainWindow::~MainWindow()
@@ -325,7 +328,6 @@ void MainWindow::init()
 
     load();
     ui->le_scenario->setStyleSheet("QLineEdit{background-color:white}");
-    web.load();
 }
 
 
@@ -491,7 +493,7 @@ void MainWindow::lift_ui()
 {
     if(md_mot.move_poisition_flag)
     {
-//        qDebug()<<"lift_state : "<<lift_state;
+        //        qDebug()<<"lift_state : "<<lift_state;
         if(abs(lift_pos - ui->sb_move_pos->value())<10)
         {
             // 완료 flag 가능
@@ -1353,7 +1355,7 @@ void MainWindow::on_BTN_MOVE_JOINT_HIGH_clicked()
     qDebug()<<"최고높이에서 디텍팅중.";
     //    cobot.MoveJoint(initPos._joint_1, initPos._joint_2 , initPos._joint_3 , initPos._joint_4, initPos._joint_5, initPos._joint_6, -1, -1);
     //    cobot.MoveTCP(-372, -118, 529, 90, -90.00, 180, 2, -1);
-    //     cobot.MoveJoint(2.90,29.97,-137.74,107.77,-92.92,-90.04,2, -1);
+    //     cobot.MoveJoint(2.90,29.97,-137.74,107.77, -92.92,-90.04,2, -1);
     //    cobot.MoveJoint(0,20,-76,20,-90,-90,2, -1);
     //    cobot.MoveJoint(-7.11, -3.82, -40.88, -12.63, -85.45, -83.14,2, -1);
     //    cobot.MoveJoint(0.0,75.7509994506836,-124.04100036621094,21,-90.00,-90.00, 2, -1);
@@ -1412,19 +1414,28 @@ void MainWindow::keti_showUI_msg(bool connect_flag)
 
 void MainWindow::kitech_showUI_msg(bool connect_flag)
 {
-    //    qDebug()<<"hi";
     if (connect_flag)
     {
-
         ui->le_kitech->setStyleSheet("background-color:green");
         ui->le_gripper_connection->setStyleSheet("background-color:green");
+        if(old_connect_flag != connect_flag)
+        {
+            vision.TCP2cam = cam_config.KITECH_TF_SENSOR;
+            std::cout<<vision.TCP2cam<<std::endl;
+        }
     }
 
     else
     {
         ui->le_kitech->setStyleSheet("background-color:red");
         ui->le_gripper_connection->setStyleSheet("background-color:red");
+        if(old_connect_flag != connect_flag)
+        {
+            vision.TCP2cam = cam_config.RB_TF_SENSOR;
+            std::cout<<vision.TCP2cam<<std::endl;
+        }
     }
+    old_connect_flag = connect_flag;
 }
 
 
@@ -1975,7 +1986,7 @@ void MainWindow::on_bt_TCP_Blend_clicked()
 
 void MainWindow::on_BTN_MOVE_JOINT_LOW_clicked()
 {
-    cobot.MoveJoint(-9.35,-85,-124,168,-82,-84, -1);
+    cobot.MoveJoint(0.000,31.222,-131.071,35.017,-90.004,-90.006, -1);
 }
 
 void MainWindow::on_BTN_MOVE_JOINT_INIT_7_clicked()
@@ -1998,8 +2009,8 @@ void MainWindow::on_bt_lift_top_clicked()
 
 void MainWindow::on_bt_lift_MID_clicked()
 {
-    ui -> sb_lift_pos->setValue(50);
-    md_mot.move_position(50);
+    ui -> sb_lift_pos->setValue(450);
+    md_mot.move_position(450);
 }
 
 void MainWindow::on_bt_lift_Low_clicked()
@@ -2071,7 +2082,7 @@ void MainWindow::on_bt_vision_rael_more_move_clicked()
 
 void MainWindow::on_BTN_MOVE_JOINT_MID_RIGHT_clicked()
 {
-    cobot.MoveJoint(178.86,6.5,-114, 20, -90.00, -88.89, 2, -1);
+    cobot.MoveJoint(178.859,0.005,-97.016,10.010,-90.000,-88.892, 2, -1);
 }
 
 void MainWindow::yujin_order(QJsonObject json)
@@ -2091,10 +2102,10 @@ void MainWindow::yujin_order(QJsonObject json)
 void MainWindow::yujin_order_check()
 {
     // order msg save -> parsing -> making parsing msg to qstringlist -> que astringlist
-//    qDebug()<<order_yj_json_msg.front();
+    //    qDebug()<<order_yj_json_msg.front();
 
     //    QString shelf_hight = ui->le_shelf_hight->text();
-//    int count = ui -> CB_gripper_num -> currentText().toInt();
+    //    int count = ui -> CB_gripper_num -> currentText().toInt();
     //    QString shelf_name = ui->CB_shelf->currentText();
 
     for(auto& it: shelf_infos) // get from saved json
@@ -2207,7 +2218,7 @@ void MainWindow::yujin_order_check()
 
             mtx.lock();
             order_yj_list_msg.push(order_msg);
-//            qDebug()<<"yujin : "<<order_msg;
+            //            qDebug()<<"yujin : "<<order_msg;
             mtx.unlock();
             cur_step_yj = FMS_ROBOT_STATE_START;
             //                qDebug()<<"나는 큐의 크기를 알고싶다 : "<<order_list_msg.size();
@@ -2229,7 +2240,7 @@ void MainWindow::yujin_loop()
     QString timeString = time.toString();
 
     //websocket 에서 시작을 알려줌.
-//    cur_step_yj = web.cur_step;
+    //    cur_step_yj = web.cur_step;
 
     int new_yujin_msg_size = order_yj_list_msg.size();
     //    qDebug()<<"order_yj_list_msg : "<<order_yj_list_msg.front();
@@ -2284,17 +2295,17 @@ void MainWindow::yujin_loop()
             break;
         if(yujin_scene.size() > 0)
         {
-//            qDebug()<<"Sssssssssssssssssssssssssssssss";
+            //            qDebug()<<"Sssssssssssssssssssssssssssssss";
             ui->te_status->setText(yujin_scene[0]);
-//            QString log = "["+timeString +"] " + scene[0];
-//            save_log(log);
+            //            QString log = "["+timeString +"] " + scene[0];
+            //            save_log(log);
 
             qDebug() << "check scene " << yujin_scene[0] << yujin_scene.size();
             if(yujin_scene[0] == "move_point_1" || yujin_scene[0] == "move_point_2"|| yujin_scene[0] == "robot origin")
             {
                 qDebug() << "move point";
                 cur_step_yj = FMS_ROBOT_STATE_AMR_START;
-//                web.cur_step = cur_step_yj;
+                //                web.cur_step = cur_step_yj;
             }
             else if(yujin_scene[0] == "init" || yujin_scene[0] == "robot_init"){
                 //                ROBOT_STATE_CHECK_SCENE=web.cur_step;
@@ -2388,7 +2399,7 @@ void MainWindow::yujin_loop()
         //내부 조건 만족하지 않을 시.
 
         QString vision_msg = ui->lb_keti_point->text();
-//        qDebug()<<"vision_msg!!!!!!!!!!!!!!!!:"<<vision_msg;
+        //        qDebug()<<"vision_msg!!!!!!!!!!!!!!!!:"<<vision_msg;
         if(vision_msg=="OBJ_NONE")
         {
             yujin_scene.clear();
@@ -2566,7 +2577,17 @@ void MainWindow::yujin_loop()
             qDebug() << "lift_pos : "<<lift_pos;
             qDebug() << "lift_hight : "<<lift_hight;
 
-            cur_step_yj = FMS_ROBOT_STATE_LIFT_WAIT;
+            // when self or ext collision occured -> stop the e/v
+            if(cobot.systemStat.sdata.op_stat_collision_occur == 1 || cobot.systemStat.sdata.op_stat_self_collision == 1)
+            {
+                //내부에 가둬버리기
+                bt_rpmZero();
+                ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
+            }
+            else
+            {
+                cur_step_yj = FMS_ROBOT_STATE_LIFT_WAIT;
+            }
         }
         else
         {
@@ -2593,7 +2614,7 @@ void MainWindow::yujin_loop()
             else
             {
 
-//                cur_step_yj = FMS_ROBOT_STATE_LIFT_DONE;
+                //                cur_step_yj = FMS_ROBOT_STATE_LIFT_DONE;
                 //3회까지 retry 하고 실패시 fail
                 if(lift_yujin_retry<3)
                 {
@@ -2926,9 +2947,9 @@ void MainWindow::yujin_loop()
             {
                 break;
             }
-//            qDebug()<<yujin_scene;
+            //            qDebug()<<yujin_scene;
             yujin_scene.pop_front();
-//            qDebug()<<yujin_scene;
+            //            qDebug()<<yujin_scene;
             cur_step_yj = FMS_ROBOT_STATE_CHECK_SCENE;
             break;
         }
@@ -3797,7 +3818,8 @@ void MainWindow::vision_img_capture()
         if(keti_box_request==false)
         {
             QString obj_cmd = ui->cb_get_object_id_vision->currentText();
-            QString keti_cmd = "REQ,VISION,DETECT,"+obj_cmd;
+//            QString keti_cmd = "REQ,VISION,DETECT,"+obj_cmd;
+            QString keti_cmd = "REQ,VISION,DETECT";
             qDebug()<<keti_cmd;
             vision.Keti_Client->write(keti_cmd.toUtf8());
 
@@ -3958,24 +3980,30 @@ void MainWindow::on_BTN_MOVE_TOTAL_4_clicked()
 
 void MainWindow::on_pb_file_choose_clicked()
 {
-    //파일 열기
+
     QString filepath = QFileDialog::getOpenFileName(this,"open","../");
-    QString cmd;
-    QString ip = "192.168.2.2";
+    QString ip = amr_config.AMR_ip;
+    QString id = amr_config.AMR_id;
+    QString pw = amr_config.AMR_pw;
 
-    ui->le_text->setText(filepath);
+    QString destination_path = "/home/" + id + "/RB_MOBILE";
 
-    cmd.sprintf("sshpass -p %s scp -oStrictHostKeyChecking=no -r %s %s@%s:~/maps",
-                "odroid",
-                filepath.toLocal8Bit().data(),
-                "odroid",
-                ip.toLocal8Bit().data());
-
-    //        std::system(cmd.toLocal8Bit().data());
+    QString cmd = "sshpass -p " + pw + " rsync -avz -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' " + filepath + " " + id + "@" + ip + ":" + destination_path;
 
     qDebug()<<cmd;
-
     std::system(cmd.toLocal8Bit().data());
+
+    int result = system(cmd.toStdString().c_str());
+
+    if(result != 0)
+    {
+        //            logger.write("[SERVER] rsync command failed.", true);
+    }
+    else
+    {
+        std::cout<<"file transfer done!!"<<std::endl;
+    }
+
 }
 
 void MainWindow::on_bt_rb5_pause_clicked()
@@ -4024,11 +4052,8 @@ void MainWindow::on_bt_sn_cmd_set_clicked()
 void MainWindow::bt_amr_motor_init()
 {
     QJsonObject json_output;
-
     json_output["MSG_TYPE"] = "INIT";
-
     QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
-
     mb.cmdSendData(json_string);
 
 }
@@ -4511,10 +4536,15 @@ void MainWindow::on_pb_reload_clicked()
 
 void MainWindow::on_bt_scen_resume_clicked()
 {
-    scene.clear();
-    scene.append("robot pump off");
-    scene.append("SCENE DONE");
-    cur_step = ROBOT_STATE_CHECK_SCENE;
+    //    scene.clear();
+    //    scene.append("robot pump off");
+    //    scene.append("SCENE DONE");
+    //    cur_step = ROBOT_STATE_CHECK_SCENE;
+
+    yujin_scene.clear();
+    yujin_scene.append("robot pump off");
+    yujin_scene.append("SCENE DONE");
+    cur_step_yj = ROBOT_STATE_CHECK_SCENE;
 }
 
 void MainWindow::lb_keti_point(QString msg)
@@ -4720,7 +4750,7 @@ QString MainWindow::mat_zyxzy()
 void MainWindow::on_bt_cobot_move2object_approach_clicked()
 {
 
-    on_BTN_GRIPPER_SUCTION_clicked();
+//    on_BTN_GRIPPER_SUCTION_clicked();
 
     ui -> spb_Tx->setValue(ui->LE_TCP_REF_X->text().toFloat()/1000);
     ui -> spb_Ty->setValue(ui->LE_TCP_REF_Y->text().toFloat()/1000);
@@ -4801,7 +4831,7 @@ void MainWindow::on_BTN_GRIPPER_OPEN_clicked()
 {
     if(Integrated_info.init_gripper == true)
     {
-        QString text = "Rg0";
+        QString text = "Rg2";
         QByteArray br = text.toUtf8();
         gripper.Kitech_Client->write(br);
     }

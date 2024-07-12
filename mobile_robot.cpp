@@ -391,7 +391,7 @@ void mobile_robot::png_change()
     cv::Mat src;
 
     // load map
-    QString path = "/home/rainbow/RB_MOBILE/maps/";
+    QString path = "/home/rainbow/maps/";
     QDir dir(path);
 
     //file 있는지 없는지 검사
@@ -478,8 +478,8 @@ void mobile_robot::bt_zip()
     QString filelist;
     QString map_name;
     // load map
-    //    QString path = "/home/rainbow/maps/";
-    QString path = "/home/rainbow/RB_MOBILE/maps";
+        QString path = "/home/rainbow/maps/";
+//    QString path = "/home/rainbow/RB_MOBILE/maps";
     QDir dir(path);
 
     //file 있는지 없는지 검사

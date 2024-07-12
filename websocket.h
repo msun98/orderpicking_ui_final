@@ -121,9 +121,9 @@ public:
 
     int old_mb_status;
 
-    void load();
-
     QJsonObject main_json;
+
+    QByteArray map_buf;
 
 signals:
 

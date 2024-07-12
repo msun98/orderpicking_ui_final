@@ -201,7 +201,6 @@ public:
     QPushButton *BTN_MOTION_RESUME;
     QPushButton *BTN_MOVE_JOINT_READY_GRIPPER;
     QPushButton *BTN_MOTION_HALT;
-    QPushButton *BTN_MOVE_JOINT_HIGH;
     QFrame *FRAME_STATUS;
     QWidget *gridLayoutWidget_4;
     QGridLayout *gridLayout_4;
@@ -444,17 +443,11 @@ public:
     QLabel *LB_BASE_SPEED;
     QPushButton *BTN_MOVE_JOINT_GRAPS_GRIPPER;
     QLabel *label_137;
-    QPushButton *BTN_MOVE_JOINT_HIGH_LEFT;
     QPushButton *BTN_MOVE_JOINT_INIT_3;
     QPushButton *BTN_MOVE_JOINT_INIT_4;
     QPushButton *BTN_MOVE_JOINT_INIT_5;
     QPushButton *btn_pump;
     QPushButton *BTN_MOVE_JOINT_Rotation;
-    QPushButton *BTN_MOVE_JOINT_LOW;
-    QPushButton *BTN_MOVE_JOINT_MID;
-    QPushButton *BTN_MOVE_JOINT_INIT_7;
-    QPushButton *BTN_MOVE_JOINT_MID_RIGHT;
-    QPushButton *BTN_MOVE_JOINT_MID_LEFT;
     QWidget *layoutWidget5;
     QGridLayout *gridLayout_15;
     QLabel *label_9;
@@ -469,6 +462,15 @@ public:
     QPushButton *BTN_MOVE_JOINT_BOX_CENTER_KETI;
     QPushButton *BTN_MOVEL_rel;
     QPushButton *BTN_quick_return;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout_7;
+    QPushButton *BTN_MOVE_JOINT_HIGH;
+    QPushButton *BTN_MOVE_JOINT_MID;
+    QPushButton *BTN_MOVE_JOINT_LOW;
+    QWidget *widget1;
+    QHBoxLayout *horizontalLayout_15;
+    QPushButton *BTN_MOVE_JOINT_MID_LEFT;
+    QPushButton *BTN_MOVE_JOINT_MID_RIGHT;
     QWidget *lift_motor;
     QComboBox *cb_port;
     QGroupBox *groupBox_3;
@@ -1524,9 +1526,6 @@ public:
         BTN_MOTION_HALT->setObjectName(QString::fromUtf8("BTN_MOTION_HALT"));
         BTN_MOTION_HALT->setGeometry(QRect(1110, 40, 101, 61));
         BTN_MOTION_HALT->setStyleSheet(QString::fromUtf8("background-color: rgb(252, 175, 62);"));
-        BTN_MOVE_JOINT_HIGH = new QPushButton(rb_5);
-        BTN_MOVE_JOINT_HIGH->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_HIGH"));
-        BTN_MOVE_JOINT_HIGH->setGeometry(QRect(1100, 200, 141, 71));
         FRAME_STATUS = new QFrame(rb_5);
         FRAME_STATUS->setObjectName(QString::fromUtf8("FRAME_STATUS"));
         FRAME_STATUS->setGeometry(QRect(20, 220, 630, 700));
@@ -3021,18 +3020,15 @@ public:
         label_137->setGeometry(QRect(20, 0, 251, 41));
         label_137->setTextFormat(Qt::RichText);
         label_137->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
-        BTN_MOVE_JOINT_HIGH_LEFT = new QPushButton(rb_5);
-        BTN_MOVE_JOINT_HIGH_LEFT->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_HIGH_LEFT"));
-        BTN_MOVE_JOINT_HIGH_LEFT->setGeometry(QRect(1260, 200, 141, 71));
         BTN_MOVE_JOINT_INIT_3 = new QPushButton(rb_5);
         BTN_MOVE_JOINT_INIT_3->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_INIT_3"));
         BTN_MOVE_JOINT_INIT_3->setGeometry(QRect(1290, 550, 141, 71));
         BTN_MOVE_JOINT_INIT_4 = new QPushButton(rb_5);
         BTN_MOVE_JOINT_INIT_4->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_INIT_4"));
-        BTN_MOVE_JOINT_INIT_4->setGeometry(QRect(1470, 420, 141, 71));
+        BTN_MOVE_JOINT_INIT_4->setGeometry(QRect(1530, 420, 141, 71));
         BTN_MOVE_JOINT_INIT_5 = new QPushButton(rb_5);
         BTN_MOVE_JOINT_INIT_5->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_INIT_5"));
-        BTN_MOVE_JOINT_INIT_5->setGeometry(QRect(1470, 500, 141, 71));
+        BTN_MOVE_JOINT_INIT_5->setGeometry(QRect(1530, 500, 141, 71));
         btn_pump = new QPushButton(rb_5);
         btn_pump->setObjectName(QString::fromUtf8("btn_pump"));
         btn_pump->setGeometry(QRect(680, 110, 71, 51));
@@ -3040,21 +3036,6 @@ public:
         BTN_MOVE_JOINT_Rotation = new QPushButton(rb_5);
         BTN_MOVE_JOINT_Rotation->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_Rotation"));
         BTN_MOVE_JOINT_Rotation->setGeometry(QRect(1480, 590, 141, 71));
-        BTN_MOVE_JOINT_LOW = new QPushButton(rb_5);
-        BTN_MOVE_JOINT_LOW->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_LOW"));
-        BTN_MOVE_JOINT_LOW->setGeometry(QRect(1100, 380, 141, 71));
-        BTN_MOVE_JOINT_MID = new QPushButton(rb_5);
-        BTN_MOVE_JOINT_MID->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_MID"));
-        BTN_MOVE_JOINT_MID->setGeometry(QRect(1100, 290, 141, 71));
-        BTN_MOVE_JOINT_INIT_7 = new QPushButton(rb_5);
-        BTN_MOVE_JOINT_INIT_7->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_INIT_7"));
-        BTN_MOVE_JOINT_INIT_7->setGeometry(QRect(1260, 380, 141, 71));
-        BTN_MOVE_JOINT_MID_RIGHT = new QPushButton(rb_5);
-        BTN_MOVE_JOINT_MID_RIGHT->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_MID_RIGHT"));
-        BTN_MOVE_JOINT_MID_RIGHT->setGeometry(QRect(1410, 290, 141, 71));
-        BTN_MOVE_JOINT_MID_LEFT = new QPushButton(rb_5);
-        BTN_MOVE_JOINT_MID_LEFT->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_MID_LEFT"));
-        BTN_MOVE_JOINT_MID_LEFT->setGeometry(QRect(1260, 290, 141, 71));
         layoutWidget5 = new QWidget(rb_5);
         layoutWidget5->setObjectName(QString::fromUtf8("layoutWidget5"));
         layoutWidget5->setGeometry(QRect(670, 640, 571, 91));
@@ -3102,7 +3083,7 @@ public:
 
         BTN_MOVE_JOINT_POP = new QPushButton(rb_5);
         BTN_MOVE_JOINT_POP->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_POP"));
-        BTN_MOVE_JOINT_POP->setGeometry(QRect(1260, 110, 141, 71));
+        BTN_MOVE_JOINT_POP->setGeometry(QRect(1300, 20, 141, 71));
         BTN_MOVE_JOINT_BOX_CENTER = new QPushButton(rb_5);
         BTN_MOVE_JOINT_BOX_CENTER->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_BOX_CENTER"));
         BTN_MOVE_JOINT_BOX_CENTER->setGeometry(QRect(1470, 20, 141, 71));
@@ -3120,7 +3101,44 @@ public:
         BTN_MOVEL_rel->setGeometry(QRect(1280, 640, 141, 71));
         BTN_quick_return = new QPushButton(rb_5);
         BTN_quick_return->setObjectName(QString::fromUtf8("BTN_quick_return"));
-        BTN_quick_return->setGeometry(QRect(1110, 490, 141, 71));
+        BTN_quick_return->setGeometry(QRect(1380, 270, 141, 71));
+        widget = new QWidget(rb_5);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        widget->setGeometry(QRect(1210, 200, 151, 211));
+        verticalLayout_7 = new QVBoxLayout(widget);
+        verticalLayout_7->setObjectName(QString::fromUtf8("verticalLayout_7"));
+        verticalLayout_7->setContentsMargins(0, 0, 0, 0);
+        BTN_MOVE_JOINT_HIGH = new QPushButton(widget);
+        BTN_MOVE_JOINT_HIGH->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_HIGH"));
+
+        verticalLayout_7->addWidget(BTN_MOVE_JOINT_HIGH);
+
+        BTN_MOVE_JOINT_MID = new QPushButton(widget);
+        BTN_MOVE_JOINT_MID->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_MID"));
+
+        verticalLayout_7->addWidget(BTN_MOVE_JOINT_MID);
+
+        BTN_MOVE_JOINT_LOW = new QPushButton(widget);
+        BTN_MOVE_JOINT_LOW->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_LOW"));
+
+        verticalLayout_7->addWidget(BTN_MOVE_JOINT_LOW);
+
+        widget1 = new QWidget(rb_5);
+        widget1->setObjectName(QString::fromUtf8("widget1"));
+        widget1->setGeometry(QRect(1160, 410, 260, 61));
+        horizontalLayout_15 = new QHBoxLayout(widget1);
+        horizontalLayout_15->setObjectName(QString::fromUtf8("horizontalLayout_15"));
+        horizontalLayout_15->setContentsMargins(0, 0, 0, 0);
+        BTN_MOVE_JOINT_MID_LEFT = new QPushButton(widget1);
+        BTN_MOVE_JOINT_MID_LEFT->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_MID_LEFT"));
+
+        horizontalLayout_15->addWidget(BTN_MOVE_JOINT_MID_LEFT);
+
+        BTN_MOVE_JOINT_MID_RIGHT = new QPushButton(widget1);
+        BTN_MOVE_JOINT_MID_RIGHT->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_MID_RIGHT"));
+
+        horizontalLayout_15->addWidget(BTN_MOVE_JOINT_MID_RIGHT);
+
         scenario->addTab(rb_5, QString());
         lift_motor = new QWidget();
         lift_motor->setObjectName(QString::fromUtf8("lift_motor"));
@@ -4014,7 +4032,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        scenario->setCurrentIndex(0);
+        scenario->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -4166,9 +4184,6 @@ public:
 "Ready to Gripper", nullptr));
         BTN_MOTION_HALT->setText(QApplication::translate("MainWindow", "Motion\n"
 "Halt", nullptr));
-        BTN_MOVE_JOINT_HIGH->setText(QApplication::translate("MainWindow", "Move joint\n"
-"HIGH\n"
-"Vision pos", nullptr));
         label_25->setText(QApplication::translate("MainWindow", "D3", nullptr));
         label_36->setText(QApplication::translate("MainWindow", "D12", nullptr));
         label_28->setText(QApplication::translate("MainWindow", "D6", nullptr));
@@ -4284,8 +4299,6 @@ public:
         BTN_MOVE_JOINT_GRAPS_GRIPPER->setText(QApplication::translate("MainWindow", "Move joint\n"
 "Graps to Gripper", nullptr));
         label_137->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:24pt; font-weight:600; color:#729fcf;\">RB_5</span></p><p><br/></p></body></html>", nullptr));
-        BTN_MOVE_JOINT_HIGH_LEFT->setText(QApplication::translate("MainWindow", "Move joint\n"
-"putdown high pos", nullptr));
         BTN_MOVE_JOINT_INIT_3->setText(QApplication::translate("MainWindow", "Move joint\n"
 "adust pos", nullptr));
         BTN_MOVE_JOINT_INIT_4->setText(QApplication::translate("MainWindow", "Move joint\n"
@@ -4295,20 +4308,6 @@ public:
         btn_pump->setText(QApplication::translate("MainWindow", "Pump on", nullptr));
         BTN_MOVE_JOINT_Rotation->setText(QApplication::translate("MainWindow", "Move joint\n"
 "Rotaion", nullptr));
-        BTN_MOVE_JOINT_LOW->setText(QApplication::translate("MainWindow", "Move joint\n"
-"LOW\n"
-"Vision pos", nullptr));
-        BTN_MOVE_JOINT_MID->setText(QApplication::translate("MainWindow", "Move joint\n"
-"Mid\n"
-"Vision pos", nullptr));
-        BTN_MOVE_JOINT_INIT_7->setText(QApplication::translate("MainWindow", "Move joint\n"
-"putdown low pos", nullptr));
-        BTN_MOVE_JOINT_MID_RIGHT->setText(QApplication::translate("MainWindow", "Move joint\n"
-"RIGHT\n"
-"putdown mid pos", nullptr));
-        BTN_MOVE_JOINT_MID_LEFT->setText(QApplication::translate("MainWindow", "Move joint\n"
-"LEFT\n"
-"putdown mid pos", nullptr));
         label_9->setText(QApplication::translate("MainWindow", "Joint", nullptr));
         label_17->setText(QApplication::translate("MainWindow", "TCP", nullptr));
         BTN_TCP_MOTION_TEST->setText(QApplication::translate("MainWindow", "TCP\n"
@@ -4324,6 +4323,21 @@ public:
         BTN_MOVEL_rel->setText(QApplication::translate("MainWindow", "Move l REL", nullptr));
         BTN_quick_return->setText(QApplication::translate("MainWindow", "QUICK\n"
 "RETURN", nullptr));
+        BTN_MOVE_JOINT_HIGH->setText(QApplication::translate("MainWindow", "Move joint\n"
+"HIGH\n"
+"Vision pos", nullptr));
+        BTN_MOVE_JOINT_MID->setText(QApplication::translate("MainWindow", "Move joint\n"
+"Mid\n"
+"Vision pos", nullptr));
+        BTN_MOVE_JOINT_LOW->setText(QApplication::translate("MainWindow", "Move joint\n"
+"LOW\n"
+"Vision pos", nullptr));
+        BTN_MOVE_JOINT_MID_LEFT->setText(QApplication::translate("MainWindow", "Move joint\n"
+"LEFT\n"
+"putdown mid pos", nullptr));
+        BTN_MOVE_JOINT_MID_RIGHT->setText(QApplication::translate("MainWindow", "Move joint\n"
+"RIGHT\n"
+"putdown mid pos", nullptr));
         scenario->setTabText(scenario->indexOf(rb_5), QApplication::translate("MainWindow", "rb_5", nullptr));
         groupBox_3->setTitle(QApplication::translate("MainWindow", "Status", nullptr));
         label_7->setText(QApplication::translate("MainWindow", "temp", nullptr));

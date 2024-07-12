@@ -17,8 +17,10 @@ Keti_vision::Keti_vision(QObject *parent) : QObject(parent)
     Vision_Connect();
 
     //    TF = cam2TCP_TF();
-    TCP2cam = cam_config.T_sensor;
-    std::cout<<TCP2cam<<std::endl;
+//    TCP2cam = cam_config.RB_TF_SENSOR;
+//    std::cout<<TCP2cam<<std::endl;
+
+
 }
 
 void Keti_vision::Vision_Connect()
@@ -84,6 +86,8 @@ cv::Mat new_img;
 
 void Keti_vision::onReadyCmdRead()
 {
+    std::cout<<TCP2cam<<std::endl;
+
     QByteArray Read_Data = Keti_Client->readAll();
     QString buf = QString(Read_Data);
     QStringList list = buf.split(", ");

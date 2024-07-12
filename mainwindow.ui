@@ -39,7 +39,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -2587,21 +2587,6 @@ Ready to Gripper</string>
       <property name="text">
        <string>Motion
 Halt</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="BTN_MOVE_JOINT_HIGH">
-      <property name="geometry">
-       <rect>
-        <x>1100</x>
-        <y>200</y>
-        <width>141</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Move joint
-HIGH
-Vision pos</string>
       </property>
      </widget>
      <widget class="QFrame" name="FRAME_STATUS">
@@ -6241,20 +6226,6 @@ Graps to Gripper</string>
        <set>Qt::LinksAccessibleByMouse</set>
       </property>
      </widget>
-     <widget class="QPushButton" name="BTN_MOVE_JOINT_HIGH_LEFT">
-      <property name="geometry">
-       <rect>
-        <x>1260</x>
-        <y>200</y>
-        <width>141</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Move joint
-putdown high pos</string>
-      </property>
-     </widget>
      <widget class="QPushButton" name="BTN_MOVE_JOINT_INIT_3">
       <property name="geometry">
        <rect>
@@ -6272,7 +6243,7 @@ adust pos</string>
      <widget class="QPushButton" name="BTN_MOVE_JOINT_INIT_4">
       <property name="geometry">
        <rect>
-        <x>1470</x>
+        <x>1530</x>
         <y>420</y>
         <width>141</width>
         <height>71</height>
@@ -6286,7 +6257,7 @@ readyG2pos</string>
      <widget class="QPushButton" name="BTN_MOVE_JOINT_INIT_5">
       <property name="geometry">
        <rect>
-        <x>1470</x>
+        <x>1530</x>
         <y>500</y>
         <width>141</width>
         <height>71</height>
@@ -6325,80 +6296,6 @@ G2 pos</string>
       <property name="text">
        <string>Move joint
 Rotaion</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="BTN_MOVE_JOINT_LOW">
-      <property name="geometry">
-       <rect>
-        <x>1100</x>
-        <y>380</y>
-        <width>141</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Move joint
-LOW
-Vision pos</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="BTN_MOVE_JOINT_MID">
-      <property name="geometry">
-       <rect>
-        <x>1100</x>
-        <y>290</y>
-        <width>141</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Move joint
-Mid
-Vision pos</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="BTN_MOVE_JOINT_INIT_7">
-      <property name="geometry">
-       <rect>
-        <x>1260</x>
-        <y>380</y>
-        <width>141</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Move joint
-putdown low pos</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="BTN_MOVE_JOINT_MID_RIGHT">
-      <property name="geometry">
-       <rect>
-        <x>1410</x>
-        <y>290</y>
-        <width>141</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Move joint
-RIGHT
-putdown mid pos</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="BTN_MOVE_JOINT_MID_LEFT">
-      <property name="geometry">
-       <rect>
-        <x>1260</x>
-        <y>290</y>
-        <width>141</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Move joint
-LEFT
-putdown mid pos</string>
       </property>
      </widget>
      <widget class="QWidget" name="layoutWidget">
@@ -6476,8 +6373,8 @@ Motion Test</string>
      <widget class="QPushButton" name="BTN_MOVE_JOINT_POP">
       <property name="geometry">
        <rect>
-        <x>1260</x>
-        <y>110</y>
+        <x>1300</x>
+        <y>20</y>
         <width>141</width>
         <height>71</height>
        </rect>
@@ -6552,8 +6449,8 @@ KETI</string>
      <widget class="QPushButton" name="BTN_quick_return">
       <property name="geometry">
        <rect>
-        <x>1110</x>
-        <y>490</y>
+        <x>1380</x>
+        <y>270</y>
         <width>141</width>
         <height>71</height>
        </rect>
@@ -6562,6 +6459,75 @@ KETI</string>
        <string>QUICK
 RETURN</string>
       </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>1210</x>
+        <y>200</y>
+        <width>151</width>
+        <height>211</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_7">
+       <item>
+        <widget class="QPushButton" name="BTN_MOVE_JOINT_HIGH">
+         <property name="text">
+          <string>Move joint
+HIGH
+Vision pos</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="BTN_MOVE_JOINT_MID">
+         <property name="text">
+          <string>Move joint
+Mid
+Vision pos</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="BTN_MOVE_JOINT_LOW">
+         <property name="text">
+          <string>Move joint
+LOW
+Vision pos</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>1160</x>
+        <y>410</y>
+        <width>260</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_15">
+       <item>
+        <widget class="QPushButton" name="BTN_MOVE_JOINT_MID_LEFT">
+         <property name="text">
+          <string>Move joint
+LEFT
+putdown mid pos</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="BTN_MOVE_JOINT_MID_RIGHT">
+         <property name="text">
+          <string>Move joint
+RIGHT
+putdown mid pos</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
     <widget class="QWidget" name="lift_motor">

@@ -41,6 +41,7 @@ void websocket::onNewConnection(){
     QWebSocket *pSocket = server->nextPendingConnection();
 
     connect(pSocket, SIGNAL(textMessageReceived(QString)), this, SLOT(onTextMessageReceived(QString)));
+    connect(pSocket, SIGNAL(binaryMessageReceived(QByteArray)), this, SLOT(onBinaryMessageReceived(QByteArray message)));
     connect(pSocket, SIGNAL(disconnected()), this, SLOT(onDisconnected()));
     clients << pSocket;
 
@@ -287,10 +288,8 @@ void websocket::Feedback()
 
 void websocket::onBinaryMessageReceived(QByteArray message)
 {
-    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
-    if(pClient){
-        pClient->sendBinaryMessage(message);
-    }
+    //    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
+    map_buf.append(message);
 }
 
 //static bool move_status = false;
@@ -349,7 +348,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
     if(!yujin_json_msg.empty())
     {
         message = yujin_json_msg.front();
-//        qDebug()<<message;
+        //        qDebug()<<message;
         yujin_json_msg.pop();
 
         if(pClient)
@@ -404,7 +403,6 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                             path[0] = pose["x"].toDouble();
                             path[1] = pose["y"].toDouble();
                         }
-
 
                         //                    qDebug()<<pose_pair;
                         json_output["MSG_TYPE"] = "MOVE_EXT";
@@ -647,12 +645,13 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
 
                     if (id == "") //현재 slam에서 사용중인 map
                     {
-                        config_path = QDir::homePath()+"/robot_config.ini";
+                        //                        config_path = QDir::homePath()+"/robot_config.ini";
+                        config_path = "/home/rainbow/RB_MOBILE/config/setting_config.ini";
                         QFileInfo config_info(config_path);
                         if(config_info.exists() && config_info.isFile())
                         {
                             QSettings settings(config_path, QSettings::IniFormat);
-                            map_id = settings.value("FLOOR/map_name").toString();
+                            map_id = settings.value("MAP/map_name").toString();
 
                             json_data["map_id"] = map_id;
                             //                        json_data["filename"] = map_id;
@@ -664,6 +663,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                             //for get map name
                             fileName = map_id+".png";
                             json_data["filename"] = map_id+".png";
+                            //                            map_config_path = QDir::homePath()+"/maps/"+map_id+"/changed_map.png";
                             map_config_path = QDir::homePath()+"/maps/"+map_id+"/changed_map.png";
 
                             file = new QFile(map_config_path);
@@ -718,7 +718,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                         //                    image_file_size = fileData_byte.size();
 
                         QDir dir(map_path);
-                        //                    qDebug()<<"map_path id : "<<map_path;
+                        qDebug()<<"map_path id : "<<map_path;
 
                         QStringList itemlist; //임시적으로 데이터 길이 늘려놓음.
                         QFileInfo map_config_info(map_path);
@@ -733,8 +733,8 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                                     filelist = item.baseName();
                                     itemlist += filelist;
                                 }
-                            }
-                            //                        qDebug()<<"itemlist : "<<itemlist;
+                           }
+                            qDebug()<<"itemlist : "<<itemlist;
 
                             if(itemlist.filter(id).count() != 0)
                             {
@@ -906,7 +906,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     main_json = json;
                     emit order_pass(main_json);
                     // temporary annotation
-//                    cur_step = FMS_ROBOT_STATE_START;
+                    //                    cur_step = FMS_ROBOT_STATE_START;
                     //                    emit msgSendSignal(scene_yujin);
 
                 }
@@ -1263,25 +1263,3 @@ void websocket::sendAck(QString uuid)
     //    client_socket->sendTextMessage(json);
 }
 
-
-void websocket::load()
-{
-    for(auto& it: shelf_infos) // get from saved json
-    {
-        if(it.second == nullptr)
-        {
-            continue;
-        }
-
-        //        QJsonDocument doc_json = QJsonDocument::fromJson(new_msg.toUtf8());
-        //        QJsonObject json = doc_json.object();
-        //        QVariantMap json_pa = json.toVariantMap();
-        //        QVariantMap json_parm = json_pa["params"].toMap();
-        qDebug()<<"dddddd: "<<it.second->shelf_id;
-        //        qDebug()<<json_parm["shelve_name"].toString()+"_"+QString::number(shelve_height);
-        //        if (it.second->shelf_id == json_parm["shelve_name"].toString()+"_"+QString::number(shelve_height))
-        //        {
-        //            qDebug()<<it.second->shelf_id;
-        //        }
-    }
-}
