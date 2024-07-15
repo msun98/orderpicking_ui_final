@@ -1986,7 +1986,10 @@ void MainWindow::on_bt_TCP_Blend_clicked()
 
 void MainWindow::on_BTN_MOVE_JOINT_LOW_clicked()
 {
-    cobot.MoveJoint(0.000,31.222,-131.071,35.017,-90.004,-90.006, -1);
+    cobot.MoveJointBlend_Clear();
+    cobot.MoveJointBlend_AddPoint(150.207,-3.357,-64.440,-19.582,-89.706,-88.582, 0.2, 0.2);
+    cobot.MoveJointBlend_AddPoint(0.000,31.222,-131.071,35.017,-90.004,-90.006, -1);
+    cobot.MoveJointBlend_MovePoint();
 }
 
 void MainWindow::on_BTN_MOVE_JOINT_INIT_7_clicked()
@@ -3818,7 +3821,7 @@ void MainWindow::vision_img_capture()
         if(keti_box_request==false)
         {
             QString obj_cmd = ui->cb_get_object_id_vision->currentText();
-//            QString keti_cmd = "REQ,VISION,DETECT,"+obj_cmd;
+            //            QString keti_cmd = "REQ,VISION,DETECT,"+obj_cmd;
             QString keti_cmd = "REQ,VISION,DETECT";
             qDebug()<<keti_cmd;
             vision.Keti_Client->write(keti_cmd.toUtf8());
@@ -3852,7 +3855,11 @@ void MainWindow::on_bt_vision_cmd_capture_clicked()
 
 void MainWindow::on_BTN_MOVE_JOINT_MID_LEFT_clicked()
 {
-    cobot.MoveJoint(150.682, 0.0, -97.412, 10.0, -90.0 ,-88.90 , 0.5, 0.5);
+    cobot.MoveJointBlend_Clear();
+    cobot.MoveJointBlend_AddPoint(6.075,-13.372,-109.094,57.454,-92.694,-95.605, 2, -1);
+    cobot.MoveJointBlend_AddPoint(150.682,0.000,-97.412,9.989,-90.000,-88.900 , 0.5, 0.5);
+    cobot.MoveJointBlend_MovePoint();
+    //    cobot.MoveJoint(150.682, 0.0, -97.412, 10.0, -90.0 ,-88.90 , 0.5, 0.5);
 }
 
 void MainWindow::on_ALL_STOP_clicked()
@@ -4595,6 +4602,10 @@ void MainWindow::lb_keti_point(QString msg)
 
         if(vision.box_cent_value)
         {
+            cent_res_x = res_x;
+            cent_res_y = res_y;
+            cent_res_z = res_z;
+
             float move_rx_valo = ui->LE_TCP_REF_RX->text().toFloat();
             float move_ry_valo = ui->LE_TCP_REF_RY->text().toFloat();
             float move_rz_valo = ui->LE_TCP_REF_RZ->text().toFloat();
@@ -4643,7 +4654,7 @@ void MainWindow::on_BTN_MOVE_JOINT_BOX_CENTER_KETI_clicked()
     //    IPC::BOX_CENTER_POSE box_center_pose = ipc.get_box_center();
     //    vision.Keti_Client->write("REQ,VISION,BOX_CENT");
     //    shutter_clicked = vison_cap_gripper_cmd;
-    shutter_clicked = vison_cap_vision_cmd;
+    shutter_clicked = vison_cap_gripper_cmd;
     keti_box_request = true;
 }
 
@@ -4750,7 +4761,7 @@ QString MainWindow::mat_zyxzy()
 void MainWindow::on_bt_cobot_move2object_approach_clicked()
 {
 
-//    on_BTN_GRIPPER_SUCTION_clicked();
+    //    on_BTN_GRIPPER_SUCTION_clicked();
 
     ui -> spb_Tx->setValue(ui->LE_TCP_REF_X->text().toFloat()/1000);
     ui -> spb_Ty->setValue(ui->LE_TCP_REF_Y->text().toFloat()/1000);
@@ -4831,11 +4842,12 @@ void MainWindow::on_BTN_GRIPPER_OPEN_clicked()
 {
     if(Integrated_info.init_gripper == true)
     {
-        QString text = "Rg2";
+        QString text = "Rg5";
         QByteArray br = text.toUtf8();
         gripper.Kitech_Client->write(br);
     }
-    else{
+    else
+    {
 
     }
 }
@@ -4864,3 +4876,26 @@ void MainWindow::save_log(QString log)
     }
 }
 
+
+void MainWindow::on_BTN_MOVE_JOINT_LOW_LEFT_clicked()
+{
+    cobot.MoveJointBlend_Clear();
+    cobot.MoveJointBlend_AddPoint(99.666,3.839,-71.312,-20.712,-94.225,-88.891, 0.5, 0.5);
+//    cobot.MoveJointBlend_AddPoint(130.194,9.992,-83.168,-4.382,-89.682,-88.651, 0.5, 0.5);
+//    cobot.MoveJointBlend_AddPoint(130.192,0.146,-83.160,-4.391,-89.678,-88.649, 0.2, 0.2);
+    cobot.MoveJointBlend_AddPoint(150.207,-3.357,-64.440,-19.582,-89.706,-88.582, 0.2, 0.2);
+//    cobot.MoveJointBlend_AddPoint(150.682,0.000,-97.412,9.989,-90.000,-88.900 , 0.2, 0.2);
+    cobot.MoveJointBlend_MovePoint();
+}
+
+void MainWindow::on_BTN_RETURN_MOVE_JOINT_BOX_CENTER_clicked()
+{
+    float move_x_valo = cent_res_x.toFloat();
+    float move_y_valo = cent_res_y.toFloat();
+    float move_z_valo = cent_res_z.toFloat();
+
+    float move_rx_valo = ui->move_rx_val->text().toFloat();
+    float move_ry_valo = ui->move_ry_val->text().toFloat();
+    float move_rz_valo = ui->move_rz_val->text().toFloat();
+    cobot.MoveTCP(move_x_valo,move_y_valo,move_z_valo, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
+}

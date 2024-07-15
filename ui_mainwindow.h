@@ -462,15 +462,20 @@ public:
     QPushButton *BTN_MOVE_JOINT_BOX_CENTER_KETI;
     QPushButton *BTN_MOVEL_rel;
     QPushButton *BTN_quick_return;
-    QWidget *widget;
+    QWidget *layoutWidget6;
     QVBoxLayout *verticalLayout_7;
     QPushButton *BTN_MOVE_JOINT_HIGH;
     QPushButton *BTN_MOVE_JOINT_MID;
     QPushButton *BTN_MOVE_JOINT_LOW;
-    QWidget *widget1;
+    QWidget *layoutWidget7;
     QHBoxLayout *horizontalLayout_15;
     QPushButton *BTN_MOVE_JOINT_MID_LEFT;
     QPushButton *BTN_MOVE_JOINT_MID_RIGHT;
+    QWidget *layoutWidget_8;
+    QHBoxLayout *horizontalLayout_16;
+    QPushButton *BTN_MOVE_JOINT_LOW_LEFT;
+    QPushButton *BTN_MOVE_JOINT_LOW_RIGHT;
+    QPushButton *BTN_RETURN_MOVE_JOINT_BOX_CENTER;
     QWidget *lift_motor;
     QComboBox *cb_port;
     QGroupBox *groupBox_3;
@@ -545,7 +550,7 @@ public:
     QLabel *label_153;
     QTextBrowser *textBrowser;
     QTextBrowser *textBrowser_2;
-    QWidget *layoutWidget6;
+    QWidget *layoutWidget8;
     QGridLayout *gridLayout_17;
     QComboBox *CB_GRIPPER_recog;
     QPushButton *BTN_GRIPPER_recog_WRITE;
@@ -573,7 +578,7 @@ public:
     QVBoxLayout *verticalLayout_3;
     QPushButton *bt_usb2_dis;
     QPushButton *bt_usb2_con;
-    QWidget *layoutWidget7;
+    QWidget *layoutWidget9;
     QVBoxLayout *verticalLayout_4;
     QPushButton *bt_usb1_dis;
     QPushButton *bt_usb1_con;
@@ -620,7 +625,7 @@ public:
     QPushButton *bt_order;
     QLabel *label_173;
     QTextEdit *te_order;
-    QWidget *layoutWidget8;
+    QWidget *layoutWidget10;
     QVBoxLayout *verticalLayout_2;
     QLabel *label_164;
     QLabel *label_170;
@@ -631,12 +636,12 @@ public:
     QPushButton *bt_save_annot_2;
     QPushButton *bt_save_all_annot_2;
     QPushButton *bt_delete_annot_2;
-    QWidget *layoutWidget9;
+    QWidget *layoutWidget11;
     QHBoxLayout *horizontalLayout;
     QLabel *label_175;
     QLabel *label_180;
     QLabel *label_179;
-    QWidget *layoutWidget10;
+    QWidget *layoutWidget12;
     QVBoxLayout *verticalLayout_6;
     QVBoxLayout *verticalLayout_5;
     QHBoxLayout *horizontalLayout_9;
@@ -3025,10 +3030,10 @@ public:
         BTN_MOVE_JOINT_INIT_3->setGeometry(QRect(1290, 550, 141, 71));
         BTN_MOVE_JOINT_INIT_4 = new QPushButton(rb_5);
         BTN_MOVE_JOINT_INIT_4->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_INIT_4"));
-        BTN_MOVE_JOINT_INIT_4->setGeometry(QRect(1530, 420, 141, 71));
+        BTN_MOVE_JOINT_INIT_4->setGeometry(QRect(1260, 470, 141, 71));
         BTN_MOVE_JOINT_INIT_5 = new QPushButton(rb_5);
         BTN_MOVE_JOINT_INIT_5->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_INIT_5"));
-        BTN_MOVE_JOINT_INIT_5->setGeometry(QRect(1530, 500, 141, 71));
+        BTN_MOVE_JOINT_INIT_5->setGeometry(QRect(1410, 470, 141, 71));
         btn_pump = new QPushButton(rb_5);
         btn_pump->setObjectName(QString::fromUtf8("btn_pump"));
         btn_pump->setGeometry(QRect(680, 110, 71, 51));
@@ -3095,50 +3100,69 @@ public:
         pb_reload->setStyleSheet(QString::fromUtf8("border-image: url(:/img/resource/reload.png);"));
         BTN_MOVE_JOINT_BOX_CENTER_KETI = new QPushButton(rb_5);
         BTN_MOVE_JOINT_BOX_CENTER_KETI->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_BOX_CENTER_KETI"));
-        BTN_MOVE_JOINT_BOX_CENTER_KETI->setGeometry(QRect(1470, 100, 141, 71));
+        BTN_MOVE_JOINT_BOX_CENTER_KETI->setGeometry(QRect(1300, 100, 141, 71));
         BTN_MOVEL_rel = new QPushButton(rb_5);
         BTN_MOVEL_rel->setObjectName(QString::fromUtf8("BTN_MOVEL_rel"));
         BTN_MOVEL_rel->setGeometry(QRect(1280, 640, 141, 71));
         BTN_quick_return = new QPushButton(rb_5);
         BTN_quick_return->setObjectName(QString::fromUtf8("BTN_quick_return"));
-        BTN_quick_return->setGeometry(QRect(1380, 270, 141, 71));
-        widget = new QWidget(rb_5);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(1210, 200, 151, 211));
-        verticalLayout_7 = new QVBoxLayout(widget);
+        BTN_quick_return->setGeometry(QRect(1090, 270, 141, 71));
+        layoutWidget6 = new QWidget(rb_5);
+        layoutWidget6->setObjectName(QString::fromUtf8("layoutWidget6"));
+        layoutWidget6->setGeometry(QRect(1240, 200, 151, 211));
+        verticalLayout_7 = new QVBoxLayout(layoutWidget6);
         verticalLayout_7->setObjectName(QString::fromUtf8("verticalLayout_7"));
         verticalLayout_7->setContentsMargins(0, 0, 0, 0);
-        BTN_MOVE_JOINT_HIGH = new QPushButton(widget);
+        BTN_MOVE_JOINT_HIGH = new QPushButton(layoutWidget6);
         BTN_MOVE_JOINT_HIGH->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_HIGH"));
 
         verticalLayout_7->addWidget(BTN_MOVE_JOINT_HIGH);
 
-        BTN_MOVE_JOINT_MID = new QPushButton(widget);
+        BTN_MOVE_JOINT_MID = new QPushButton(layoutWidget6);
         BTN_MOVE_JOINT_MID->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_MID"));
 
         verticalLayout_7->addWidget(BTN_MOVE_JOINT_MID);
 
-        BTN_MOVE_JOINT_LOW = new QPushButton(widget);
+        BTN_MOVE_JOINT_LOW = new QPushButton(layoutWidget6);
         BTN_MOVE_JOINT_LOW->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_LOW"));
 
         verticalLayout_7->addWidget(BTN_MOVE_JOINT_LOW);
 
-        widget1 = new QWidget(rb_5);
-        widget1->setObjectName(QString::fromUtf8("widget1"));
-        widget1->setGeometry(QRect(1160, 410, 260, 61));
-        horizontalLayout_15 = new QHBoxLayout(widget1);
+        layoutWidget7 = new QWidget(rb_5);
+        layoutWidget7->setObjectName(QString::fromUtf8("layoutWidget7"));
+        layoutWidget7->setGeometry(QRect(1410, 250, 260, 61));
+        horizontalLayout_15 = new QHBoxLayout(layoutWidget7);
         horizontalLayout_15->setObjectName(QString::fromUtf8("horizontalLayout_15"));
         horizontalLayout_15->setContentsMargins(0, 0, 0, 0);
-        BTN_MOVE_JOINT_MID_LEFT = new QPushButton(widget1);
+        BTN_MOVE_JOINT_MID_LEFT = new QPushButton(layoutWidget7);
         BTN_MOVE_JOINT_MID_LEFT->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_MID_LEFT"));
 
         horizontalLayout_15->addWidget(BTN_MOVE_JOINT_MID_LEFT);
 
-        BTN_MOVE_JOINT_MID_RIGHT = new QPushButton(widget1);
+        BTN_MOVE_JOINT_MID_RIGHT = new QPushButton(layoutWidget7);
         BTN_MOVE_JOINT_MID_RIGHT->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_MID_RIGHT"));
 
         horizontalLayout_15->addWidget(BTN_MOVE_JOINT_MID_RIGHT);
 
+        layoutWidget_8 = new QWidget(rb_5);
+        layoutWidget_8->setObjectName(QString::fromUtf8("layoutWidget_8"));
+        layoutWidget_8->setGeometry(QRect(1410, 350, 260, 61));
+        horizontalLayout_16 = new QHBoxLayout(layoutWidget_8);
+        horizontalLayout_16->setObjectName(QString::fromUtf8("horizontalLayout_16"));
+        horizontalLayout_16->setContentsMargins(0, 0, 0, 0);
+        BTN_MOVE_JOINT_LOW_LEFT = new QPushButton(layoutWidget_8);
+        BTN_MOVE_JOINT_LOW_LEFT->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_LOW_LEFT"));
+
+        horizontalLayout_16->addWidget(BTN_MOVE_JOINT_LOW_LEFT);
+
+        BTN_MOVE_JOINT_LOW_RIGHT = new QPushButton(layoutWidget_8);
+        BTN_MOVE_JOINT_LOW_RIGHT->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_LOW_RIGHT"));
+
+        horizontalLayout_16->addWidget(BTN_MOVE_JOINT_LOW_RIGHT);
+
+        BTN_RETURN_MOVE_JOINT_BOX_CENTER = new QPushButton(rb_5);
+        BTN_RETURN_MOVE_JOINT_BOX_CENTER->setObjectName(QString::fromUtf8("BTN_RETURN_MOVE_JOINT_BOX_CENTER"));
+        BTN_RETURN_MOVE_JOINT_BOX_CENTER->setGeometry(QRect(1470, 100, 141, 71));
         scenario->addTab(rb_5, QString());
         lift_motor = new QWidget();
         lift_motor->setObjectName(QString::fromUtf8("lift_motor"));
@@ -3495,13 +3519,13 @@ public:
         textBrowser_2 = new QTextBrowser(GR_KITECH);
         textBrowser_2->setObjectName(QString::fromUtf8("textBrowser_2"));
         textBrowser_2->setGeometry(QRect(340, 250, 231, 131));
-        layoutWidget6 = new QWidget(GR_KITECH);
-        layoutWidget6->setObjectName(QString::fromUtf8("layoutWidget6"));
-        layoutWidget6->setGeometry(QRect(210, 60, 111, 30));
-        gridLayout_17 = new QGridLayout(layoutWidget6);
+        layoutWidget8 = new QWidget(GR_KITECH);
+        layoutWidget8->setObjectName(QString::fromUtf8("layoutWidget8"));
+        layoutWidget8->setGeometry(QRect(210, 60, 111, 30));
+        gridLayout_17 = new QGridLayout(layoutWidget8);
         gridLayout_17->setObjectName(QString::fromUtf8("gridLayout_17"));
         gridLayout_17->setContentsMargins(0, 0, 0, 0);
-        CB_GRIPPER_recog = new QComboBox(layoutWidget6);
+        CB_GRIPPER_recog = new QComboBox(layoutWidget8);
         CB_GRIPPER_recog->addItem(QString());
         CB_GRIPPER_recog->addItem(QString());
         CB_GRIPPER_recog->addItem(QString());
@@ -3514,7 +3538,7 @@ public:
 
         gridLayout_17->addWidget(CB_GRIPPER_recog, 0, 0, 1, 1);
 
-        BTN_GRIPPER_recog_WRITE = new QPushButton(layoutWidget6);
+        BTN_GRIPPER_recog_WRITE = new QPushButton(layoutWidget8);
         BTN_GRIPPER_recog_WRITE->setObjectName(QString::fromUtf8("BTN_GRIPPER_recog_WRITE"));
         sizePolicy1.setHeightForWidth(BTN_GRIPPER_recog_WRITE->sizePolicy().hasHeightForWidth());
         BTN_GRIPPER_recog_WRITE->setSizePolicy(sizePolicy1);
@@ -3623,18 +3647,18 @@ public:
 
         verticalLayout_3->addWidget(bt_usb2_con);
 
-        layoutWidget7 = new QWidget(barcode);
-        layoutWidget7->setObjectName(QString::fromUtf8("layoutWidget7"));
-        layoutWidget7->setGeometry(QRect(160, 100, 92, 62));
-        verticalLayout_4 = new QVBoxLayout(layoutWidget7);
+        layoutWidget9 = new QWidget(barcode);
+        layoutWidget9->setObjectName(QString::fromUtf8("layoutWidget9"));
+        layoutWidget9->setGeometry(QRect(160, 100, 92, 62));
+        verticalLayout_4 = new QVBoxLayout(layoutWidget9);
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         verticalLayout_4->setContentsMargins(0, 0, 0, 0);
-        bt_usb1_dis = new QPushButton(layoutWidget7);
+        bt_usb1_dis = new QPushButton(layoutWidget9);
         bt_usb1_dis->setObjectName(QString::fromUtf8("bt_usb1_dis"));
 
         verticalLayout_4->addWidget(bt_usb1_dis);
 
-        bt_usb1_con = new QPushButton(layoutWidget7);
+        bt_usb1_con = new QPushButton(layoutWidget9);
         bt_usb1_con->setObjectName(QString::fromUtf8("bt_usb1_con"));
 
         verticalLayout_4->addWidget(bt_usb1_con);
@@ -3841,26 +3865,26 @@ public:
         te_order = new QTextEdit(tab_3);
         te_order->setObjectName(QString::fromUtf8("te_order"));
         te_order->setGeometry(QRect(1170, 180, 541, 571));
-        layoutWidget8 = new QWidget(tab_3);
-        layoutWidget8->setObjectName(QString::fromUtf8("layoutWidget8"));
-        layoutWidget8->setGeometry(QRect(604, 30, 81, 131));
-        verticalLayout_2 = new QVBoxLayout(layoutWidget8);
+        layoutWidget10 = new QWidget(tab_3);
+        layoutWidget10->setObjectName(QString::fromUtf8("layoutWidget10"));
+        layoutWidget10->setGeometry(QRect(604, 30, 81, 131));
+        verticalLayout_2 = new QVBoxLayout(layoutWidget10);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        label_164 = new QLabel(layoutWidget8);
+        label_164 = new QLabel(layoutWidget10);
         label_164->setObjectName(QString::fromUtf8("label_164"));
         label_164->setLayoutDirection(Qt::LeftToRight);
         label_164->setAlignment(Qt::AlignCenter);
 
         verticalLayout_2->addWidget(label_164);
 
-        label_170 = new QLabel(layoutWidget8);
+        label_170 = new QLabel(layoutWidget10);
         label_170->setObjectName(QString::fromUtf8("label_170"));
         label_170->setAlignment(Qt::AlignCenter);
 
         verticalLayout_2->addWidget(label_170);
 
-        label_171 = new QLabel(layoutWidget8);
+        label_171 = new QLabel(layoutWidget10);
         label_171->setObjectName(QString::fromUtf8("label_171"));
         label_171->setAlignment(Qt::AlignCenter);
 
@@ -3888,54 +3912,54 @@ public:
         bt_delete_annot_2 = new QPushButton(tab_3);
         bt_delete_annot_2->setObjectName(QString::fromUtf8("bt_delete_annot_2"));
         bt_delete_annot_2->setGeometry(QRect(1020, 60, 101, 41));
-        layoutWidget9 = new QWidget(tab_3);
-        layoutWidget9->setObjectName(QString::fromUtf8("layoutWidget9"));
-        layoutWidget9->setGeometry(QRect(1250, 20, 251, 20));
-        horizontalLayout = new QHBoxLayout(layoutWidget9);
+        layoutWidget11 = new QWidget(tab_3);
+        layoutWidget11->setObjectName(QString::fromUtf8("layoutWidget11"));
+        layoutWidget11->setGeometry(QRect(1250, 20, 251, 20));
+        horizontalLayout = new QHBoxLayout(layoutWidget11);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        label_175 = new QLabel(layoutWidget9);
+        label_175 = new QLabel(layoutWidget11);
         label_175->setObjectName(QString::fromUtf8("label_175"));
         label_175->setAlignment(Qt::AlignCenter);
 
         horizontalLayout->addWidget(label_175);
 
-        label_180 = new QLabel(layoutWidget9);
+        label_180 = new QLabel(layoutWidget11);
         label_180->setObjectName(QString::fromUtf8("label_180"));
         label_180->setAlignment(Qt::AlignCenter);
 
         horizontalLayout->addWidget(label_180);
 
-        label_179 = new QLabel(layoutWidget9);
+        label_179 = new QLabel(layoutWidget11);
         label_179->setObjectName(QString::fromUtf8("label_179"));
         label_179->setLayoutDirection(Qt::LeftToRight);
         label_179->setAlignment(Qt::AlignCenter);
 
         horizontalLayout->addWidget(label_179);
 
-        layoutWidget10 = new QWidget(tab_3);
-        layoutWidget10->setObjectName(QString::fromUtf8("layoutWidget10"));
-        layoutWidget10->setGeometry(QRect(1250, 50, 253, 93));
-        verticalLayout_6 = new QVBoxLayout(layoutWidget10);
+        layoutWidget12 = new QWidget(tab_3);
+        layoutWidget12->setObjectName(QString::fromUtf8("layoutWidget12"));
+        layoutWidget12->setGeometry(QRect(1250, 50, 253, 93));
+        verticalLayout_6 = new QVBoxLayout(layoutWidget12);
         verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
         verticalLayout_6->setContentsMargins(0, 0, 0, 0);
         verticalLayout_5 = new QVBoxLayout();
         verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         horizontalLayout_9 = new QHBoxLayout();
         horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
-        CB_shelf = new QComboBox(layoutWidget10);
+        CB_shelf = new QComboBox(layoutWidget12);
         CB_shelf->setObjectName(QString::fromUtf8("CB_shelf"));
 
         horizontalLayout_9->addWidget(CB_shelf);
 
-        cb_obj_direction_2 = new QComboBox(layoutWidget10);
+        cb_obj_direction_2 = new QComboBox(layoutWidget12);
         cb_obj_direction_2->addItem(QString());
         cb_obj_direction_2->addItem(QString());
         cb_obj_direction_2->setObjectName(QString::fromUtf8("cb_obj_direction_2"));
 
         horizontalLayout_9->addWidget(cb_obj_direction_2);
 
-        cb_get_object_id_2 = new QComboBox(layoutWidget10);
+        cb_get_object_id_2 = new QComboBox(layoutWidget12);
         cb_get_object_id_2->setObjectName(QString::fromUtf8("cb_get_object_id_2"));
 
         horizontalLayout_9->addWidget(cb_get_object_id_2);
@@ -3948,13 +3972,13 @@ public:
 
         gridLayout_16 = new QGridLayout();
         gridLayout_16->setObjectName(QString::fromUtf8("gridLayout_16"));
-        label_178 = new QLabel(layoutWidget10);
+        label_178 = new QLabel(layoutWidget12);
         label_178->setObjectName(QString::fromUtf8("label_178"));
         label_178->setAlignment(Qt::AlignCenter);
 
         gridLayout_16->addWidget(label_178, 0, 0, 1, 1);
 
-        label_176 = new QLabel(layoutWidget10);
+        label_176 = new QLabel(layoutWidget12);
         label_176->setObjectName(QString::fromUtf8("label_176"));
         label_176->setAlignment(Qt::AlignCenter);
 
@@ -3969,7 +3993,7 @@ public:
 
         horizontalLayout_2->addItem(horizontalSpacer_13);
 
-        le_shelf_hight = new QLineEdit(layoutWidget10);
+        le_shelf_hight = new QLineEdit(layoutWidget12);
         le_shelf_hight->setObjectName(QString::fromUtf8("le_shelf_hight"));
         le_shelf_hight->setEnabled(true);
         sizePolicy1.setHeightForWidth(le_shelf_hight->sizePolicy().hasHeightForWidth());
@@ -3983,7 +4007,7 @@ public:
 
         horizontalLayout_2->addItem(horizontalSpacer_11);
 
-        CB_gripper_num = new QComboBox(layoutWidget10);
+        CB_gripper_num = new QComboBox(layoutWidget12);
         CB_gripper_num->addItem(QString());
         CB_gripper_num->addItem(QString());
         CB_gripper_num->addItem(QString());
@@ -4338,6 +4362,13 @@ public:
         BTN_MOVE_JOINT_MID_RIGHT->setText(QApplication::translate("MainWindow", "Move joint\n"
 "RIGHT\n"
 "putdown mid pos", nullptr));
+        BTN_MOVE_JOINT_LOW_LEFT->setText(QApplication::translate("MainWindow", "Move joint\n"
+"LEFT\n"
+"putdown low pos", nullptr));
+        BTN_MOVE_JOINT_LOW_RIGHT->setText(QApplication::translate("MainWindow", "Move joint\n"
+"RIGHT\n"
+"putdown low pos", nullptr));
+        BTN_RETURN_MOVE_JOINT_BOX_CENTER->setText(QApplication::translate("MainWindow", "RETRUN_box_cent", nullptr));
         scenario->setTabText(scenario->indexOf(rb_5), QApplication::translate("MainWindow", "rb_5", nullptr));
         groupBox_3->setTitle(QApplication::translate("MainWindow", "Status", nullptr));
         label_7->setText(QApplication::translate("MainWindow", "temp", nullptr));

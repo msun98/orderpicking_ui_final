@@ -160,6 +160,7 @@ public:
 
     float keti_x,keti_y,keti_z;
     float keti_rx,keti_ry,keti_rz;
+    QString cent_res_x,cent_res_y,cent_res_z;
 
     Eigen::Matrix4d T_sensor;
 
@@ -492,5 +493,7 @@ private slots:
     void on_BTN_quick_return_clicked();
     void on_BTN_GRIPPER_SUCTION_clicked();
     void on_BTN_GRIPPER_OPEN_clicked();
+    void on_BTN_MOVE_JOINT_LOW_LEFT_clicked();
+    void on_BTN_RETURN_MOVE_JOINT_BOX_CENTER_clicked();
 };
 #endif // MAINWINDOW_H
