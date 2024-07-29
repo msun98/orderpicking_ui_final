@@ -16,3 +16,4 @@ $ sudo ls -l /dev/ttyLiDAR
 (2) tty만 확인하고 싶을 때 예
 또는 ls -al /dev/tty*
 ```
+![image](https://github.com/user-attachments/assets/485302f4-6901-40e3-bf26-2e83825dabed)
