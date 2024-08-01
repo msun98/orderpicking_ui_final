@@ -210,7 +210,9 @@ public:
 
     void get_Joint_Tcp(jointInfo& js, tcpInfo& ts);
 
-
+    void move_jb2_clear();
+    void move_jb2_add(float joint1, float joint2, float joint3, float joint4, float joint5, float joint6, float spd, float acc, float blending_value);
+    void move_jb2_run();
 
 private:
     int initFlag;

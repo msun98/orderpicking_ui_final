@@ -270,6 +270,8 @@ public:
 
     bool old_connect_flag=false;
 
+    QString old_rb5_msg;
+
     //    void yujin_order();
     //    void yujin_order_check();
 
@@ -444,7 +446,6 @@ private slots:
     void on_btn_pump_2_clicked();
     void on_bt_TCP_Blend_clicked();
     void on_BTN_MOVE_JOINT_LOW_clicked();
-    void on_BTN_MOVE_JOINT_INIT_7_clicked();
     void on_bt_lift_top_clicked();
     void on_bt_lift_MID_clicked();
     void on_bt_lift_Low_clicked();
@@ -495,5 +496,9 @@ private slots:
     void on_BTN_GRIPPER_OPEN_clicked();
     void on_BTN_MOVE_JOINT_LOW_LEFT_clicked();
     void on_BTN_RETURN_MOVE_JOINT_BOX_CENTER_clicked();
+    void on_BTN_quick_return_2_clicked();
+    void on_BTN_quick_return_3_clicked();
+    void on_BTN_quick_return_4_clicked();
+    void on_BTN_quick_return_5_clicked();
 };
 #endif // MAINWINDOW_H

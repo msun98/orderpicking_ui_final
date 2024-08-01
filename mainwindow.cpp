@@ -63,12 +63,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     Q_FOREACH(QSerialPortInfo port, QSerialPortInfo::availablePorts())
     {
-        qDebug()<<"port : "<<port.portName();
+        QString portName = port.portName();
+        //        qDebug() << "port : " << portName;
+
+        //        qDebug()<<"port : "<<port.portName();
         bool lift = port.portName().contains("USB", Qt::CaseInsensitive);//이름이 바코드로 정해놓은 것만 들어오도록
         if (lift)
         {
             ui->cb_port->addItem(port.portName());
             lift_port = port.portName();
+
         }
 
         bool bar = port.portName().contains("ACM", Qt::CaseInsensitive);//이름이 바코드로 정해놓은 것만 들어오도록
@@ -79,8 +83,10 @@ MainWindow::MainWindow(QWidget *parent)
             //    qDebug()<<"eeeee : "<<ui->cb_usb1->currentText();
             //    ui->cb_usb_1->currentText();
             //            barcode.bt_usb1_con(port);
-            ui->cb_usb1->addItem(port.portName());
-            ui->cb_usb2->addItem(port.portName());
+            //            ui->cb_usb1->addItem(port.portName());
+            //            ui->cb_usb2->addItem(port.portName());
+            ui->cb_usb1->addItem("ttyBAR0");
+            ui->cb_usb2->addItem("ttyBAR1");
         }
     }
 
@@ -1277,9 +1283,15 @@ void MainWindow::print()
     QByteArray rb_5_data = cobot.datas;
     QString string(rb_5_data);
     //    qDebug() << "datas! : "<<rb_5_data;
-    ui->textPrint->append(string);
-    QScrollBar *sb = ui->textPrint->verticalScrollBar();
-    sb->setValue(sb->maximum());
+    if(string!=old_rb5_msg)
+    {
+        ui->textPrint->append(string);
+        QScrollBar *sb = ui->textPrint->verticalScrollBar();
+        sb->setValue(sb->maximum());
+    }
+
+
+    old_rb5_msg=string;
 }
 
 void MainWindow::BTN_CONNECT_COM()
@@ -1990,18 +2002,6 @@ void MainWindow::on_BTN_MOVE_JOINT_LOW_clicked()
     cobot.MoveJointBlend_AddPoint(150.207,-3.357,-64.440,-19.582,-89.706,-88.582, 0.2, 0.2);
     cobot.MoveJointBlend_AddPoint(0.000,31.222,-131.071,35.017,-90.004,-90.006, -1);
     cobot.MoveJointBlend_MovePoint();
-}
-
-void MainWindow::on_BTN_MOVE_JOINT_INIT_7_clicked()
-{
-    cobot.MoveJointBlend_Clear();
-    cobot.MoveJointBlend_AddPoint(-9.35,-85,-124,168,-82,-84, -1, -1);
-    cobot.MoveJointBlend_AddPoint(22.61,-49,-132,111,-86,-87, -1, -1);
-    cobot.MoveJointBlend_AddPoint(50,0,-113,26,-90,-90,-1 -1);
-    cobot.MoveJointBlend_AddPoint(117,-6,-79,-12,-90,-90, -1, -1);
-    cobot.MoveJointBlend_AddPoint(172,-3,-116,30,-90,-90,-1 -1);
-    cobot.MoveJointBlend_MovePoint();
-    //    cobot.MoveJoint(180,0,-113,15,-90,-90, -1);
 }
 
 void MainWindow::on_bt_lift_top_clicked()
@@ -3855,10 +3855,14 @@ void MainWindow::on_bt_vision_cmd_capture_clicked()
 
 void MainWindow::on_BTN_MOVE_JOINT_MID_LEFT_clicked()
 {
-    cobot.MoveJointBlend_Clear();
-    cobot.MoveJointBlend_AddPoint(6.075,-13.372,-109.094,57.454,-92.694,-95.605, 2, -1);
-    cobot.MoveJointBlend_AddPoint(150.682,0.000,-97.412,9.989,-90.000,-88.900 , 0.5, 0.5);
-    cobot.MoveJointBlend_MovePoint();
+    float spd = 50.0;
+    float acc = 30.0;
+    float blending_value = 0.2;
+
+    cobot.move_jb2_clear();
+    cobot.move_jb2_add(6.075,-13.372,-109.094,57.454,-92.694,-95.605, spd, acc, blending_value);
+    cobot.move_jb2_add(150.682,0.000,-97.412,9.989,-90.000,-88.900, spd, acc, blending_value);
+    cobot.move_jb2_run();
     //    cobot.MoveJoint(150.682, 0.0, -97.412, 10.0, -90.0 ,-88.90 , 0.5, 0.5);
 }
 
@@ -4556,7 +4560,6 @@ void MainWindow::on_bt_scen_resume_clicked()
 
 void MainWindow::lb_keti_point(QString msg)
 {
-
     if(msg!="OBJ_NONE")
     {
         ui -> spb_Tx->setValue(ui->LE_TCP_REF_X->text().toFloat()/1000);
@@ -4588,7 +4591,6 @@ void MainWindow::lb_keti_point(QString msg)
         ui->move_z_val->setText(res_z);
 
         //////////////////////////////////////////////////////
-
         //for approach
 
         Eigen::Vector3d app_P(vision.keti_app_x, vision.keti_app_y, vision.keti_app_z);
@@ -4597,7 +4599,6 @@ void MainWindow::lb_keti_point(QString msg)
         app_x = app_trance_P[0]*1000;
         app_y = app_trance_P[1]*1000;
         app_z = app_trance_P[2]*1000;
-
         //////////////////////////////////////////////////////
 
         if(vision.box_cent_value)
@@ -4779,8 +4780,12 @@ void MainWindow::on_bt_cobot_move2object_approach_clicked()
         float move_rx_valo = ui->move_rx_val->text().toFloat();
         float move_ry_valo = ui->move_ry_val->text().toFloat();
         float move_rz_valo = ui->move_rz_val->text().toFloat();
+        //        if (move_rz_valo>...||move_rz_valo<..)
+        //        {
+        //            cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
+        //        }
 
-        cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
+
     }
     else if(color_list[1] == "red")
     {
@@ -4788,16 +4793,15 @@ void MainWindow::on_bt_cobot_move2object_approach_clicked()
         float move_ry_valo = ui->move_ry_val->text().toFloat();
         float move_rz_valo = ui->move_rz_val->text().toFloat();
 
-        cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
+        //        if (move_rz_valo>...||move_rz_valo<..)
+        //        {
+        //            cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
+        //        }
+
+
+        //        cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
 
     }
-    //        float move_rx_valo = ui->move_rx_val->text().toFloat();
-    //        float move_ry_valo = ui->move_ry_val->text().toFloat();
-    //        float move_rz_valo = ui->move_rz_val->text().toFloat();
-
-    //        cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
-    //    }
-    //    cobot.ControlBoxDigitalOut(1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 }
 
 void MainWindow::on_BTN_MOVEL_rel_clicked()
@@ -4881,10 +4885,10 @@ void MainWindow::on_BTN_MOVE_JOINT_LOW_LEFT_clicked()
 {
     cobot.MoveJointBlend_Clear();
     cobot.MoveJointBlend_AddPoint(99.666,3.839,-71.312,-20.712,-94.225,-88.891, 0.5, 0.5);
-//    cobot.MoveJointBlend_AddPoint(130.194,9.992,-83.168,-4.382,-89.682,-88.651, 0.5, 0.5);
-//    cobot.MoveJointBlend_AddPoint(130.192,0.146,-83.160,-4.391,-89.678,-88.649, 0.2, 0.2);
+    //    cobot.MoveJointBlend_AddPoint(130.194,9.992,-83.168,-4.382,-89.682,-88.651, 0.5, 0.5);
+    //    cobot.MoveJointBlend_AddPoint(130.192,0.146,-83.160,-4.391,-89.678,-88.649, 0.2, 0.2);
     cobot.MoveJointBlend_AddPoint(150.207,-3.357,-64.440,-19.582,-89.706,-88.582, 0.2, 0.2);
-//    cobot.MoveJointBlend_AddPoint(150.682,0.000,-97.412,9.989,-90.000,-88.900 , 0.2, 0.2);
+    //    cobot.MoveJointBlend_AddPoint(150.682,0.000,-97.412,9.989,-90.000,-88.900 , 0.2, 0.2);
     cobot.MoveJointBlend_MovePoint();
 }
 
@@ -4898,4 +4902,50 @@ void MainWindow::on_BTN_RETURN_MOVE_JOINT_BOX_CENTER_clicked()
     float move_ry_valo = ui->move_ry_val->text().toFloat();
     float move_rz_valo = ui->move_rz_val->text().toFloat();
     cobot.MoveTCP(move_x_valo,move_y_valo,move_z_valo, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
+}
+
+void MainWindow::on_BTN_quick_return_2_clicked()
+{
+    QString text;
+    text.sprintf("move_jb2_clear()");
+    qDebug()<<text;
+    cobot.cmdConfirmFlag = false;
+    cobot.cmdSocket.write(text.toStdString().c_str(), text.toStdString().length());
+
+}
+
+void MainWindow::on_BTN_quick_return_3_clicked()
+{
+    QString text;
+    text.sprintf("move_jb2_add(jnt[150.68,0.00,-97.41,-10.00,-90.00,-88.90],50,30,0,0.2)");
+    //    text.sprintf("move_jb2 add %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f,0,0.2", spd, acc, joint1, joint2, joint3, joint4, joint5, joint6);
+    qDebug()<<text;
+    cobot.cmdConfirmFlag = false;
+    cobot.cmdSocket.write(text.toStdString().c_str(), text.toStdString().length());
+
+}
+
+void MainWindow::on_BTN_quick_return_4_clicked()
+{
+    QString text;
+    text.sprintf("move_jb2_add(jnt[-3.24,36.00,-113.62,-12.40,-90.00,-88.90],50,30,0,0.2)");
+    //    text.sprintf("move_jb2 add %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f,0,0.2", spd, acc, joint1, joint2, joint3, joint4, joint5, joint6);
+    qDebug()<<text;
+    cobot.cmdConfirmFlag = false;
+    cobot.cmdSocket.write(text.toStdString().c_str(), text.toStdString().length());
+}
+
+void MainWindow::on_BTN_quick_return_5_clicked()
+{
+    float spd = 100;
+    float acc = 50.0;
+    float blending_value = 0.9;
+
+    cobot.move_jb2_clear();
+    cobot.move_jb2_add(150.68,0.00,-97.41,-10.00,-90.00,-88.90,spd, acc, blending_value);
+    cobot.move_jb2_add(95.63,11.45,-97.41,10.00,-90.00,-88.90, spd, acc, blending_value);
+    cobot.move_jb2_add(25.32,26.38,-113.63,0.33,-90.00,-88.90, spd, acc, blending_value);
+    cobot.move_jb2_add(-3.24,36.00,-113.62,-12.40,-90.00,-88.90, spd, acc, blending_value);
+    cobot.move_jb2_add(0.58,21.38,-97.41,10.00,-90.00,-88.90,spd, acc, blending_value);
+    cobot.move_jb2_run();
 }
