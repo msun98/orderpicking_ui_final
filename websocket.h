@@ -125,6 +125,8 @@ public:
 
     QByteArray map_buf;
 
+    double calc_theta(cv::Vec2d path,cv::Vec2d now_path);
+
 signals:
 
     void msgSignal(bool msg);

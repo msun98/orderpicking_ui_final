@@ -379,7 +379,17 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     {
                         x = tempDest["x"].toDouble();
                         y = tempDest["y"].toDouble();
-                        theta = tempDest["theta"].toDouble();
+
+                        if (tempDest["theta"] == QJsonValue::Null)
+                        {
+                            cv::Vec2d now_pose = cv::Vec2d(mb->pose_x,mb->pose_y);
+                            theta = calc_theta(cv::Vec2d(x,y),now_pose);
+                        }
+                        else
+                        {
+                            theta = tempDest["theta"].toDouble();
+//                            theta;
+                        }
                         ////////// send msg to mobile robot ////////////////
                         json_output["MSG_TYPE"] = "MOVE";
                         json_output["POSE_x"] = x;
@@ -733,7 +743,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                                     filelist = item.baseName();
                                     itemlist += filelist;
                                 }
-                           }
+                            }
                             qDebug()<<"itemlist : "<<itemlist;
 
                             if(itemlist.filter(id).count() != 0)
@@ -1263,3 +1273,11 @@ void websocket::sendAck(QString uuid)
     //    client_socket->sendTextMessage(json);
 }
 
+double websocket::calc_theta(cv::Vec2d path, cv::Vec2d now_path)
+{
+    double dx = path[0]-now_path[0];
+    double dy = path[1]-now_path[1];
+    double th = std::atan2(dy, dx);
+    qDebug()<<"경로상 헤딩 각도는 : "<<th;
+    return th;
+}
