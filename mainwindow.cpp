@@ -1,4 +1,4 @@
-﻿//랙과 모바일 플랫폼과의 거리는 45cm 정도를 유지해야 하며 랙 한칸의 높이는 70cm를 유지해야한다.￣
+//랙과 모바일 플랫폼과의 거리는 45cm 정도를 유지해야 하며 랙 한칸의 높이는 70cm를 유지해야한다.￣
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -63,16 +63,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     Q_FOREACH(QSerialPortInfo port, QSerialPortInfo::availablePorts())
     {
-        QString portName = port.portName();
-        //        qDebug() << "port : " << portName;
-
-        //        qDebug()<<"port : "<<port.portName();
+        qDebug()<<"port : "<<port.portName();
         bool lift = port.portName().contains("USB", Qt::CaseInsensitive);//이름이 바코드로 정해놓은 것만 들어오도록
         if (lift)
         {
             ui->cb_port->addItem(port.portName());
             lift_port = port.portName();
-
         }
 
         bool bar = port.portName().contains("ACM", Qt::CaseInsensitive);//이름이 바코드로 정해놓은 것만 들어오도록
@@ -83,10 +79,8 @@ MainWindow::MainWindow(QWidget *parent)
             //    qDebug()<<"eeeee : "<<ui->cb_usb1->currentText();
             //    ui->cb_usb_1->currentText();
             //            barcode.bt_usb1_con(port);
-            //            ui->cb_usb1->addItem(port.portName());
-            //            ui->cb_usb2->addItem(port.portName());
-            ui->cb_usb1->addItem("ttyBAR0");
-            ui->cb_usb2->addItem("ttyBAR1");
+            ui->cb_usb1->addItem(port.portName());
+            ui->cb_usb2->addItem(port.portName());
         }
     }
 
@@ -164,7 +158,7 @@ MainWindow::MainWindow(QWidget *parent)
     liftTimer.start(100);
 
     connect(&CobotStatusTimer, SIGNAL(timeout()), this, SLOT(print()));
-    CobotStatusTimer.start(100);
+    CobotStatusTimer.start(300);
 
     connect(ui->bt_get_map_from_mobile, SIGNAL(clicked()), this, SLOT(bt_get_map_from_mobile()));
 
@@ -371,6 +365,7 @@ void MainWindow::load()
             shelf_info->lift_pose = obj["lift_pose"].toString().toDouble();
             shelf_info->AMR_pose = array_to_pose(obj["AMR_pose"].toArray());
             shelf_info->RB_5_pose = array_to_pose6(obj["RB_5_pose"].toArray());
+            qDebug()<<"lift : "<<shelf_info->lift_pose;
 
             shelf_infos[shelf_info->shelf_id.toStdString()] = shelf_info;
 
@@ -777,26 +772,6 @@ void MainWindow::onUpdate()
 
             first_time+=1;
         }
-
-        //        qDebug()<<ui->LE_TCP_REF_X->text();
-
-
-        //        // 디텍팅 끝난 이후에만 바뀌어야 함.
-        //        if (detecting_flag)
-        //        {
-        //            ui -> spb_Tx->setValue(ui->LE_TCP_REF_X->text().toFloat()/1000);
-        //            ui -> spb_Ty->setValue(ui->LE_TCP_REF_Y->text().toFloat()/1000);
-        //            ui -> spb_Tz->setValue(ui->LE_TCP_REF_Z->text().toFloat()/1000);
-
-        //            //                        ui -> spb_Rx->setValue(-1*(ui->LE_TCP_REF_RY->text().toFloat()+90));
-        //            //                        ui -> spb_Rx->setValue(-57);
-
-        //            ui->move_rx_val->setText(QString().sprintf("%.3f",cobot.systemStat.sdata.tcp_ref[3]));
-        //            ui->move_ry_val->setText(QString().sprintf("%.3f",cobot.systemStat.sdata.tcp_ref[4]));
-        //            ui->move_rz_val->setText(QString().sprintf("%.3f",cobot.systemStat.sdata.tcp_ref[5]));
-        //            detecting_flag = false;
-        //        }
-
 
         for(int i=0; i<16; i++){
             if(cobot.systemStat.sdata.digital_in[i] == 0){
@@ -1283,15 +1258,13 @@ void MainWindow::print()
     QByteArray rb_5_data = cobot.datas;
     QString string(rb_5_data);
     //    qDebug() << "datas! : "<<rb_5_data;
-    if(string!=old_rb5_msg)
+    if(string != old_rb5_msg)
     {
         ui->textPrint->append(string);
         QScrollBar *sb = ui->textPrint->verticalScrollBar();
         sb->setValue(sb->maximum());
     }
-
-
-    old_rb5_msg=string;
+    old_rb5_msg = string;
 }
 
 void MainWindow::BTN_CONNECT_COM()
@@ -1426,6 +1399,7 @@ void MainWindow::keti_showUI_msg(bool connect_flag)
 
 void MainWindow::kitech_showUI_msg(bool connect_flag)
 {
+    qDebug()<<"connect_flag : "<<connect_flag;
     if (connect_flag)
     {
         ui->le_kitech->setStyleSheet("background-color:green");
@@ -1433,7 +1407,7 @@ void MainWindow::kitech_showUI_msg(bool connect_flag)
         if(old_connect_flag != connect_flag)
         {
             vision.TCP2cam = cam_config.KITECH_TF_SENSOR;
-            std::cout<<vision.TCP2cam<<std::endl;
+            //            std::cout<<vision.TCP2cam<<std::endl;
         }
     }
 
@@ -1444,7 +1418,7 @@ void MainWindow::kitech_showUI_msg(bool connect_flag)
         if(old_connect_flag != connect_flag)
         {
             vision.TCP2cam = cam_config.RB_TF_SENSOR;
-            std::cout<<vision.TCP2cam<<std::endl;
+            //            std::cout<<vision.TCP2cam<<std::endl;
         }
     }
     old_connect_flag = connect_flag;
@@ -1673,6 +1647,8 @@ void MainWindow::CB_GRIPPER_GE_CMD_WRITE()
 
 void MainWindow::bt_cobot_move2object()
 {
+    on_BTN_GRIPPER_OPEN_clicked();
+
     float move_x_valo = ui->move_x_val->text().toFloat();
     float move_y_valo = ui->move_y_val->text().toFloat();
     float move_z_valo = ui->move_z_val->text().toFloat();
@@ -1832,6 +1808,7 @@ void MainWindow::timer_shared_memory_loop()
             //            keti_ry = vision_pose.pitch;
             //            keti_rz = vision_pose.yaw;
         }
+
         Eigen::Vector3d P(keti_x, keti_y, keti_z);
         Eigen::Vector3d _P = T_sensor.block(0,0,3,3)*P+T_sensor.block(0,3,3,1);
 
@@ -1847,7 +1824,6 @@ void MainWindow::timer_shared_memory_loop()
         ui->move_rx_val->setText(QString::number(keti_rx));
         ui->move_ry_val->setText(QString::number(keti_ry));
         ui->move_rz_val->setText(QString::number(keti_rz));
-
     }
 
     // map
@@ -2002,6 +1978,18 @@ void MainWindow::on_BTN_MOVE_JOINT_LOW_clicked()
     cobot.MoveJointBlend_AddPoint(150.207,-3.357,-64.440,-19.582,-89.706,-88.582, 0.2, 0.2);
     cobot.MoveJointBlend_AddPoint(0.000,31.222,-131.071,35.017,-90.004,-90.006, -1);
     cobot.MoveJointBlend_MovePoint();
+}
+
+void MainWindow::on_BTN_MOVE_JOINT_INIT_7_clicked()
+{
+    cobot.MoveJointBlend_Clear();
+    cobot.MoveJointBlend_AddPoint(-9.35,-85,-124,168,-82,-84, -1, -1);
+    cobot.MoveJointBlend_AddPoint(22.61,-49,-132,111,-86,-87, -1, -1);
+    cobot.MoveJointBlend_AddPoint(50,0,-113,26,-90,-90,-1 -1);
+    cobot.MoveJointBlend_AddPoint(117,-6,-79,-12,-90,-90, -1, -1);
+    cobot.MoveJointBlend_AddPoint(172,-3,-116,30,-90,-90,-1 -1);
+    cobot.MoveJointBlend_MovePoint();
+    //    cobot.MoveJoint(180,0,-113,15,-90,-90, -1);
 }
 
 void MainWindow::on_bt_lift_top_clicked()
@@ -2169,7 +2157,7 @@ void MainWindow::yujin_order_check()
                 order_msg.append("vision");
                 order_msg.append("wait");
                 order_msg.append("robot approach");
-                order_msg.append("robot pick");
+                order_msg.append("");
                 //                order_msg.append("wait");
                 order_msg.append("robot push");
                 order_msg.append("wait");
@@ -3066,10 +3054,7 @@ void MainWindow::seqLoop()
             else if(scene[0] == "vision"){
                 cur_step = ROBOT_STATE_VISION_START;
             }
-            else if(scene[0] == "robot_grasp_ready"){
-                cur_step = ROBOT_STATE_GRIPPER_START;
-            }
-            else if(scene[0] == "robot_grasp"){
+            else if(scene[0]left(5) == "grasp"){
                 cur_step = ROBOT_STATE_GRIPPER_START;
             }
             else if(scene[0] == "lift_down"){
@@ -3492,9 +3477,20 @@ void MainWindow::seqLoop()
 
             timeout = 1000/100;
         }
-        else{
-            cur_step = ROBOT_STATE_ROBOT_WAIT;
-            timeout = 1000/100;
+        else
+        {
+            if (caution_flag)
+            // （비전에서 위치 이상하게 줘서 이동 못한 경우에는 비전 추가하고 스테이트 확인으로 옮기기)
+            {
+                scene.append("vision");
+                cur_step = ROBOT_STATE_ROBOT_START;
+
+            }
+            else
+{
+                cur_step = ROBOT_STATE_CHECK_SCENE;
+                timeout = 1000/100;
+                }
         }
 
         break;
@@ -3718,27 +3714,28 @@ void MainWindow::auto_homming_seq()
 {
     static int homming_timeout = 0;
     //    qDebug()<<"auto_homing_clicked : "<<auto_homing_clicked;
-    if(auto_homing_clicked==auto_homing_start)
+    if(auto_homing_clicked == auto_homing_start)
     {
         bt_move_rpm();
         bt_move_rpm();
         bt_move_rpm();
+
         homming_timeout = 1000/100;
         auto_homing_clicked = auto_homing_lift_wait;
     }
-    else if(auto_homing_clicked==auto_homing_lift_wait)
+    else if(auto_homing_clicked == auto_homing_lift_wait)
     {
         if(--homming_timeout > 0)
         {
             qDebug()<<homming_timeout;
-            auto_homing_clicked=auto_homing_lift_wait;
+            auto_homing_clicked = auto_homing_lift_wait;
         }
         else
         {
-            auto_homing_clicked=auto_homing_lift_working;
+            auto_homing_clicked = auto_homing_lift_working;
         }
     }
-    else if(auto_homing_clicked==auto_homing_lift_working)
+    else if(auto_homing_clicked == auto_homing_lift_working)
     {
 
         QString color = ui -> le_lift_move_status->styleSheet();
@@ -3771,7 +3768,7 @@ void MainWindow::auto_homming_seq()
         }
         else
         {
-            auto_homing_clicked=auto_homing_done;
+            auto_homing_clicked = auto_homing_done;
         }
     }
     else if(auto_homing_clicked == auto_homing_done)
@@ -3818,7 +3815,7 @@ void MainWindow::vision_img_capture()
             break;
         }
 
-        if(keti_box_request==false)
+        if(keti_box_request == false)
         {
             QString obj_cmd = ui->cb_get_object_id_vision->currentText();
             //            QString keti_cmd = "REQ,VISION,DETECT,"+obj_cmd;
@@ -3855,6 +3852,14 @@ void MainWindow::on_bt_vision_cmd_capture_clicked()
 
 void MainWindow::on_BTN_MOVE_JOINT_MID_LEFT_clicked()
 {
+    /*
+    qDebug()<<"mmmmmmmmmiiiiiiiiiiiiiddddddddddddd";
+    cobot.MoveJointBlend_Clear();
+    cobot.MoveJointBlend_AddPoint(6.075,-13.372,-109.094,57.454,-92.694,-95.605, 2, -1);
+    cobot.MoveJointBlend_AddPoint(150.682,0.000,-97.412,9.989,-90.000,-88.900 , 0.5, 0.5);
+    cobot.MoveJointBlend_MovePoint();
+    //    cobot.MoveJoint(150.682, 0.0, -97.412, 10.0, -90.0 ,-88.90 , 0.5, 0.5);*/
+
     float spd = 50.0;
     float acc = 30.0;
     float blending_value = 0.2;
@@ -4215,7 +4220,7 @@ void MainWindow::bt_delete_annot_2()
     arr1.pop_back();
     QJsonDocument doc(arr1);
     QString str_json(doc.toJson(QJsonDocument::Indented));
-    ui->te_scen ->setText(str_json);
+    ui-> te_scen_2 ->setText(str_json);
 
 }
 
@@ -4275,7 +4280,7 @@ void MainWindow::bt_order()
 void MainWindow::bt_order_check()
 {
     // order msg save -> parsing -> making parsing msg to qstringlist -> que astringlist
-    qDebug()<<order_json_msg.front();
+    //    qDebug()<<order_json_msg.front();
 
     //    QString shelf_hight = ui->le_shelf_hight->text();
     int count = ui -> CB_gripper_num -> currentText().toInt();
@@ -4298,7 +4303,6 @@ void MainWindow::bt_order_check()
         QVariantMap json_destination_box = json_parm["destination_box"].toMap();
 
         float shelve_height = json_parm["shelve_height"].toDouble();
-
         //        shelf_info->RB_5_pose;
 
         if (order_list_msg.size() == 0)
@@ -4310,11 +4314,13 @@ void MainWindow::bt_order_check()
         // 명령에 맞게 리스트를 만든후 que 에 넣음. -> loop start ->
 
         //        qDebug()<<json_parm["shelve_name"].toString()+"_"+json_destination_box["name"].toString();
-        qDebug()<<it.second->shelf_id;
+        /*  qDebug()<<it.second->shelf_id;
         qDebug()<<json_parm["shelve_name"].toString()+"_"+QString::number(shelve_height);
+        */
+
         if (it.second->shelf_id == json_parm["shelve_name"].toString()+"_"+QString::number(shelve_height))
         {
-            qDebug()<<it.second->shelf_id;
+            //            qDebug()<<it.second->shelf_id;
             // 정해진 위치에 해당하는 명령이 들어온다면.
             if (it.second->lift_pose == shelve_height)
             {
@@ -4340,15 +4346,15 @@ void MainWindow::bt_order_check()
                 //                order_msg.append("wait");
                 order_msg.append("robot push");
                 order_msg.append("wait");
-                order_msg.append("robot pump on");
-                order_msg.append("robot pop");
                 //                order_msg.append("robot pump on");
-                order_msg.append("robot mid left");
+                //                order_msg.append("robot pop");
+                //                //                order_msg.append("robot pump on");
+                //                order_msg.append("robot mid left");
 
-                QString lift_down = "lift_high,5";
-                order_msg.append(lift_down);//리프트 이동
-                order_msg.append("robot pump off");
-                order_msg.append("success");
+                //                QString lift_down = "lift_high,5";
+                //                order_msg.append(lift_down);//리프트 이동
+                //                order_msg.append("robot pump off");
+                //                order_msg.append("success");
 
                 if (count!=1)
                 {
@@ -4383,11 +4389,29 @@ void MainWindow::bt_order_check()
                     qDebug()<<"ready grap pose :"<<it.second->obj_ready_grap_pose;
                     //                        order_msg.append("");
                     //                        order_msg.append("");
+                    QString grasp_ready = "grasp ready,"+it.second->obj_ready_grap_pose;
+                    //                qDebug()<<"robot moving :" <<robot_vision;
+                    order_msg.append(grasp_ready);
+                    order_msg.append("wait");
+                    order_msg.append("robot pump on");
+
+                    QString real_grasp = "grasp real,"+it.second->obj_grap_pose;
+                    //                qDebug()<<"robot moving :" <<robot_vision;
+                    order_msg.append(real_grasp);
+                    order_msg.append("robot pop");
+                    //                order_msg.append("robot pump on");
+                    order_msg.append("robot mid left");
+
+                    QString lift_down = "lift_high,5";
+                    order_msg.append(lift_down);//리프트 이동
+                    order_msg.append("robot pump off");
+                    order_msg.append("success");
                 }
             }
 
+            qDebug()<<"order_msg :"<<order_msg;
             mtx.lock();
-            order_list_msg.push(order_msg);
+            //            order_list_msg.push(order_msg);
             mtx.unlock();
             //                qDebug()<<"나는 큐의 크기를 알고싶다 : "<<order_list_msg.size();
             //                cur_step = ROBOT_STATE_START;
@@ -4534,14 +4558,27 @@ void MainWindow::on_pb_reload_clicked()
 {
     //    qDebug()<<"reload rb_5 joint value";
 
-    QString LE_TCP_LIST = ui->LE_TCP_REF_X->text()+","+ui->LE_TCP_REF_Y->text()+","+ui->LE_TCP_REF_Z->text()+","
-            +ui->LE_TCP_REF_RX->text()+","+ui->LE_TCP_REF_RY->text()+","+ui->LE_TCP_REF_RZ->text();
+    float j1 = cobot.systemStat.sdata.jnt_ang[0];
+    float j2 = cobot.systemStat.sdata.jnt_ang[1];
+    float j3 = cobot.systemStat.sdata.jnt_ang[2];
+    float j4 = cobot.systemStat.sdata.jnt_ang[3];
+    float j5 = cobot.systemStat.sdata.jnt_ang[4];
+    float j6 = cobot.systemStat.sdata.jnt_ang[5];
+
+    QString LE_JOINT_LIST = QString::number(j1)+","+QString::number(j2)+","+QString::number(j3)+","+QString::number(j4)+","+QString::number(j5)+","+QString::number(j6);
+
+    float tcp_x = cobot.systemStat.sdata.tcp_ref[0];
+    float tcp_y = cobot.systemStat.sdata.tcp_ref[1];
+    float tcp_z = cobot.systemStat.sdata.tcp_ref[2];
+    float tcp_rx = cobot.systemStat.sdata.tcp_ref[3];
+    float tcp_ry = cobot.systemStat.sdata.tcp_ref[4];
+    float tcp_rz = cobot.systemStat.sdata.tcp_ref[5];
+    //LE_TCP_LIST
+    QString LE_TCP_LIST = QString::number(tcp_x)+","+QString::number(tcp_y)+","+QString::number(tcp_z)+","+QString::number(tcp_rx)+","+QString::number(tcp_ry)+","+QString::number(tcp_rz);
 
 
-    QString LE_JOINT_LIST = ui->LE_JNT_ENC_1->text()+","+ui->LE_JNT_ENC_2->text()+","+ui->LE_JNT_ENC_3->text()+","
-            +ui->LE_JNT_ENC_4->text()+","+ui->LE_JNT_ENC_5->text()+","+ui->LE_JNT_ENC_6->text();
+    //    qDebug()<<LE_TCP_LIST;
     ui -> LE_TCP_LIST -> setText(LE_TCP_LIST);
-
     ui -> LE_JOINT_LIST -> setText(LE_JOINT_LIST);
 }
 
@@ -4560,6 +4597,7 @@ void MainWindow::on_bt_scen_resume_clicked()
 
 void MainWindow::lb_keti_point(QString msg)
 {
+
     if(msg!="OBJ_NONE")
     {
         ui -> spb_Tx->setValue(ui->LE_TCP_REF_X->text().toFloat()/1000);
@@ -4591,6 +4629,7 @@ void MainWindow::lb_keti_point(QString msg)
         ui->move_z_val->setText(res_z);
 
         //////////////////////////////////////////////////////
+
         //for approach
 
         Eigen::Vector3d app_P(vision.keti_app_x, vision.keti_app_y, vision.keti_app_z);
@@ -4599,6 +4638,7 @@ void MainWindow::lb_keti_point(QString msg)
         app_x = app_trance_P[0]*1000;
         app_y = app_trance_P[1]*1000;
         app_z = app_trance_P[2]*1000;
+
         //////////////////////////////////////////////////////
 
         if(vision.box_cent_value)
@@ -4780,12 +4820,18 @@ void MainWindow::on_bt_cobot_move2object_approach_clicked()
         float move_rx_valo = ui->move_rx_val->text().toFloat();
         float move_ry_valo = ui->move_ry_val->text().toFloat();
         float move_rz_valo = ui->move_rz_val->text().toFloat();
-        //        if (move_rz_valo>...||move_rz_valo<..)
-        //        {
-        //            cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
-        //        }
 
-
+        if(abs(abs(ui->LE_TCP_REF_Y->text().toFloat()/1000)-abs(app_y))<220)
+        {
+            caution_flag = false;
+            ui -> la_caution->setText("");
+            cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
+        }
+        else
+        {
+            caution_flag = true;
+            ui -> la_caution->setText("prohibited area!");
+        }
     }
     else if(color_list[1] == "red")
     {
@@ -4793,15 +4839,16 @@ void MainWindow::on_bt_cobot_move2object_approach_clicked()
         float move_ry_valo = ui->move_ry_val->text().toFloat();
         float move_rz_valo = ui->move_rz_val->text().toFloat();
 
-        //        if (move_rz_valo>...||move_rz_valo<..)
-        //        {
-        //            cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
-        //        }
-
-
-        //        cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
+        cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
 
     }
+    //        float move_rx_valo = ui->move_rx_val->text().toFloat();
+    //        float move_ry_valo = ui->move_ry_val->text().toFloat();
+    //        float move_rz_valo = ui->move_rz_val->text().toFloat();
+
+    //        cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
+    //    }
+    //    cobot.ControlBoxDigitalOut(1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 }
 
 void MainWindow::on_BTN_MOVEL_rel_clicked()
@@ -4902,50 +4949,4 @@ void MainWindow::on_BTN_RETURN_MOVE_JOINT_BOX_CENTER_clicked()
     float move_ry_valo = ui->move_ry_val->text().toFloat();
     float move_rz_valo = ui->move_rz_val->text().toFloat();
     cobot.MoveTCP(move_x_valo,move_y_valo,move_z_valo, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
-}
-
-void MainWindow::on_BTN_quick_return_2_clicked()
-{
-    QString text;
-    text.sprintf("move_jb2_clear()");
-    qDebug()<<text;
-    cobot.cmdConfirmFlag = false;
-    cobot.cmdSocket.write(text.toStdString().c_str(), text.toStdString().length());
-
-}
-
-void MainWindow::on_BTN_quick_return_3_clicked()
-{
-    QString text;
-    text.sprintf("move_jb2_add(jnt[150.68,0.00,-97.41,-10.00,-90.00,-88.90],50,30,0,0.2)");
-    //    text.sprintf("move_jb2 add %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f,0,0.2", spd, acc, joint1, joint2, joint3, joint4, joint5, joint6);
-    qDebug()<<text;
-    cobot.cmdConfirmFlag = false;
-    cobot.cmdSocket.write(text.toStdString().c_str(), text.toStdString().length());
-
-}
-
-void MainWindow::on_BTN_quick_return_4_clicked()
-{
-    QString text;
-    text.sprintf("move_jb2_add(jnt[-3.24,36.00,-113.62,-12.40,-90.00,-88.90],50,30,0,0.2)");
-    //    text.sprintf("move_jb2 add %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f,0,0.2", spd, acc, joint1, joint2, joint3, joint4, joint5, joint6);
-    qDebug()<<text;
-    cobot.cmdConfirmFlag = false;
-    cobot.cmdSocket.write(text.toStdString().c_str(), text.toStdString().length());
-}
-
-void MainWindow::on_BTN_quick_return_5_clicked()
-{
-    float spd = 100;
-    float acc = 50.0;
-    float blending_value = 0.9;
-
-    cobot.move_jb2_clear();
-    cobot.move_jb2_add(150.68,0.00,-97.41,-10.00,-90.00,-88.90,spd, acc, blending_value);
-    cobot.move_jb2_add(95.63,11.45,-97.41,10.00,-90.00,-88.90, spd, acc, blending_value);
-    cobot.move_jb2_add(25.32,26.38,-113.63,0.33,-90.00,-88.90, spd, acc, blending_value);
-    cobot.move_jb2_add(-3.24,36.00,-113.62,-12.40,-90.00,-88.90, spd, acc, blending_value);
-    cobot.move_jb2_add(0.58,21.38,-97.41,10.00,-90.00,-88.90,spd, acc, blending_value);
-    cobot.move_jb2_run();
 }
