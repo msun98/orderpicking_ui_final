@@ -2153,23 +2153,23 @@ void MainWindow::yujin_order_check()
                 order_msg.append("wait");
                 order_msg.append("robot vision box center");
                 */
-//                order_msg.append("wait");
-//                order_msg.append("vision");
-//                order_msg.append("wait");
-//                order_msg.append("robot approach");
-//                order_msg.append("");
-//                //                order_msg.append("wait");
-//                order_msg.append("robot push");
-//                order_msg.append("wait");
-//                order_msg.append("robot pump on");
-//                order_msg.append("robot pop");
-//                //                order_msg.append("robot pump on");
-//                order_msg.append("robot mid left");
+                //                order_msg.append("wait");
+                //                order_msg.append("vision");
+                //                order_msg.append("wait");
+                //                order_msg.append("robot approach");
+                //                order_msg.append("");
+                //                //                order_msg.append("wait");
+                //                order_msg.append("robot push");
+                //                order_msg.append("wait");
+                //                order_msg.append("robot pump on");
+                //                order_msg.append("robot pop");
+                //                //                order_msg.append("robot pump on");
+                //                order_msg.append("robot mid left");
 
-//                QString lift_down = "lift_high,5";
-//                order_msg.append(lift_down);//리프트 이동
-//                order_msg.append("robot pump off");
-//                order_msg.append("success");
+                //                QString lift_down = "lift_high,5";
+                //                order_msg.append(lift_down);//리프트 이동
+                //                order_msg.append("robot pump off");
+                //                order_msg.append("success");
 
                 order_msg.append("wait");
                 order_msg.append("vision");
@@ -2254,7 +2254,7 @@ void MainWindow::yujin_order_check()
 
 void MainWindow::yujin_loop()
 {
-    int seq = 0;
+    /*int seq = 0;
     static int yujin_timeout = 0;
     int cnt = 1;
 
@@ -2999,12 +2999,12 @@ void MainWindow::yujin_loop()
         }
         }
     }
-    //     order_yj_list_msg.pop();// loop 안에서 pop해야함.
+    //     order_yj_list_msg.pop();// loop 안에서 pop해야함.*/
 }
 
 void MainWindow::seqLoop()
 {
-    /*
+    //    /*
     int seq = 0;
     static int timeout = 0;
 
@@ -3085,7 +3085,7 @@ void MainWindow::seqLoop()
             else if(scene[0] == "vision"){
                 cur_step = ROBOT_STATE_VISION_START;
             }
-            else if(scene[0]left(5) == "grasp"){
+            else if(scene[0].left(5) == "grasp"){
                 cur_step = ROBOT_STATE_GRIPPER_START;
             }
             else if(scene[0] == "lift_down"){
@@ -3254,7 +3254,7 @@ void MainWindow::seqLoop()
             cur_step = ROBOT_STATE_AMR_MOVE_CHECK;
             //             ui->le_mobile_move_status->setStyleSheet("QLineEdit{background-color:green}");
         }
-        else if(mobile_moving_flag==false)
+        else if(mobile_moving_flag == false)
         {
 
             qDebug() << "move done check";
@@ -3511,17 +3511,17 @@ void MainWindow::seqLoop()
         else
         {
             if (caution_flag)
-            // （비전에서 위치 이상하게 줘서 이동 못한 경우에는 비전 추가하고 스테이트 확인으로 옮기기)
+                // （비전에서 위치 이상하게 줘서 이동 못한 경우에는 비전 추가하고 스테이트 확인으로 옮기기)
             {
                 scene.append("vision");
                 cur_step = ROBOT_STATE_ROBOT_START;
 
             }
             else
-{
+            {
                 cur_step = ROBOT_STATE_CHECK_SCENE;
                 timeout = 1000/100;
-                }
+            }
         }
 
         break;
@@ -3636,7 +3636,7 @@ void MainWindow::seqLoop()
                     // lift 에 따른 로봇의 위치를 파악 후 로봇의 위치 원상복귀 시킴.
                     scene.prepend("robot mid left");
                     ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
-                     web.CMD_RESULT("faillure");
+                    web.CMD_RESULT("faillure");
                 }
             }
         }
@@ -3651,103 +3651,104 @@ void MainWindow::seqLoop()
 
     case ROBOT_STATE_GRIPPER_START:{
         //
-      if(scene[0] == "grasp ready"){
-        bool json_rb_val = scene[0].contains(",", Qt::CaseInsensitive);
-        if(json_rb_val)
-        {
-            QStringList gripper = scene[0].split(",");
-            cv::Vec2d gripper_pose;
-            for(int a=1; a<3; a++) // get from saved json file
+        if(scene[0] == "grasp ready"){
+            bool json_rb_val = scene[0].contains(",", Qt::CaseInsensitive);
+            if(json_rb_val)
             {
-                gripper_pose[a-1] = gripper[a];
+                QStringList gripper = scene[0].split(",");
+                cv::Vec2d gripper_pose;
+                for(int a=1; a<3; a++) // get from saved json file
+                {
+                    gripper_pose[a-1] = gripper[a];
+                }
+                QString text = gripper_pose[0]+gripper_pose[1];
+                QByteArray br = text.toUtf8();
+                gripper.Kitech_Client->write(br);
             }
-            QString text = gripper_pose[0]+gripper_pose[1];
-            QByteArray br = text.toUtf8();
-            gripper.Kitech_Client->write(br);
-}
 
-        //            integrate_ui.onSocketWrite("open gripper");
-        //        }
-        //        else if(scene[0] == "robot_grasp"){
-        //            integrate_ui.onSocketWrite("close gripper"); //400
-        //            //                scene.pop_front();
-        //        }
-        cur_step = ROBOT_STATE_GRIPPER_MOVE_CHECK;
-        timeout = 600/100;
-        break;
-    }
+            //            integrate_ui.onSocketWrite("open gripper");
+            //        }
+            //        else if(scene[0] == "robot_grasp"){
+            //            integrate_ui.onSocketWrite("close gripper"); //400
+            //            //                scene.pop_front();
+            //        }
+            cur_step = ROBOT_STATE_GRIPPER_MOVE_CHECK;
+            timeout = 600/100;
+            break;
+        }
     case ROBOT_STATE_GRIPPER_MOVE_CHECK:{
 
-        if(--timeout > 0)
+            if(--timeout > 0)
+                break;
+            cur_step = ROBOT_STATE_GRIPPER_DONE;
+            //            if(integrate_ui.robot_state == 3){
+            //                qDebug() << "robot moving check";
+            //                cur_step = ROBOT_STATE_ROBOT_WAIT;
+            //            }else{
+            //                qDebug() << "robot not moving";
+
+            //                cur_step = ROBOT_STATE_ROBOT_START;
+            //            }
+
             break;
-        cur_step = ROBOT_STATE_GRIPPER_DONE;
-        //            if(integrate_ui.robot_state == 3){
-        //                qDebug() << "robot moving check";
-        //                cur_step = ROBOT_STATE_ROBOT_WAIT;
-        //            }else{
-        //                qDebug() << "robot not moving";
-
-        //                cur_step = ROBOT_STATE_ROBOT_START;
-        //            }
-
-        break;
-    }
-    case ROBOT_STATE_GRIPPER_WAIT:{
-        if(--timeout > 0)
-            break;
-        //        if(integrate_ui.robot_state == 1){
-        //            qDebug() << "robot moving done check";
-        //            cur_step = ROBOT_STATE_ROBOT_DONE;
-        //            break;
-        //        }
-        break;
-    }
-
-    case ROBOT_STATE_GRIPPER_DONE:{
-        if(flag_circle){
-            QString last = scene[0];
-            scene.pop_front();
-            scene.append(last);
-        }else{
-            scene.pop_front();
         }
-        cur_step = ROBOT_STATE_CHECK_SCENE;
-        break;
-    }
-    case ROBOT_STATE_WAIT:{
-        //        scene.append("wait");
-        //        qDebug()<<"wait";
-        //        qDebug()<<"timeout"<<timeout;
-
-        cur_step = ROBOT_STATE_WAIT_OUT;
-        timeout = 3000/200;
-        break;
-    }
-    case ROBOT_STATE_WAIT_OUT:{
-        //        qDebug()<<"wait out";
-        if(--timeout > 0)
-        {
+        case ROBOT_STATE_GRIPPER_WAIT:{
+            if(--timeout > 0)
+                break;
+            //        if(integrate_ui.robot_state == 1){
+            //            qDebug() << "robot moving done check";
+            //            cur_step = ROBOT_STATE_ROBOT_DONE;
+            //            break;
+            //        }
             break;
-
         }
-        scene.pop_front();
-        cur_step = ROBOT_STATE_CHECK_SCENE;
-        break;
-    }
 
-    case ROBOT_STATE_NOT_READY:{
-        scene.append("not ready");
-        //        qDebug()<<"not ready";
-        break;
-    }
+        case ROBOT_STATE_GRIPPER_DONE:{
+            if(flag_circle){
+                QString last = scene[0];
+                scene.pop_front();
+                scene.append(last);
+            }else{
+                scene.pop_front();
+            }
+            cur_step = ROBOT_STATE_CHECK_SCENE;
+            break;
+        }
+        case ROBOT_STATE_WAIT:{
+            //        scene.append("wait");
+            //        qDebug()<<"wait";
+            //        qDebug()<<"timeout"<<timeout;
 
-    case ROBOT_STATE_SUCCESS:{
-        scene.pop_front();
-        web.CMD_RESULT("success");
-        break;
+            cur_step = ROBOT_STATE_WAIT_OUT;
+            timeout = 3000/200;
+            break;
+        }
+        case ROBOT_STATE_WAIT_OUT:{
+            //        qDebug()<<"wait out";
+            if(--timeout > 0)
+            {
+                break;
+
+            }
+            scene.pop_front();
+            cur_step = ROBOT_STATE_CHECK_SCENE;
+            break;
+        }
+
+        case ROBOT_STATE_NOT_READY:{
+            scene.append("not ready");
+            //        qDebug()<<"not ready";
+            break;
+        }
+
+        case ROBOT_STATE_SUCCESS:{
+            scene.pop_front();
+            web.CMD_RESULT("success");
+            break;
+        }
+        }
+        //*/
     }
-    }
-*/
 }
 
 void MainWindow::bt_auto_homing()
@@ -4456,9 +4457,9 @@ void MainWindow::bt_order_check()
                 }
             }
 
-            qDebug()<<"order_msg :"<<order_msg;
+            //            qDebug()<<"order_msg :"<<order_msg;
             mtx.lock();
-            //            order_list_msg.push(order_msg);
+            order_list_msg.push(order_msg);
             mtx.unlock();
             //                qDebug()<<"나는 큐의 크기를 알고싶다 : "<<order_list_msg.size();
             //                cur_step = ROBOT_STATE_START;
