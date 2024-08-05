@@ -1,4 +1,4 @@
-//랙과 모바일 플랫폼과의 거리는 45cm 정도를 유지해야 하며 랙 한칸의 높이는 70cm를 유지해야한다.￣
+﻿//랙과 모바일 플랫폼과의 거리는 45cm 정도를 유지해야 하며 랙 한칸의 높이는 70cm를 유지해야한다.￣
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -2153,23 +2153,32 @@ void MainWindow::yujin_order_check()
                 order_msg.append("wait");
                 order_msg.append("robot vision box center");
                 */
+//                order_msg.append("wait");
+//                order_msg.append("vision");
+//                order_msg.append("wait");
+//                order_msg.append("robot approach");
+//                order_msg.append("");
+//                //                order_msg.append("wait");
+//                order_msg.append("robot push");
+//                order_msg.append("wait");
+//                order_msg.append("robot pump on");
+//                order_msg.append("robot pop");
+//                //                order_msg.append("robot pump on");
+//                order_msg.append("robot mid left");
+
+//                QString lift_down = "lift_high,5";
+//                order_msg.append(lift_down);//리프트 이동
+//                order_msg.append("robot pump off");
+//                order_msg.append("success");
+
                 order_msg.append("wait");
                 order_msg.append("vision");
                 order_msg.append("wait");
                 order_msg.append("robot approach");
-                order_msg.append("");
+                order_msg.append("robot pick");
                 //                order_msg.append("wait");
                 order_msg.append("robot push");
                 order_msg.append("wait");
-                order_msg.append("robot pump on");
-                order_msg.append("robot pop");
-                //                order_msg.append("robot pump on");
-                order_msg.append("robot mid left");
-
-                QString lift_down = "lift_high,5";
-                order_msg.append(lift_down);//리프트 이동
-                order_msg.append("robot pump off");
-                order_msg.append("success");
 
                 if (count!=1)
                 {
@@ -2204,6 +2213,28 @@ void MainWindow::yujin_order_check()
                     qDebug()<<"ready grap pose :"<<it.second->obj_ready_grap_pose;
                     //                        order_msg.append("");
                     //                        order_msg.append("");
+
+                    qDebug()<<"grap pose : "<<it.second->obj_grap_pose;
+                    qDebug()<<"ready grap pose :"<<it.second->obj_ready_grap_pose;
+                    //                        order_msg.append("");
+                    //                        order_msg.append("");
+                    QString grasp_ready = "grasp ready,"+it.second->obj_ready_grap_pose;
+                    //                qDebug()<<"robot moving :" <<robot_vision;
+                    order_msg.append(grasp_ready);
+                    order_msg.append("wait");
+                    order_msg.append("robot pump on");
+
+                    QString real_grasp = "grasp real,"+it.second->obj_grap_pose;
+                    //                qDebug()<<"robot moving :" <<robot_vision;
+                    order_msg.append(real_grasp);
+                    order_msg.append("robot pop");
+                    //                order_msg.append("robot pump on");
+                    order_msg.append("robot mid left");
+
+                    QString lift_down = "lift_high,5";
+                    order_msg.append(lift_down);//리프트 이동
+                    order_msg.append("robot pump off");
+                    order_msg.append("success");
                 }
             }
 
@@ -3619,7 +3650,22 @@ void MainWindow::seqLoop()
     }
 
     case ROBOT_STATE_GRIPPER_START:{
-        //        if(scene[0] == "robot_grasp_ready"){
+        //
+      if(scene[0] == "grasp ready"){
+        bool json_rb_val = scene[0].contains(",", Qt::CaseInsensitive);
+        if(json_rb_val)
+        {
+            QStringList gripper = scene[0].split(",");
+            cv::Vec2d gripper_pose;
+            for(int a=1; a<3; a++) // get from saved json file
+            {
+                gripper_pose[a-1] = gripper[a];
+            }
+            QString text = gripper_pose[0]+gripper_pose[1];
+            QByteArray br = text.toUtf8();
+            gripper.Kitech_Client->write(br);
+}
+
         //            integrate_ui.onSocketWrite("open gripper");
         //        }
         //        else if(scene[0] == "robot_grasp"){
@@ -4336,6 +4382,7 @@ void MainWindow::bt_order_check()
                 //                                order_msg.append("robot_high_vision");
                 /*
                 order_msg.append("wait");
+                // 물체가 박스에 있는 경우에만 사용.
                 order_msg.append("robot vision box center");
                 */
                 order_msg.append("wait");

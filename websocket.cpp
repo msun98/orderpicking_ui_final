@@ -388,7 +388,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                         else
                         {
                             theta = tempDest["theta"].toDouble();
-//                            theta;
+                            //                            theta;
                         }
                         ////////// send msg to mobile robot ////////////////
                         json_output["MSG_TYPE"] = "MOVE";
@@ -402,27 +402,45 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                         QJsonArray waypoints = params["waypoints"].toArray();
                         json_output["speed"] = params["speed"].toArray();
 
-                        QJsonObject pose;
+                        QJsonArray pathArray; // Path를 저장할 배열
+
                         qDebug()<<"size of waypoints : "<<waypoints.size();
                         for(int p = 0; p < waypoints.size(); p++)//for 문을 통해 파싱 진행
                         {
-                            cv::Vec2d path;
                             QJsonObject waypoints_obj = waypoints[p].toObject();
-                            //                        qDebug()<<waypoints_obj["node_id"];
-                            pose = waypoints_obj["pose"].toObject();
-                            path[0] = pose["x"].toDouble();
-                            path[1] = pose["y"].toDouble();
-                        }
+                            QJsonObject pose = waypoints_obj["pose"].toObject();
 
+                            QJsonObject pathObj;
+                            //theta 를 제공해 준 경우 제공해준 theta 사용.
+                            if(pose.contains("theta") && !pose["theta"].isNull())
+                            {
+
+                                pathObj["x"] = pose["x"].toDouble();
+                                pathObj["y"] = pose["y"].toDouble();
+                                pathObj["theta"] = pose["theta"].toDouble();
+                            }
+                            else
+                            {
+                                pathObj["x"] = pose["x"].toDouble();
+                                pathObj["y"] = pose["y"].toDouble();
+                            }
+                            pathArray.append(pathObj);
+                        }
                         //                    qDebug()<<pose_pair;
                         json_output["MSG_TYPE"] = "MOVE_EXT";
-                        json_output["PATH"] = waypoints;
+                        json_output["PATH"] = pathArray;
                     }
-                    QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
+                    //                    QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
 
-                    mb->cmdSendData(json_string);
+                    //                    mb->cmdSendData(QJsonDocument(json_output).toJson(QJsonDocument::Compact));
+
+                    QString send_data = QJsonDocument(json_output).toJson(QJsonDocument::Indented);//보낸 내용 확인용
+
+                    emit msgSendSignal(send_data);
+
                     qDebug()<<"x :"<<x<<",y :"<<y<<",theta :"<<theta;
                     move_flag = true;
+                    qDebug()<<send_data;
                 }
 
                 else if(action == "dock")
@@ -1273,11 +1291,12 @@ void websocket::sendAck(QString uuid)
     //    client_socket->sendTextMessage(json);
 }
 
-double websocket::calc_theta(cv::Vec2d path, cv::Vec2d now_path)
+double websocket::calc_theta(cv::Vec2d path, cv::Vec2d cur_path)
 {
-    double dx = path[0]-now_path[0];
-    double dy = path[1]-now_path[1];
+    double dx = path[0]-cur_path[0];
+    double dy = path[1]-cur_path[1];
     double th = std::atan2(dy, dx);
+
     qDebug()<<"경로상 헤딩 각도는 : "<<th;
     return th;
 }
