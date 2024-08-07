@@ -8,7 +8,7 @@
 
 //#define IP "10.108.1.68" //자기자신 ip
 //#define IP "192.168.2.92" //자기자신 ip
-#define IP "10.108.2.92" //자기자신 ip
+#define IP "10.108.2.91" //자기자신 ip
 #define PORT1 7799 //통신할 포트
 #define PORT2 7788 //통신 받을 포트
 #define MAP_PORT 5555 //통신 받을 포트
@@ -77,6 +77,7 @@ public:
     bool charge_state;
     bool map_changed=false;
     int status = 0;
+    int fsm_status = 0;
 
     //     cv::Mat map_img;
     float mobile_pose_x,mobile_pose_y,mobile_pose_theta;

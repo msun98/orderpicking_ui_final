@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = LIFT_PROG_d435f_07041.0.0
-DISTDIR = /home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti/.tmp/LIFT_PROG_d435f_07041.0.0
+DISTDIR = /home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718/.tmp/LIFT_PROG_d435f_07041.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
 LIBS          = $(SUBLIBS) -L/usr/lib/x86_64-linux-gnu/ -ltbb -lopencv_core -lopencv_highgui -lopencv_imgcodecs -lopencv_imgproc -lopencv_calib3d -lopencv_features2d -lopencv_flann -lopencv_objdetect -lopencv_photo -lopencv_video -lopencv_videoio -lboost_system -lopencv_ximgproc -lopencv_aruco /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5WebSockets.so /usr/lib/x86_64-linux-gnu/libQt5Network.so /usr/lib/x86_64-linux-gnu/libQt5SerialPort.so /usr/lib/x86_64-linux-gnu/libQt5Core.so /usr/lib/x86_64-linux-gnu/libGL.so -lpthread   
@@ -172,7 +172,6 @@ DIST          = resource/rainbow.png \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -302,7 +301,6 @@ Makefile: LIFT_PROG_d435f_0704.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -397,7 +395,6 @@ Makefile: LIFT_PROG_d435f_0704.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -489,7 +486,7 @@ compiler_moc_header_clean:
 moc_barcode.cpp: barcode.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include barcode.h -o moc_barcode.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718 -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include barcode.h -o moc_barcode.cpp
 
 moc_cobot.cpp: cobot.h \
 		common_header.h \
@@ -497,13 +494,13 @@ moc_cobot.cpp: cobot.h \
 		option_writer.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include cobot.h -o moc_cobot.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718 -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include cobot.h -o moc_cobot.cpp
 
 moc_ipc.cpp: ipc.h \
 		global_defines.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ipc.h -o moc_ipc.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718 -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ipc.h -o moc_ipc.cpp
 
 moc_keti_vision.cpp: keti_vision.h \
 		common_header.h \
@@ -511,13 +508,13 @@ moc_keti_vision.cpp: keti_vision.h \
 		option_writer.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include keti_vision.h -o moc_keti_vision.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718 -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include keti_vision.h -o moc_keti_vision.cpp
 
 moc_kitech_gripper.cpp: kitech_gripper.h \
 		common_header.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include kitech_gripper.h -o moc_kitech_gripper.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718 -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include kitech_gripper.h -o moc_kitech_gripper.cpp
 
 moc_mainwindow.cpp: mainwindow.h \
 		common_header.h \
@@ -534,14 +531,14 @@ moc_mainwindow.cpp: mainwindow.h \
 		cv_to_qt.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718 -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
 
 moc_md_motor.cpp: md_motor.h \
 		common_header.h \
 		global_defines.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include md_motor.h -o moc_md_motor.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718 -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include md_motor.h -o moc_md_motor.cpp
 
 moc_mobile_robot.cpp: mobile_robot.h \
 		global_defines.h \
@@ -551,13 +548,13 @@ moc_mobile_robot.cpp: mobile_robot.h \
 		option_writer.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include mobile_robot.h -o moc_mobile_robot.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718 -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include mobile_robot.h -o moc_mobile_robot.cpp
 
 moc_mygraphicsview.cpp: mygraphicsview.h \
 		global_defines.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include mygraphicsview.h -o moc_mygraphicsview.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718 -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include mygraphicsview.h -o moc_mygraphicsview.cpp
 
 moc_websocket.cpp: websocket.h \
 		ipc.h \
@@ -569,7 +566,7 @@ moc_websocket.cpp: websocket.h \
 		option_writer.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include websocket.h -o moc_websocket.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0718 -I/usr/include/opencv4 -I/usr/include/eigen3 -I/usr/local/include/sophus -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtWebSockets -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include websocket.h -o moc_websocket.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:

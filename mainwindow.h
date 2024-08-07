@@ -266,7 +266,7 @@ public:
 
     bool grip = false;
     void save_log(QString log);
-    bool lift_working = false;
+//    bool lift_working = false;
 
     bool old_connect_flag=false;
     QString old_rb5_msg;
@@ -274,6 +274,8 @@ public:
     bool caution_flag = false;
     //    void yujin_order();
     //    void yujin_order_check();
+
+    int lift_clicked;
 
 private:
     Ui::MainWindow *ui;

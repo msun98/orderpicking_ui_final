@@ -165,32 +165,76 @@ void MD_MOTOR::onReadyCmdRead()
             {
                 buf.remove(0, p);
                 is_header = true;
-                break;
+
+                // 172,183,1,193,17,D1, ..., D17,CHK -> size:23
+                const int packet_size = 23;
+                if(is_header && buf.size() >= packet_size)
+                {
+                    uchar* body = (uchar*)buf.data();
+
+                    MOTOR_MAIN_DATA _main_data;
+                    memcpy(&_main_data.motor_rpm, &body[5], 2);
+                    memcpy(&_main_data.motor_armp, &body[7], 2);
+                    memcpy(&_main_data.motor_controlType, &body[9], 1);
+                    memcpy(&_main_data.motor_ref_rpm, &body[10], 2);
+                    memcpy(&_main_data.motor_controlOutput, &body[12], 2);
+                    memcpy(&_main_data.motor_status, &body[14], 1);
+                    memcpy(&_main_data.motor_position, &body[15], 4);
+                    memcpy(&_main_data.motor_brake_duty, &body[19], 1);
+                    memcpy(&_main_data.motor_temperature, &body[20], 1);
+
+                    buf.remove(0, buf.size());
+
+                    pose = _main_data.motor_position*680/2700;
+
+                    main_data = _main_data;
+                    //                break;
+                }
+
             }
-        }
+            else if(buf[p] == (char)0xac && buf[p+1] == (char)0xb7 && buf[p+2] == (char)0x01 && buf[p+3] == (char)0x22)
+            {
+                // 172,183,1,34,1,DATA,CHK -> size:6
+                qDebug()<<"sssssssssssss";
 
-        // 172,183,1,193,17,D1, ..., D17,CHK -> size:23
-        const int packet_size = 23;
-        if(is_header && buf.size() >= packet_size)
-        {
-            uchar* body = (uchar*)buf.data();
+                buf.remove(0, p);
+//                is_header = true;
 
-            MOTOR_MAIN_DATA _main_data;
-            memcpy(&_main_data.motor_rpm, &body[5], 2);
-            memcpy(&_main_data.motor_armp, &body[7], 2);
-            memcpy(&_main_data.motor_controlType, &body[9], 1);
-            memcpy(&_main_data.motor_ref_rpm, &body[10], 2);
-            memcpy(&_main_data.motor_controlOutput, &body[12], 2);
-            memcpy(&_main_data.motor_status, &body[14], 1);
-            memcpy(&_main_data.motor_position, &body[15], 4);
-            memcpy(&_main_data.motor_brake_duty, &body[19], 1);
-            memcpy(&_main_data.motor_temperature, &body[20], 1);
+                // 172,183,1,193,17,D1, ..., D17,CHK -> size:23
+                const int packet_size = 6;
+                if(buf.size() >= packet_size)
+                {
+                    uchar* body = (uchar*)buf.data();
 
-            buf.remove(0, buf.size());
+//                    MOTOR_MAIN_DATA _main_data;
+                    int status;
+                    memcpy(&status, &body[5], 1);
+                    qDebug()<<"lift status : "<<status;
+                }
 
-            pose = _main_data.motor_position*680/2700;
+            }
+            //        // 172,183,1,193,17,D1, ..., D17,CHK -> size:23
+            //        const int packet_size = 23;
+            //        if(is_header && buf.size() >= packet_size)
+            //        {
+            //            uchar* body = (uchar*)buf.data();
 
-            main_data = _main_data;
+            //            MOTOR_MAIN_DATA _main_data;
+            //            memcpy(&_main_data.motor_rpm, &body[5], 2);
+            //            memcpy(&_main_data.motor_armp, &body[7], 2);
+            //            memcpy(&_main_data.motor_controlType, &body[9], 1);
+            //            memcpy(&_main_data.motor_ref_rpm, &body[10], 2);
+            //            memcpy(&_main_data.motor_controlOutput, &body[12], 2);
+            //            memcpy(&_main_data.motor_status, &body[14], 1);
+            //            memcpy(&_main_data.motor_position, &body[15], 4);
+            //            memcpy(&_main_data.motor_brake_duty, &body[19], 1);
+            //            memcpy(&_main_data.motor_temperature, &body[20], 1);
+
+            //            buf.remove(0, buf.size());
+
+            //            pose = _main_data.motor_position*680/2700;
+
+            //            main_data = _main_data;
         }
     }
 }

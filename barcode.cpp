@@ -16,8 +16,8 @@ Barcode::Barcode(QObject *parent) : QObject(parent)
 
     connect(&barcode_Timer, SIGNAL(timeout()), this, SLOT(send_msg_ui()));
     barcode_Timer.start(1000);
-    bt_usb1_con("/dev/ttyACMR");
-    bt_usb2_con("/dev/ttyACML");
+    bt_usb1_con("/dev/ttyBAR0");
+    bt_usb2_con("/dev/ttyBAR1");
 
     //    send_msg_ui
 

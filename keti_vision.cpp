@@ -3,8 +3,8 @@
 Keti_vision::Keti_vision(QObject *parent) : QObject(parent)
 {
     Keti_Client = new QTcpSocket(this);
-//    IP_VISION.ip = "192.168.2.208";
-    IP_VISION.ip = "10.108.2.208";
+    IP_VISION.ip = "192.168.2.209";
+    //    IP_VISION.ip = "10.108.2.209";
     IP_VISION.port = 7777;
 
     connect(Keti_Client, SIGNAL(connected()), this, SLOT(onKetiConnected()));
@@ -17,8 +17,8 @@ Keti_vision::Keti_vision(QObject *parent) : QObject(parent)
     Vision_Connect();
 
     //    TF = cam2TCP_TF();
-//    TCP2cam = cam_config.RB_TF_SENSOR;
-//    std::cout<<TCP2cam<<std::endl;
+    //    TCP2cam = cam_config.RB_TF_SENSOR;
+    //    std::cout<<TCP2cam<<std::endl;
 
 
 }
@@ -86,8 +86,6 @@ cv::Mat new_img;
 
 void Keti_vision::onReadyCmdRead()
 {
-    std::cout<<TCP2cam<<std::endl;
-
     QByteArray Read_Data = Keti_Client->readAll();
     QString buf = QString(Read_Data);
     QStringList list = buf.split(", ");
@@ -102,7 +100,7 @@ void Keti_vision::onReadyCmdRead()
             qDebug()<<list.size();
             if(list.size()>4)
             {
-//                            qDebug()<<list;
+                //                            qDebug()<<list;
                 qDebug()<<"coordinate : "<<list[1]<<","<<list[2]<<","<<list[3]<<","<<list[4]<<","<<list[5]<<","<<list[6]<<","<<list[7];
 
                 res_x = list[1];
@@ -112,7 +110,7 @@ void Keti_vision::onReadyCmdRead()
                 res_rx = list[4];
                 res_ry = list[5];
                 res_rz = list[6];
-//                res_rz = "1";
+                //                res_rz = "1";
 
                 res_wrist_rot = list[7];
                 //        new_buf.remove(0, Read_Data.size());
@@ -222,12 +220,12 @@ void Keti_vision::onReadyCmdRead()
         //        qDebug()<<"new_buf[1] : "<<new_buf[1];
         //        qDebug()<<"new_buf[2] : "<<new_buf[2];
         const int packet_size = 300*500*3;
-//        qDebug()<<"packet_size : "<<packet_size;
+        //        qDebug()<<"packet_size : "<<packet_size;
         if (new_buf!=0)
         {
             QByteArray chop_byte = new_buf.chopped(3);
             QString byte(chop_byte);
-//            qDebug()<<byte;
+            //            qDebug()<<byte;
 
             if(byte == "IMG")
             {
@@ -313,10 +311,11 @@ void Keti_vision::c_p2c_tcp(QString str)
         double ty = list[1].toDouble();
         double tz = list[2].toDouble();
 
-        //for using normal vector!!
-//        double rx = list[3].toDouble();
-//        double ry = list[4].toDouble();
-//        double rz = list[5].toDouble();
+        //for using keti normal vector!!
+        //        double rx = list[3].toDouble();
+        //        double ry = list[4].toDouble();
+        //        double rz = list[5].toDouble();
+
         double rx = 0.0;
         double ry = 0.0;
         double rz = 1.0;

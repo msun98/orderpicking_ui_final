@@ -89,6 +89,13 @@ enum{
     auto_homing_done
 };
 
+//for lift
+enum{
+    lift_start=0,
+    lift_wait,
+    lift_working,
+    lift_done
+};
 enum{
     ROBOT_STATE_NOT_READY=0,
     ROBOT_STATE_START,
@@ -122,7 +129,8 @@ enum{
     ROBOT_STATE_WAIT,
     ROBOT_STATE_WAIT_OUT,
 
-    ROBOT_STATE_SUCCESS
+    ROBOT_STATE_SUCCESS,
+    ROBOT_STATE_DONE
     //    ROBOT_STATE_END
 };
 

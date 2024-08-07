@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.0, 2024-07-15T20:02:16. -->
+<!-- Written by QtCreator 4.11.0, 2024-08-07T18:35:12. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -114,7 +114,7 @@
     <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">2</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/build-LIFT_PROG_d435f-Desktop-Release</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/rainbow/CODE/2024_orderpicking_code/build-LIFT_PROG_d435f-Desktop-Debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -283,8 +283,8 @@
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">LIFT_PROG_d435f_07042</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti/LIFT_PROG_d435f_0704.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/LIFT_PROG_0710_d435f_keti/LIFT_PROG_d435f_0704.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0805/LIFT_PROG_d435f_0704.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision_0805/LIFT_PROG_d435f_0704.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -294,8 +294,8 @@
     <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/rainbow/CODE/2024_orderpicking_code/order_ui_d435f/build-LIFT_PROG_d435f-Desktop-Release</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory">/home/rainbow/CODE/2024_orderpicking_code/build-LIFT_PROG_d435f-Desktop-Release</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/rainbow/CODE/2024_orderpicking_code/build-LIFT_PROG_d435f-Desktop-Debug</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

@@ -359,8 +359,6 @@ void Cobot::MoveJointBlend_Clear()
 {
     QString text;
     text.sprintf("blend_jnt clear_pt");
-
-    //        text.sprintf("move_jb2_clear()");
     qDebug()<<text;
     cmdConfirmFlag = false;
     cmdSocket.write(text.toStdString().c_str(), text.toStdString().length());
@@ -368,8 +366,7 @@ void Cobot::MoveJointBlend_Clear()
 void Cobot::MoveJointBlend_AddPoint(float joint1, float joint2, float joint3, float joint4, float joint5, float joint6, float spd, float acc)
 {
     QString text;
-    //    text.sprintf("blend_jnt add_pt %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f", spd, acc, joint1, joint2, joint3, joint4, joint5, joint6);
-    text.sprintf("move_jb2 add %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f,0,0.2", spd, acc, joint1, joint2, joint3, joint4, joint5, joint6);
+    text.sprintf("blend_jnt add_pt %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f", spd, acc, joint1, joint2, joint3, joint4, joint5, joint6);
     qDebug()<<text;
     cmdConfirmFlag = false;
     cmdSocket.write(text.toStdString().c_str(), text.toStdString().length());
@@ -379,7 +376,6 @@ void Cobot::MoveJointBlend_MovePoint()
 {
     QString text;
     text.sprintf("blend_jnt move_pt");
-    //    text.sprintf("move_jb2 run()");
     qDebug()<<text;
     moveCmdFlag = true;
     cmdConfirmFlag = false;

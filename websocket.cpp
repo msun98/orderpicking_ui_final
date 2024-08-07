@@ -73,7 +73,7 @@ void websocket::init(mobile_robot *_mb, MD_MOTOR *_md)
     md_mot = _md;
 }
 
-void websocket::CMD_RESULT(QString result)
+void websocket::CMD_RESULT(QString result, QString Error)
 {
     for(int i=0; i<clients.size(); i++)
     {
@@ -87,10 +87,10 @@ void websocket::CMD_RESULT(QString result)
         if (result == "failure")
         {
             QJsonObject json_error_info;
-            json_error_info["error_code"] = "dddd";
+            json_error_info["error_code"] = Error;
             // about error description
-            json_error_info["description"] = "dddd";
-            json_error_info["debug_msg"] = "dddd";
+            json_error_info["description"] = Error;
+            json_error_info["debug_msg"] = Error;
             json["error"] = json_error_info;
         }
 
@@ -295,6 +295,7 @@ void websocket::onBinaryMessageReceived(QByteArray message)
 //static bool move_status = false;
 void websocket::moveCheck()
 {
+    /*
     //    qDebug()<<"action : "<<action;
     if(move_flag && mb->status==2)
     {
@@ -327,6 +328,56 @@ void websocket::moveCheck()
             //            qDebug()<<"sssssssssssss";
             CMD_RESULT("success");
         }
+    }*/
+
+    if(move_flag)
+    {
+        if(mb->fsm_status == 0)
+        {
+//            mb->AMR_FSM_status = "STATE_AUTO_PATH_FINDING";
+        }
+
+        else if(mb->fsm_status == 1)
+        {
+//            AMR_FSM_status = "STATE_AUTO_FIRST_ALIGN";
+        }
+        else if(mb->fsm_status == 2)
+        {
+//            AMR_FSM_status = "STATE_AUTO_PURE_PURSUIT";
+//            emit mobile_run("true");
+        }
+        else if(mb->fsm_status == 3)
+        {
+//            AMR_FSM_status = "STATE_AUTO_FINAL_ALIGN";
+//            emit mobile_run("true");
+        }
+        else if(mb->fsm_status == 4)
+        {
+            CMD_RESULT("success");
+            move_flag = false;
+//            AMR_FSM_status = "STATE_AUTO_GOAL_REACHED";
+//            emit mobile_run("false");
+        }
+        else if(mb->fsm_status == 5)
+        {
+            QString Error = "STATE_AUTO_OBSTACLE";
+            CMD_RESULT("failure",Error);
+        }
+        else if(mb->fsm_status == 6)
+        {
+//            AMR_FSM_status = "STATE_AUTO_PAUSE";
+//            emit mobile_run("true");
+        }
+        else if(mb->fsm_status == 7)
+        {
+            QString Error = "STATE_AUTO_FAILED";
+            CMD_RESULT("failure",Error);
+
+//            emit mobile_run("true");
+        }
+                //        charge_state = json_input["charge_state"].toInt;
+
+
     }
 }
 
@@ -411,6 +462,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                             QJsonObject pose = waypoints_obj["pose"].toObject();
 
                             QJsonObject pathObj;
+                            cv::Vec2d old_point;
                             //theta 를 제공해 준 경우 제공해준 theta 사용.
                             if(pose.contains("theta") && !pose["theta"].isNull())
                             {
@@ -421,8 +473,25 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                             }
                             else
                             {
-                                pathObj["x"] = pose["x"].toDouble();
-                                pathObj["y"] = pose["y"].toDouble();
+                                x = pose["x"].toDouble();
+                                y = pose["y"].toDouble();
+
+                                if(p==0)
+                                {
+                                    cv::Vec2d now_pose = cv::Vec2d(mb -> pose_x, mb -> pose_y);
+                                    theta = calc_theta(cv::Vec2d(x,y),now_pose);
+
+                                    old_point = cv::Vec2d(x,y);
+                                }
+                                else
+                                {
+                                    cv::Vec2d new_pose = cv::Vec2d(x,y);
+                                    theta = calc_theta(new_pose,old_point);
+                                    old_point = new_pose;
+                                }
+                                pathObj["x"] = x;
+                                pathObj["y"] = y;
+                                pathObj["theta"] = theta;
                             }
                             pathArray.append(pathObj);
                         }
@@ -432,7 +501,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     }
                     //                    QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
 
-                    //                    mb->cmdSendData(QJsonDocument(json_output).toJson(QJsonDocument::Compact));
+                    mb->cmdSendData(QJsonDocument(json_output).toJson(QJsonDocument::Compact));
 
                     QString send_data = QJsonDocument(json_output).toJson(QJsonDocument::Indented);//보낸 내용 확인용
 

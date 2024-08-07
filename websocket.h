@@ -88,7 +88,7 @@ public:
     //      double x,y,theta;//for yujin
 
     float mobile_pose_x,mobile_pose_y,mobile_pose_theta;
-    void CMD_RESULT(QString result);
+    void CMD_RESULT(QString result,QString Error="None");
 
     QString old_mobile_status;
 
@@ -126,6 +126,8 @@ public:
     QByteArray map_buf;
 
     double calc_theta(cv::Vec2d path,cv::Vec2d cur_path);
+
+
 
 signals:
 

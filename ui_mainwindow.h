@@ -173,6 +173,7 @@ public:
     QPushButton *bt_cobot_move2object_approach;
     QPushButton *bt_cobot_move2object;
     QPushButton *bt_cobot_push;
+    QLineEdit *la_caution;
     QWidget *rb_5;
     QSlider *HS_BASE_SPEED;
     QGroupBox *GB_NETWORK;
@@ -814,7 +815,7 @@ public:
         le_mobile_move_status->setStyleSheet(QString::fromUtf8("    border-style: outset;\n"
 "    border-width: 1px;\n"
 "    border-color: black;\n"
-"    background-color:rgb(255,0,0)"));
+"    background-color:rgb(255,255,255)"));
         le_mobile_move_status->setReadOnly(true);
         le_lift_move_status = new QLineEdit(GE_MOVE_INFO);
         le_lift_move_status->setObjectName(QString::fromUtf8("le_lift_move_status"));
@@ -1429,6 +1430,9 @@ public:
 
         horizontalLayout_14->addWidget(bt_cobot_push);
 
+        la_caution = new QLineEdit(tab);
+        la_caution->setObjectName(QString::fromUtf8("la_caution"));
+        la_caution->setGeometry(QRect(1360, 538, 121, 21));
         scenario->addTab(tab, QString());
         rb_5 = new QWidget();
         rb_5->setObjectName(QString::fromUtf8("rb_5"));
@@ -4056,7 +4060,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        scenario->setCurrentIndex(1);
+        scenario->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -4375,7 +4379,7 @@ public:
         label->setText(QApplication::translate("MainWindow", "RPM", nullptr));
         label_4->setText(QApplication::translate("MainWindow", "control", nullptr));
         label_6->setText(QApplication::translate("MainWindow", "RPM (std)", nullptr));
-        label_5->setText(QApplication::translate("MainWindow", " Ampere [A] ", nullptr));
+        label_5->setText(QApplication::translate("MainWindow", "Ampere [A] ", nullptr));
         label_3->setText(QApplication::translate("MainWindow", "position [mm]", nullptr));
         te_data->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"

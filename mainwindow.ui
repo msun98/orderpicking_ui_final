@@ -39,7 +39,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -445,7 +445,7 @@
         <string notr="true">    border-style: outset;
     border-width: 1px;
     border-color: black;
-    background-color:rgb(255,0,0)</string>
+    background-color:rgb(255,255,255)</string>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -2187,22 +2187,10 @@
       <property name="geometry">
        <rect>
         <x>1360</x>
-        <y>530</y>
+        <y>538</y>
         <width>121</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>200</width>
-        <height>500</height>
-       </size>
       </property>
      </widget>
     </widget>
@@ -6395,7 +6383,7 @@ Motion Test</string>
      <widget class="QPushButton" name="BTN_MOVE_JOINT_POP">
       <property name="geometry">
        <rect>
-        <x>1450</x>
+        <x>1300</x>
         <y>20</y>
         <width>141</width>
         <height>71</height>
@@ -6409,7 +6397,7 @@ POP</string>
      <widget class="QPushButton" name="BTN_MOVE_JOINT_BOX_CENTER">
       <property name="geometry">
        <rect>
-        <x>1300</x>
+        <x>1470</x>
         <y>20</y>
         <width>141</width>
         <height>71</height>
@@ -6584,7 +6572,7 @@ putdown low pos</string>
      <widget class="QPushButton" name="BTN_RETURN_MOVE_JOINT_BOX_CENTER">
       <property name="geometry">
        <rect>
-        <x>1450</x>
+        <x>1470</x>
         <y>100</y>
         <width>141</width>
         <height>71</height>
@@ -6751,7 +6739,7 @@ putdown low pos</string>
           <item>
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string> Ampere [A] </string>
+             <string>Ampere [A] </string>
             </property>
            </widget>
           </item>

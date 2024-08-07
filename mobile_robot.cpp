@@ -307,51 +307,94 @@ void mobile_robot::on_read_mobile_status() //get map data
         // JSON 객체에서 원하는 데이터에 접근
         QJsonObject jsonObject = jsonDoc.object();
         QString msgType = jsonObject["MSG_TYPE"].toString();
-//        qDebug() << "MSG_TYPE:" << msgType;
+        //        qDebug() << "MSG_TYPE:" << msgType;
 
         if (msgType == "MOBILE_POSE")
         {
             status = json_input["STATUS"].toInt();
             QString AMR_status;
+            QString AMR_FSM_status;
+            QString charge;
+
             if (status == 0)
             {
                 AMR_status="UI_LOC_NOT_READY";
-                emit mobile_run("false");
+                //                emit mobile_run("false");
             }
             else if(status == 1)
             {
                 AMR_status = "UI_LOC_BUSY";
-                emit mobile_run("false");
+                //                emit mobile_run("false");
             }
             else if(status == 2)
             {
                 AMR_status="UI_LOC_GOOD";
-                emit mobile_run("true");
+                //                emit mobile_run("true");
             }
             else if(status == 3)
             {
                 AMR_status = "UI_LOC_FAIL";
-                emit mobile_run("true");
+                //                emit mobile_run("true");
             }
             else if(status == 4)
             {
                 AMR_status = "UI_LOC_MANUAL";
-                emit mobile_run("false");
+                //                emit mobile_run("false");
             }
             else if(status == 5)
             {
                 AMR_status = "UI_LOC_GOOD_BUT_FAR_WAY";
-                emit mobile_run("false");
+                //                emit mobile_run("false");
             }
             //배터리 정보도 받아와야 함.
             pose_x = json_input["Pose_x"].toDouble();
             pose_y = json_input["Pose_y"].toDouble();
             pose_th = json_input["Pose_th"].toDouble();
             battery = json_input["battery"].toDouble();
-            //        charge_state = json_input["charge_state"].toInt;
 
+            fsm_status = json_input["FSM STATUS"].toInt();
 
-            QString charge;
+            if(fsm_status == 0)
+            {
+                AMR_FSM_status = "STATE_AUTO_PATH_FINDING";
+            }
+
+            else if(fsm_status == 1)
+            {
+                AMR_FSM_status = "STATE_AUTO_FIRST_ALIGN";
+                emit mobile_run("true");
+            }
+            else if(fsm_status == 2)
+            {
+                AMR_FSM_status = "STATE_AUTO_PURE_PURSUIT";
+                emit mobile_run("true");
+            }
+            else if(fsm_status == 3)
+            {
+                AMR_FSM_status = "STATE_AUTO_FINAL_ALIGN";
+                emit mobile_run("true");
+            }
+            else if(fsm_status == 4)
+            {
+                AMR_FSM_status = "STATE_AUTO_GOAL_REACHED";
+                emit mobile_run("false");
+            }
+            else if(fsm_status == 5)
+            {
+                AMR_FSM_status = "STATE_AUTO_OBSTACLE";
+                emit mobile_run("false");
+            }
+            else if(fsm_status == 6)
+            {
+                AMR_FSM_status = "STATE_AUTO_PAUSE";
+                emit mobile_run("true");
+            }
+            else if(fsm_status == 7)
+            {
+                AMR_FSM_status = "STATE_AUTO_FAILED";
+                emit mobile_run("true");
+            }
+                    //        charge_state = json_input["charge_state"].toInt;
 
             if (json_input["charge_state"].toInt()==0)
             {
@@ -365,7 +408,7 @@ void mobile_robot::on_read_mobile_status() //get map data
             }
 
             QString pose_msg;
-            pose_msg.sprintf("x : %.2f, y : %.2f, z : %.1f, bat : %.1f, status : %s, charging status : %s", pose_x,pose_y,pose_th,battery,AMR_status.toLocal8Bit().data(),charge.toLocal8Bit().data());
+            pose_msg.sprintf("x : %.2f, y : %.2f, z : %.1f, bat : %.1f, status : %s, charging status : %s, fsm status : %s", pose_x,pose_y,pose_th,battery,AMR_status.toLocal8Bit().data(),charge.toLocal8Bit().data(),AMR_FSM_status.toLocal8Bit().data());
             emit mobile_status(pose_msg);
         }
         else if (msgType == "MOBILE_MAP_CHANGE")
@@ -373,7 +416,7 @@ void mobile_robot::on_read_mobile_status() //get map data
             qDebug()<<"MOBLE_MAP_CHANGE";
             map_changed = true;
         }
-        else if(json_input["MSG_TYPE"] == "MAP_SEND_DONE")
+        else if(msgType == "MAP_SEND_DONE")
         {
             png_change();
             bt_zip();
@@ -478,8 +521,8 @@ void mobile_robot::bt_zip()
     QString filelist;
     QString map_name;
     // load map
-        QString path = "/home/rainbow/maps/";
-//    QString path = "/home/rainbow/RB_MOBILE/maps";
+    QString path = "/home/rainbow/maps/";
+    //    QString path = "/home/rainbow/RB_MOBILE/maps";
     QDir dir(path);
 
     //file 있는지 없는지 검사
