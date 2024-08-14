@@ -6,6 +6,24 @@ websocket::websocket(QObject *parent) : QObject(parent)
 {
     open();
 
+    QString static_config_path =  QDir::homePath()+"/RB_MOBILE/config/static_config.ini";
+    QFileInfo static_config_info(static_config_path);
+
+    if(static_config_info.exists() && static_config_info.isFile())
+    {
+        QSettings settings(static_config_path, QSettings::IniFormat);
+        robot_length_x = settings.value("ROBOT_HW/robot_length_x").toFloat();
+        robot_length_y = settings.value("ROBOT_HW/robot_length_y").toFloat();
+    }
+
+    QString setting_config_path = QDir::homePath()+"/RB_MOBILE/config/setting_config.ini";
+    QFileInfo setting_config_info(setting_config_path);
+    if(setting_config_info.exists() && setting_config_info.isFile())
+    {
+        QSettings settings(setting_config_path, QSettings::IniFormat);
+        map_id = settings.value("MAP/map_name").toString();
+    }
+
 }
 
 websocket::~websocket()
@@ -82,7 +100,7 @@ void websocket::CMD_RESULT(QString result, QString Error)
         QJsonObject json;
         json["msg_type"] = "cmd_result";
         json["result"] = result;
-        //        qDebug()<<"result : "<<result;
+                qDebug()<<"result : "<<result;
 
         if (result == "failure")
         {
@@ -97,14 +115,14 @@ void websocket::CMD_RESULT(QString result, QString Error)
         if (action == "pick_item")
         {
             QJsonObject json_data;
-            json["result"] = "success";
+            json["result"] = result;
             //            json["error_info"] = QJsonValue::Null;
             json_data["success_count"] = 1;
             json_data["failure_count"] = 0;
             json["data"]=json_data;
         }
 
-        if (action == "set_position")
+        else if (action == "set_position")
         {
             json["msg_type"] = "cmd_result";
             json["do"] = action;
@@ -118,7 +136,7 @@ void websocket::CMD_RESULT(QString result, QString Error)
             mb->map_changed = false;
         }
 
-        if (action == "set_nodes_info")
+        else if (action == "set_nodes_info")
         {
             json["msg_type"] = "cmd_result";
             json["do"] = action;
@@ -169,12 +187,15 @@ void websocket::Feedback()
     for(int i=0; i<clients.size(); i++)
     {
         QJsonObject json;
-        int mobile_status = mb->status;
+        QString mobile_status = mb->AMR_FSM_status;
 
         QWebSocket *pSocket = clients[i];
-        if (move_flag)
+        //        qDebug()<<"move_flag :"<<move_flag;
+        if (mb->move_flag)
         {
-            QString mb_status;
+
+            json["feedback"] = mobile_status;
+            /* QString mb_status;
             ///////////////////AMR status/////////////////////////
 
             if (mobile_status == 0)
@@ -212,7 +233,7 @@ void websocket::Feedback()
                 json["feedback"] = mb_status;
                 //                seq_num = 0;
 
-            }
+            }*/
 
         }
         //////////////////////////rb5//////////////////////////
@@ -330,53 +351,65 @@ void websocket::moveCheck()
         }
     }*/
 
-    if(move_flag)
+    if(mb->move_flag)
     {
+        //        AUTO_FSM_STATE auto_fsm_state;
         if(mb->fsm_status == 0)
         {
-//            mb->AMR_FSM_status = "STATE_AUTO_PATH_FINDING";
+            mobile_fsm_status = "STATE_AUTO_PATH_FINDING";
+            mobile_status ="not moving";
         }
 
         else if(mb->fsm_status == 1)
         {
-//            AMR_FSM_status = "STATE_AUTO_FIRST_ALIGN";
+            mobile_fsm_status = "STATE_AUTO_FIRST_ALIGN";
+            mobile_status ="MOVING";
         }
         else if(mb->fsm_status == 2)
         {
-//            AMR_FSM_status = "STATE_AUTO_PURE_PURSUIT";
-//            emit mobile_run("true");
+            mobile_fsm_status = "STATE_AUTO_PURE_PURSUIT";
+            mobile_status ="MOVING";
+            //            emit mobile_run("true");
         }
         else if(mb->fsm_status == 3)
         {
-//            AMR_FSM_status = "STATE_AUTO_FINAL_ALIGN";
-//            emit mobile_run("true");
+            mobile_fsm_status ="STATE_AUTO_FINAL_ALIGN";
+            mobile_status ="MOVING";
+            //            emit mobile_run("true");
         }
         else if(mb->fsm_status == 4)
         {
+
+            mobile_fsm_status = "STATE_AUTO_GOAL_REACHED";
             CMD_RESULT("success");
-            move_flag = false;
-//            AMR_FSM_status = "STATE_AUTO_GOAL_REACHED";
-//            emit mobile_run("false");
+            //            AMR_FSM_status = "STATE_AUTO_GOAL_REACHED";
+            //            emit mobile_run("false");
+
+            mobile_status ="not moving";
         }
         else if(mb->fsm_status == 5)
         {
+            mobile_status ="not moving";
+            mobile_fsm_status = "STATE_AUTO_OBSTACLE";
             QString Error = "STATE_AUTO_OBSTACLE";
             CMD_RESULT("failure",Error);
         }
         else if(mb->fsm_status == 6)
         {
-//            AMR_FSM_status = "STATE_AUTO_PAUSE";
-//            emit mobile_run("true");
+            mobile_status ="PAUSE";
+            mobile_fsm_status = "STATE_AUTO_PAUSE";
+            //            emit mobile_run("true");
         }
         else if(mb->fsm_status == 7)
         {
+            mobile_status ="not moving";
+            mobile_fsm_status =  "STATE_AUTO_FAILED";
             QString Error = "STATE_AUTO_FAILED";
             CMD_RESULT("failure",Error);
 
-//            emit mobile_run("true");
+            //            emit mobile_run("true");
         }
-                //        charge_state = json_input["charge_state"].toInt;
-
+        //        charge_state = json_input["charge_state"].toInt;
 
     }
 }
@@ -508,7 +541,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     emit msgSendSignal(send_data);
 
                     qDebug()<<"x :"<<x<<",y :"<<y<<",theta :"<<theta;
-                    move_flag = true;
+                    //                    move_flag = true;
                     qDebug()<<send_data;
                 }
 
@@ -633,7 +666,6 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     //                QJsonObject json;
                     QJsonObject json_data;
                     QJsonObject json_out;
-                    QString map_id;
 
                     json_out["msg_type"] = "cmd_result";
                     json_out["result"] = "success";
@@ -643,15 +675,8 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
 
                     if (params["map_id"].toString() == "")
                     {
-                        //for get map name
-                        QString config_path = QDir::homePath()+"/robot_config.ini";
-                        QFileInfo config_info(config_path);
-                        if(config_info.exists() && config_info.isFile())
-                        {
-                            QSettings settings(config_path, QSettings::IniFormat);
-                            map_id = settings.value("FLOOR/map_name").toString();
-                            json_data["map_id"] = map_id;
-                        }
+                        //                        }
+                        json_data["map_id"] = map_id;
 
                         //for get map info
                         map_config_path = QDir::homePath()+"/maps/"+map_id+"/map_meta.ini";
@@ -1224,57 +1249,59 @@ void websocket::sendNotice(QWebSocket *client_socket)
 {
     QJsonObject json;
     json["msg_type"] = "notice";
-    int mobile_status = mb->status;
 
-    if (mobile_status == 0)
+    qDebug()<<"move_flag : "<<move_flag;
+    if (mb->move_flag)
     {
-        mb_status="NOT_READY";
-        json_mb_status= "init";
-        //        qDebug()<<"UI_AUTO_NOT_READY";
-    }
-    else if(mobile_status == 1)
-    {
-        if (old_mb_status != mobile_status){
-            mb_status="READY";
-            json_mb_status= "ready";
-            //            qDebug()<<"UI_AUTO_READY";
+
+        /*
+        QString mb_status;
+        ///////////////////AMR status/////////////////////////
+
+        if (mobile_status == 0)
+        {
+            //                mb_status="NOT_READY";
+            seq_num = 0;
         }
-    }
-    else if(mobile_status == 2)
-    {
-        mb_status="MOVING";
-        json_mb_status= "running";
-        //        qDebug()<<"UI_AUTO_MOVING";
-    }
-    else if(mobile_status == 3)
-    {
-        mb_status="WAIT";
-        //        qDebug()<<"UI_AUTO_WAIT";
-    }
-    else if(mobile_status == 4)
-    {
-        mb_status="PAUSE";
-        json_mb_status= "paused";
-        //        qDebug()<<"UI_AUTO_PAUSE";
-        //        if(old_mobile_status=="MOVING")
-        //        {
-        //            CMD_RESULT("success");
-        //        }
-        //        else if(old_mobile_status!="PAUSE")
-        //        {
-        //            CMD_RESULT("cancelled");
-        //        }
-    }
+        else if(mobile_status == 1)
+        {
+            //                mb_status="READY";
+            seq_num = 0;
+        }
+        else if(mobile_status == 2)
+        {
+            //                qDebug()<<"mmmmmmmmmmmm";
+            mb_status="running";
+            //                json["feedback"] = "running";
+            //                mobile robot 으로부터 받은 json path plan 을 넣어줌.
+            json = mb->json;
 
-    if(rb_status == "moving")
-    {
-        json_mb_status= "running";
-    }
-    else if(rb_status == "not moving")
-    {
-        //            qDebug()<<"nnnnnnnnnnnnnnnnnnnnn";
-    }
+            json["feedback"] = mb_status;
+            //                seq_num = 1;
+            seq_num++;
+            json["seq_num"] = seq_num;
+        }
+        else if(mobile_status == 3)
+        {
+            //                mb_status="WAIT";
+            //                seq_num = 0;
+        }
+        else if(mobile_status == 4)
+        {
+            mb_status = "pause";
+            //                json["feeback"] = "pause";
+            json["feedback"] = mb_status;
+            //                seq_num = 0;
 
+        }*/
+//        json_mb_status = mobile_fsm_status;
+        json_mb_status = "moving";
+
+    }
+    else
+    {
+        json_mb_status ="not moving";
+    }
     //////////////////////////lift//////////////////////////
 
     if(lift_status == "moving")
@@ -1286,33 +1313,17 @@ void websocket::sendNotice(QWebSocket *client_socket)
         //
     }
 
+    /*
+     * robot arm is working
+    if()
     old_mobile_status = mb_status;
+    */
 
     json["robot_state"] = json_mb_status;
     json["navi_mode"] = "navigate";
 
-    QString static_config_path =  QDir::homePath()+"/RB_MOBILE/config/static_config.ini";
-    QFileInfo static_config_info(static_config_path);
-    qDebug()<<"static_config_path :"<<static_config_path;
-//    if(static_config_info.exists() && static_config_info.isFile())
-    if(static_config_info.exists() && static_config_info.isFile())
-    {
-        QSettings settings(static_config_path, QSettings::IniFormat);
-        json["robot_width"] = settings.value("ROBOT_HW/robot_length_x").toFloat();
-        json["robot_length"] = settings.value("ROBOT_HW/robot_length_y").toFloat();
-    }
-
-    QString setting_config_path = QDir::homePath()+"/RB_MOBILE/config/setting_config.ini";
-    QFileInfo setting_config_info(setting_config_path);
-    if(setting_config_info.exists() && setting_config_info.isFile())
-    {
-        QSettings settings(setting_config_path, QSettings::IniFormat);
-        map_id = settings.value("MAP/map_name").toString();
-        qDebug()<<"map_id : "<<map_id;
-    }
-
-    //    json["robot_op_type"] = "real_robot";
-    //    json["robot_manufacturer"] = "Rainbow";
+    json["robot_width"] = robot_length_x;
+    json["robot_length"] = robot_length_y;
 
     QJsonObject json_pose;
     json_pose["x"] = mb->pose_x;
@@ -1336,13 +1347,10 @@ void websocket::sendNotice(QWebSocket *client_socket)
     //    json["battery"] = json_battery;
 
     QJsonDocument doc_json(json);
-    //QString str_json(doc_json.toJson(QJsonDocument::Compact));
     QString str_json(doc_json.toJson(QJsonDocument::Indented));
 
-    //        qDebug()<<str_json;
-    //    client_socket->sendTextMessage("notice");
     client_socket->sendTextMessage(str_json);
-    old_mb_status = mobile_status;
+    old_mobile_status = mobile_status;
 }
 
 void websocket::sendAck(QString uuid)

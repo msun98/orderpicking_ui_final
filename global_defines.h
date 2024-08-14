@@ -52,6 +52,20 @@ enum UI_AUTO_STATE
     UI_AUTO_PAUSE
 };
 
+enum AUTO_FSM_STATE
+{
+    STATE_AUTO_PATH_FINDING = 0,
+    STATE_AUTO_FIRST_ALIGN,
+    STATE_AUTO_PURE_PURSUIT,
+    STATE_AUTO_FINAL_ALIGN,
+    STATE_AUTO_GOAL_REACHED,
+    STATE_AUTO_OBSTACLE,
+    STATE_AUTO_PAUSE,
+    STATE_AUTO_FAILED,
+};
+
+
+
 enum DIR
 {
     CW = 0,
@@ -441,6 +455,8 @@ struct motor_cmd
 
 };
 extern motor_cmd MD_CMD;
+
+
 
 
 struct CAM_CONFIG

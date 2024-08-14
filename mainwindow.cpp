@@ -781,7 +781,7 @@ void MainWindow::onUpdate()
         else
         {
             web.rb_status = "not moving";
-            web.move_flag = false;
+            web.rb5_move_flag = false;
             ui->LE_ROBOT_STATE_IDLE->setStyleSheet("QLineEdit{background-color:white}");
             ui->LE_ROBOT_STATE_MOVING->setStyleSheet("QLineEdit{background-color:white}");
             ui->le_rb5_move_status->setStyleSheet("QLineEdit{background-color:green}");
@@ -1482,7 +1482,6 @@ void MainWindow::keti_showUI_msg(bool connect_flag)
 
 void MainWindow::kitech_showUI_msg(bool connect_flag)
 {
-    qDebug()<<"connect_flag : "<<connect_flag;
     if (connect_flag)
     {
         ui->le_kitech->setStyleSheet("background-color:green");

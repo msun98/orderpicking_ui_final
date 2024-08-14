@@ -75,6 +75,7 @@ public:
     bool connected;
 
     bool move_flag=false;
+    bool rb5_move_flag=false;
 
     float status_charge,status_power;
 
@@ -119,7 +120,7 @@ public:
     std::map<std::string, SHELF_INFO*> shelf_infos;
     std::map<std::string, OBJECT_INFO*> object_infos;
 
-    int old_mb_status;
+    QString old_mb_status;
 
     QJsonObject main_json;
 
@@ -127,7 +128,10 @@ public:
 
     double calc_theta(cv::Vec2d path,cv::Vec2d cur_path);
 
+    float robot_length_x,robot_length_y;
+    QString mobile_fsm_status;
 
+    QString mobile_status;
 
 signals:
 

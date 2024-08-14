@@ -83,6 +83,8 @@ void mobile_robot::on_map_read_command(){
     QByteArray _buf = map_Socket->readAll();
     cv::Mat new_img = cv::Mat::zeros(1000,1000,CV_8UC3);
 
+    qDebug()<<"sssssssssssss";
+
     if(_buf.size() > 0)
     {
         new_buf.append(_buf);
@@ -127,19 +129,14 @@ void mobile_robot::disConnection_tcp()
 {
     connect_flag = false;
     //disconnect 하기
-    //    signal
-    //
     disconnect(clientSocket, SIGNAL(readyRead()), this, SLOT(readyRead_tcp()));
-    clientSocket = mobile_robot_server->nextPendingConnection();
-    connect(clientSocket, SIGNAL(disconnected()), this, SLOT(readyRead_tcp()));
+    disconnect(clientSocket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
 
     disconnect(mobile_status_socket, SIGNAL(readyRead()), this, SLOT(on_read_mobile_status()));
-    mobile_status_socket = mobile_rb_status_server->nextPendingConnection();
-    connect(mobile_status_socket, SIGNAL(disconnected()), this, SLOT(on_read_mobile_status()));
+    disconnect(clientSocket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
 
     disconnect(map_Socket, SIGNAL(readyRead()), this, SLOT(on_map_read_command()));
-    map_Socket = tcpServer_map->nextPendingConnection();
-    connect(map_Socket, SIGNAL(disconnected()), this, SLOT(on_map_read_command()));
+    disconnect(clientSocket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
     qDebug()<<"tcp connection is dead";
 
 }
@@ -313,7 +310,7 @@ void mobile_robot::on_read_mobile_status() //get map data
         {
             status = json_input["STATUS"].toInt();
             QString AMR_status;
-            QString AMR_FSM_status;
+            //            QString AMR_FSM_status;
             QString charge;
 
             if (status == 0)
@@ -357,49 +354,69 @@ void mobile_robot::on_read_mobile_status() //get map data
             if(fsm_status == 0)
             {
                 AMR_FSM_status = "STATE_AUTO_PATH_FINDING";
+                move_flag=true;
             }
 
             else if(fsm_status == 1)
             {
                 AMR_FSM_status = "STATE_AUTO_FIRST_ALIGN";
+                move_flag=true;
                 emit mobile_run("true");
             }
             else if(fsm_status == 2)
             {
                 AMR_FSM_status = "STATE_AUTO_PURE_PURSUIT";
                 emit mobile_run("true");
+                move_flag=true;
             }
             else if(fsm_status == 3)
             {
                 AMR_FSM_status = "STATE_AUTO_FINAL_ALIGN";
                 emit mobile_run("true");
+                move_flag=true;
             }
             else if(fsm_status == 4)
             {
                 AMR_FSM_status = "STATE_AUTO_GOAL_REACHED";
                 emit mobile_run("false");
+
+                if(old_AMR_FSM_status == AMR_FSM_status)
+                {
+                    qDebug()<<"aaaaaaaaaaaa";
+                    move_flag=false;
+                }
+                else
+                {
+                    move_flag=true;
+                }
             }
             else if(fsm_status == 5)
             {
                 AMR_FSM_status = "STATE_AUTO_OBSTACLE";
                 emit mobile_run("false");
+                move_flag=true;
             }
             else if(fsm_status == 6)
             {
                 AMR_FSM_status = "STATE_AUTO_PAUSE";
                 emit mobile_run("true");
+                move_flag=true;
             }
             else if(fsm_status == 7)
             {
                 AMR_FSM_status = "STATE_AUTO_FAILED";
                 emit mobile_run("true");
+                move_flag=false;
             }
-                    //        charge_state = json_input["charge_state"].toInt;
+
+            old_AMR_FSM_status = AMR_FSM_status;
+            //        charge_state = json_input["charge_state"].toInt;
 
             if (json_input["charge_state"].toInt()==0)
             {
                 charge_state = false;
                 charge = "false";
+                //                move_flag=false;
             }
             else
             {

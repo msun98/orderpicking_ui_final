@@ -93,7 +93,6 @@ void update_order_config()
     }
 
     QString cam2tcp_tf_path = QDir::currentPath() + "/cam_config.ini";
-    qDebug()<<cam2tcp_tf_path;
     QFileInfo cam_config_info(cam2tcp_tf_path);
     if(cam_config_info.exists() && cam_config_info.isFile())
     {
