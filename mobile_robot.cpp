@@ -133,10 +133,10 @@ void mobile_robot::disConnection_tcp()
     disconnect(clientSocket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
 
     disconnect(mobile_status_socket, SIGNAL(readyRead()), this, SLOT(on_read_mobile_status()));
-    disconnect(clientSocket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
+    disconnect(mobile_status_socket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
 
     disconnect(map_Socket, SIGNAL(readyRead()), this, SLOT(on_map_read_command()));
-    disconnect(clientSocket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
+    disconnect(map_Socket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
     qDebug()<<"tcp connection is dead";
 
 }
@@ -207,8 +207,10 @@ void mobile_robot::cmdSendData(QByteArray cmd_msg)
 //for robot arrived
 void mobile_robot::sendData()
 {
-    if(clientSocket != nullptr){
-        if(clientSocket->isWritable()){
+    if(clientSocket != nullptr)
+    {
+        if(clientSocket->isWritable())
+        {
             QJsonObject json_output;
             json_output["MSG_TYPE"] = "STATE";
             //            qDebug()<<"cobot->systemStat.sdata.robot_state : "<<cobot->systemStat.sdata.robot_state;
