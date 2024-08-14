@@ -1279,7 +1279,7 @@ void websocket::sendNotice(QWebSocket *client_socket)
 
     if(lift_status == "moving")
     {
-        json_mb_status= "running";
+        json_mb_status = "running";
     }
     else if(lift_status == "not moving")
     {
@@ -1291,21 +1291,24 @@ void websocket::sendNotice(QWebSocket *client_socket)
     json["robot_state"] = json_mb_status;
     json["navi_mode"] = "navigate";
 
-    QString static_config_path = "/home/rainbow/RB_MOBILE/config/static_config.ini";
+    QString static_config_path =  QDir::homePath()+"/RB_MOBILE/config/static_config.ini";
     QFileInfo static_config_info(static_config_path);
+    qDebug()<<"static_config_path :"<<static_config_path;
+//    if(static_config_info.exists() && static_config_info.isFile())
     if(static_config_info.exists() && static_config_info.isFile())
     {
-        QSettings settings(config_path, QSettings::IniFormat);
-        json["robot_width"] = settings.value("robot_length_x").toString();
-        json["robot_length"] = settings.value("robot_length_y").toString();
+        QSettings settings(static_config_path, QSettings::IniFormat);
+        json["robot_width"] = settings.value("ROBOT_HW/robot_length_x").toFloat();
+        json["robot_length"] = settings.value("ROBOT_HW/robot_length_y").toFloat();
     }
 
-    QString setting_config_path = "/home/rainbow/RB_MOBILE/config/setiing_config.ini";
+    QString setting_config_path = QDir::homePath()+"/RB_MOBILE/config/setting_config.ini";
     QFileInfo setting_config_info(setting_config_path);
     if(setting_config_info.exists() && setting_config_info.isFile())
     {
-        QSettings settings(config_path, QSettings::IniFormat);
+        QSettings settings(setting_config_path, QSettings::IniFormat);
         map_id = settings.value("MAP/map_name").toString();
+        qDebug()<<"map_id : "<<map_id;
     }
 
     //    json["robot_op_type"] = "real_robot";

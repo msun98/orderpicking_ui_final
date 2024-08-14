@@ -79,8 +79,11 @@ MainWindow::MainWindow(QWidget *parent)
             //    qDebug()<<"eeeee : "<<ui->cb_usb1->currentText();
             //    ui->cb_usb_1->currentText();
             //            barcode.bt_usb1_con(port);
+            /*
             ui->cb_usb1->addItem(port.portName());
-            ui->cb_usb2->addItem(port.portName());
+            ui->cb_usb2->addItem(port.portName());*/
+            ui->cb_usb1->addItem("ttyBAR0");
+            ui->cb_usb2->addItem("ttyBAR1");
         }
     }
 
@@ -1227,7 +1230,7 @@ void MainWindow::bt_lift_status()
     QString le_lift_move_status = ui->le_lift_move_status->styleSheet();
     QStringList lift_color = le_lift_move_status.split(":");
 
-    if(lift_color[1]=="red")
+    if(lift_color[1]=="red}")
     {
         ui -> sb_lift_pos->setValue(lift_pos);
     }
