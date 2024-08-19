@@ -3343,7 +3343,7 @@ public:
         sb_rpm->setGeometry(QRect(10, 30, 111, 31));
         sb_rpm->setMinimum(-3000);
         sb_rpm->setMaximum(3000);
-        sb_rpm->setValue(200);
+        sb_rpm->setValue(700);
         bt_move_rpm = new QPushButton(groupBox_2);
         bt_move_rpm->setObjectName(QString::fromUtf8("bt_move_rpm"));
         bt_move_rpm->setGeometry(QRect(140, 30, 71, 31));
@@ -4060,7 +4060,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        scenario->setCurrentIndex(0);
+        scenario->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

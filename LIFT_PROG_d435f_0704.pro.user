@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.0, 2024-08-14T20:05:46. -->
+<!-- Written by QtCreator 4.11.0, 2024-08-19T16:31:31. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -282,8 +282,9 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/rainbow/code/2024_order/LIFT_PROG_yunjin_vision _0814/LIFT_PROG_d435f_0704.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/rainbow/code/2024_order/LIFT_PROG_yunjin_vision _0814/LIFT_PROG_d435f_0704.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">LIFT_PROG_d435f_07042</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/rainbow/code/2024_order/LIFT_PROG_yunjin_vision _0819/LIFT_PROG_d435f_0704.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/rainbow/code/2024_order/LIFT_PROG_yunjin_vision _0819/LIFT_PROG_d435f_0704.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>

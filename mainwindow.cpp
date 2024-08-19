@@ -368,7 +368,7 @@ void MainWindow::load()
             shelf_info->lift_pose = obj["lift_pose"].toString().toDouble();
             shelf_info->AMR_pose = array_to_pose(obj["AMR_pose"].toArray());
             shelf_info->RB_5_pose = array_to_pose6(obj["RB_5_pose"].toArray());
-            qDebug()<<"lift : "<<shelf_info->lift_pose;
+            //            qDebug()<<"lift : "<<shelf_info->lift_pose;
 
             shelf_infos[shelf_info->shelf_id.toStdString()] = shelf_info;
 
@@ -498,6 +498,7 @@ void MainWindow::lift_ui()
     static int lift_timeout = 0;
 
     //    qDebug()<<"md_mot.move_poisition_flag : "<<md_mot.move_poisition_flag;
+    //    qDebug()<<"lift_clicked : "<<lift_clicked;
     if(md_mot.move_poisition_flag)
     {
         lift_clicked = lift_start;
@@ -511,6 +512,7 @@ void MainWindow::lift_ui()
 
     if(lift_clicked == lift_start)
     {
+        web.lift_status = "working";
         qDebug()<<"lift is working";
         lift_timeout = 500/100;
         lift_clicked = lift_wait;
@@ -520,29 +522,19 @@ void MainWindow::lift_ui()
     {
         if(--lift_timeout > 0)
         {
-            qDebug()<<lift_timeout;
+            //            qDebug()<<lift_timeout;
             lift_clicked = lift_wait;
         }
         else
         {
             lift_clicked = lift_working;
-            //            if(lift_pos == old_lift_pos)
-            //            {
-            //                // 완료 flag 가능
-            //                ui -> le_lift_move_status->setStyleSheet("QLineEdit{background-color:green}");
-            //                qDebug()<<"done!!!!!!!!!!!!";
-            //                //        web.move_flag =false;
-            //                web.lift_status = "not moving";
-            //                lift_state = "done";
-            //                md_mot.move_poisition_flag = false;
-            //            }
         }
     }
     else if(lift_clicked == lift_working)
     {
-
         if(lift_pos == old_lift_pos)
         {
+            //            web.lift_status = false;
             ui -> le_lift_move_status->setStyleSheet("QLineEdit{background-color:green}");
             //        web.move_flag =false;
             web.lift_status = "not moving";
@@ -551,6 +543,7 @@ void MainWindow::lift_ui()
         }
         else if(lift_pos != old_lift_pos)
         {
+            //            web.lift_status = true;
             ui -> le_lift_move_status->setStyleSheet("QLineEdit{background-color:red}");
             //        web.move_flag =false;
             web.lift_status = "moving";
@@ -564,6 +557,7 @@ void MainWindow::lift_ui()
     {
         if(lift_pos == old_lift_pos)
         {
+            //            web.lift_status = true;
             ui -> le_lift_move_status->setStyleSheet("QLineEdit{background-color:green}");
             //        web.move_flag =false;
             web.lift_status = "not moving";
@@ -574,47 +568,6 @@ void MainWindow::lift_ui()
         }
     }
 }
-
-/*
-//        else if(ui->le_rpm->text()<20)
-//        {
-//            //완료 flag 불가능 -> 비상정지임.
-//            ui -> le_lift_move_status->setStyleSheet("QLineEdit{background-color:green}");
-//            web.move_flag = false;
-//            web.lift_status = "not moving";
-//            lift_state = "done";
-//        }
-        else // when the opposite status
-        {
-            if (abs(lift_pos - old_lift_pos)>1)//position moving x-> stop status
-            {
-                //            web.move_flag =true;
-                web.lift_status = "moving";
-                ui -> le_lift_move_status->setStyleSheet("QLineEdit{background-color:red}");
-                lift_state = "working";
-                old_lift_pos = lift_pos;
-            }
-            else
-            {
-                ui -> le_lift_move_status->setStyleSheet("QLineEdit{background-color:green}");
-                old_lift_pos = lift_pos;
-                lift_state = "done";
-            }
-        }*/
-//        mb.liftState(lift_state);
-//    }
-
-//    else
-//    {
-//        ui -> le_lift_move_status->setStyleSheet("QLineEdit{background-color:green}");
-//        //        web.move_flag =false;
-//        web.lift_status = "not moving";
-//        lift_state = "done";
-//        md_mot.move_poisition_flag = false;
-//    }
-//mb.liftState(lift_state);
-//}
-
 
 void MainWindow::barcode_ON_showUI(QString msg)
 {
@@ -805,8 +758,10 @@ void MainWindow::onUpdate()
         }
         if(cobot.systemStat.sdata.op_stat_soft_estop_occur == 1){
             ui->LE_ROBOT_STATUS_PAUSED->setStyleSheet("QLineEdit{background-color:red}");
+            web.rb_pause_status = "paused";
         }else{
             ui->LE_ROBOT_STATUS_PAUSED->setStyleSheet("QLineEdit{background-color:white}");
+            web.rb_pause_status = "resume";
         }
         if(cobot.systemStat.sdata.op_stat_ems_flag != 0){
             ui->LE_ROBOT_STATUS_EMS->setStyleSheet("QLineEdit{background-color:red}");
@@ -3900,8 +3855,10 @@ void MainWindow::bt_auto_homing()
 
 void MainWindow::auto_homming_seq()
 {
-    static int homming_timeout = 0;
     //    qDebug()<<"auto_homing_clicked : "<<auto_homing_clicked;
+
+    static int homming_timeout = 0;
+
     if(auto_homing_clicked == auto_homing_start)
     {
         bt_move_rpm();
@@ -3915,7 +3872,7 @@ void MainWindow::auto_homming_seq()
     {
         if(--homming_timeout > 0)
         {
-            qDebug()<<homming_timeout;
+            //            qDebug()<<homming_timeout;
             auto_homing_clicked = auto_homing_lift_wait;
         }
         else

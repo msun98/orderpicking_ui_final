@@ -68,6 +68,7 @@ void mobile_robot::newConnection_tcp()
 
     while (tcpServer_map->hasPendingConnections())
     {
+        //        qDebug()<<"tcp server map new connected!!!!!!!!!!!!";
         map_Socket = tcpServer_map->nextPendingConnection();
         map_Socket->setSocketOption(QAbstractSocket::LowDelayOption,1);
         //        connect_flag = true;
@@ -78,12 +79,36 @@ void mobile_robot::newConnection_tcp()
     }
 }
 
+void mobile_robot::disConnection_tcp()
+{
+    connect_flag = false;
+
+    clientSocket->deleteLater();
+    mobile_status_socket->deleteLater();
+    map_Socket->deleteLater();
+
+    //disconnect 하기
+    disconnect(clientSocket, SIGNAL(readyRead()), this, SLOT(readyRead_tcp()));
+    disconnect(clientSocket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
+
+    disconnect(mobile_status_socket, SIGNAL(readyRead()), this, SLOT(on_read_mobile_status()));
+    disconnect(mobile_status_socket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
+
+    disconnect(map_Socket, SIGNAL(readyRead()), this, SLOT(on_map_read_command()));
+    disconnect(map_Socket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
+
+    qDebug()<<"AMR tcp connection is dead";
+
+    old_AMR_FSM_status = "STATE_AUTO_PATH_FINDING";
+    move_flag = false;
+    new_start = true;
+
+}
+
 void mobile_robot::on_map_read_command(){
     // 이미지 틀어지지 않도록 해더 추가함 "map"
     QByteArray _buf = map_Socket->readAll();
     cv::Mat new_img = cv::Mat::zeros(1000,1000,CV_8UC3);
-
-    qDebug()<<"sssssssssssss";
 
     if(_buf.size() > 0)
     {
@@ -119,70 +144,9 @@ void mobile_robot::on_map_read_command(){
 
             new_buf.remove(0, packet_size);
         }
-
-    }
-}
-//    map_img = cv::Mat(1000,1000,CV_8UC3,buf.data());
-
-
-void mobile_robot::disConnection_tcp()
-{
-    connect_flag = false;
-    //disconnect 하기
-    disconnect(clientSocket, SIGNAL(readyRead()), this, SLOT(readyRead_tcp()));
-    disconnect(clientSocket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
-
-    disconnect(mobile_status_socket, SIGNAL(readyRead()), this, SLOT(on_read_mobile_status()));
-    disconnect(mobile_status_socket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
-
-    disconnect(map_Socket, SIGNAL(readyRead()), this, SLOT(on_map_read_command()));
-    disconnect(map_Socket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
-    qDebug()<<"tcp connection is dead";
-
-}
-/*
-void mobile_robot::send_command()//클라이언트에게 명령을 전달하기 위함.
-{
-    if(mobile_status_socket != nullptr){
-        if(mobile_status_socket->isWritable()){
-            QJsonObject json_output;
-            json_output["MSG_TYPE"] = "CHECK MAP INFO";
-
-            QString head = QString("%1##%2##%3").arg(FILE_CODE).arg(filename).arg(filesize);
-            qDebug()<<"head : "<<head;
-            json_output["HEAD MSG"] = head;
-            QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
-
-            //            qDebug()<<"json_string"<<str_json;
-            //            clientSocket->write(json_string);
-
-            qint64 len = mobile_status_socket->write(json_string);
-            if(len <= 0){
-                qDebug()<<ERROR_CODE_110;
-                file.close();
-            }
-        }
     }
 }
 
-void mobile_robot::send_command(int code, QString str){
-
-    if(mobile_status_socket != nullptr){
-        if(mobile_status_socket->isWritable()){
-            QJsonObject json_output;
-            json_output["MSG_TYPE"] = "DOWNLOAD MAP ACCEPT";
-
-            QString head = QString("%1##%2").arg(code).arg(str);
-            //            qint64 len = clientSocket->write(head.toUtf8());
-            json_output["HEAD MSG"] = head;
-            QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
-
-            //            qDebug()<<"json_string"<<str_json;
-            mobile_status_socket->write(json_string);
-        }
-    }
-}
-*/
 void mobile_robot::init(MD_MOTOR *_md_mot,Cobot *_cobot)
 {
     md_mot =_md_mot;
@@ -356,40 +320,39 @@ void mobile_robot::on_read_mobile_status() //get map data
             if(fsm_status == 0)
             {
                 AMR_FSM_status = "STATE_AUTO_PATH_FINDING";
-                move_flag=true;
+                move_flag = true;
             }
 
             else if(fsm_status == 1)
             {
                 AMR_FSM_status = "STATE_AUTO_FIRST_ALIGN";
-                move_flag=true;
+                move_flag = true;
                 emit mobile_run("true");
             }
             else if(fsm_status == 2)
             {
                 AMR_FSM_status = "STATE_AUTO_PURE_PURSUIT";
                 emit mobile_run("true");
-                move_flag=true;
+                move_flag = true;
             }
             else if(fsm_status == 3)
             {
                 AMR_FSM_status = "STATE_AUTO_FINAL_ALIGN";
                 emit mobile_run("true");
-                move_flag=true;
+                move_flag = true;
             }
             else if(fsm_status == 4)
             {
                 AMR_FSM_status = "STATE_AUTO_GOAL_REACHED";
                 emit mobile_run("false");
-
+                //                qDebug()<<old_AMR_FSM_status;
                 if(old_AMR_FSM_status == AMR_FSM_status)
                 {
-                    qDebug()<<"aaaaaaaaaaaa";
-                    move_flag=false;
+                    move_flag = false;
                 }
                 else
                 {
-                    move_flag=true;
+                    move_flag = true;
                 }
             }
             else if(fsm_status == 5)
@@ -411,14 +374,13 @@ void mobile_robot::on_read_mobile_status() //get map data
                 move_flag=false;
             }
 
-            old_AMR_FSM_status = AMR_FSM_status;
+            //            old_AMR_FSM_status = AMR_FSM_status;
             //        charge_state = json_input["charge_state"].toInt;
 
             if (json_input["charge_state"].toInt()==0)
             {
                 charge_state = false;
-                charge = "false";
-                //                move_flag=false;
+                charge = "false";                //                move_flag=false;
             }
             else
             {
@@ -445,6 +407,7 @@ void mobile_robot::on_read_mobile_status() //get map data
             qDebug() << "Unknown MSG_TYPE:" << msgType;
         }
     }
+    old_AMR_FSM_status = AMR_FSM_status;
 }
 
 void mobile_robot::png_change()
@@ -701,7 +664,7 @@ void mobile_robot::readyRead_tcp()
         json_global["global"] = json_arr;
         json["path_plan"] = json_global;
         QString path_info = QJsonDocument(json).toJson(QJsonDocument::Compact);//보낸 내용 확인용
-        //        qDebug() << path_info;
+//        qDebug() << path_info;
     }
 }
 

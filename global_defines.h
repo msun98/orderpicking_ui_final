@@ -97,7 +97,6 @@ enum{
     auto_homing_start=0,
     auto_homing_lift_wait,
     auto_homing_lift_working,
-
     auto_homing_working,
     auto_homing_wait,
     auto_homing_done

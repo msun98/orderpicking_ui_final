@@ -275,7 +275,7 @@ public:
     //    void yujin_order();
     //    void yujin_order_check();
 
-    int lift_clicked;
+    int lift_clicked = 3;
 
 private:
     Ui::MainWindow *ui;

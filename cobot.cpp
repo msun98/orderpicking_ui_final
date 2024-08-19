@@ -394,7 +394,7 @@ void Cobot::move_jb2_clear()
     text.sprintf("move_jb2_clear()");
 
     //        text.sprintf("move_jb2_clear()");
-    qDebug()<<text;
+//    qDebug()<<text;
     cmdConfirmFlag = false;
     cmdSocket.write(text.toStdString().c_str(), text.toStdString().length());
 }
@@ -402,7 +402,7 @@ void Cobot::move_jb2_add(float joint1, float joint2, float joint3, float joint4,
 {
     QString text;
     text.sprintf("move_jb2_add(jnt[%.3f, %.3f, %.3f, %.3f, %.3f, %.3f],%.3f, %.3f,0,%.3f)", joint1, joint2, joint3, joint4, joint5, joint6, spd, acc,blending_value);
-    qDebug()<<text;
+//    qDebug()<<text;
     cmdConfirmFlag = false;
     cmdSocket.write(text.toStdString().c_str(), text.toStdString().length());
     systemStat.sdata.robot_state = 3; //run
@@ -412,7 +412,7 @@ void Cobot::move_jb2_run()
 {
     QString text;
     text.sprintf("move_jb2_run()");
-    qDebug()<<text;
+//    qDebug()<<text;
     moveCmdFlag = true;
     cmdConfirmFlag = false;
     cmdSocket.write(text.toStdString().c_str(), text.toStdString().length());

@@ -71,6 +71,7 @@ void MD_MOTOR::set_maxVel_pos(unsigned short val)
 void MD_MOTOR::move_position(int val)
 {
     move_poisition_flag = true;
+
     if(!motor.isOpen())
     {
         printf("motor not connected.\n");
@@ -262,6 +263,8 @@ void MD_MOTOR::checkSum(QByteArray &data)
 
 void MD_MOTOR::move_rpm(short val)
 {
+    move_poisition_flag = true;
+
     if(!motor.isOpen())
     {
         write_log(QString("motor not connected."));

@@ -48,6 +48,8 @@ public:
     QString mb_status;
     QString json_mb_status;
 
+    QString md_lift_status;
+
     bool move_status = false;
 
     bool msg = false;
@@ -108,6 +110,7 @@ public:
     int item_count;
 
     QString rb_status;
+    QString rb_pause_status;
 
     QString lift_status;
 
@@ -129,9 +132,14 @@ public:
     double calc_theta(cv::Vec2d path,cv::Vec2d cur_path);
 
     float robot_length_x,robot_length_y;
-    QString mobile_fsm_status;
+    QString mobile_fsm_status = "STATE_AUTO_GOAL_REACHED";
 
     QString mobile_status;
+
+    QString robot_name,robot_id;
+
+    QString cobot_status;
+    //    bool lift_move_flag;
 
 signals:
 
