@@ -141,6 +141,17 @@ public:
     QString cobot_status;
     //    bool lift_move_flag;
 
+    int pick_item_success_count=0;
+    int pick_item_failure_count=0;
+
+    QString send_map_name;
+    QString send_map_filesize;
+
+//    bool pause_flag = false;
+
+    QString old_uuid,pause_uuid,old_acton;
+    bool move_finish_flag = false;
+
 signals:
 
     void msgSignal(bool msg);

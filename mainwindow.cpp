@@ -11,7 +11,6 @@ MainWindow::MainWindow(QWidget *parent)
     , cobot(this)
     , mb(this)
 
-
 {
     ui->setupUi(this);
 
@@ -51,7 +50,7 @@ MainWindow::MainWindow(QWidget *parent)
     //    connect(&mobile_timer, SIGNAL(timeout()), this, SLOT(disConnection_tcp()));
     mobile_timer.start(200);
 
-    udp_socket.bind(QHostAddress(QString("10.108.1.52")), 4444);
+    //    udp_socket.bind(QHostAddress(QString("10.108.1.52")), 4444);
     //ordroid go for lift(jog controll lift)
 
 
@@ -63,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     Q_FOREACH(QSerialPortInfo port, QSerialPortInfo::availablePorts())
     {
-        qDebug()<<"port : "<<port.portName();
+        //        qDebug()<<"port : "<<port.portName();
         bool lift = port.portName().contains("USB", Qt::CaseInsensitive);//이름이 바코드로 정해놓은 것만 들어오도록
         if (lift)
         {
@@ -237,6 +236,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 기본
     vision.TCP2cam = cam_config.RB_TF_SENSOR;
+
+    //    connect(&vision_trigger_timer,SIGNAL(timeout()),this,SLOT(vision_trigger()));
+    //    vision_trigger_timer.start(5000);
 }
 
 MainWindow::~MainWindow()
@@ -955,76 +957,76 @@ void MainWindow::newConnection_tcp()
     }
 }
 
-void MainWindow::readyRead_udp()
-// using joystick
-// for using odroid go -> move lift
-{
-    if(udp_socket.hasPendingDatagrams())
-    {
-        QByteArray _buf;
-        _buf.resize(udp_socket.pendingDatagramSize());
+//void MainWindow::readyRead_udp()
+//// using joystick
+//// for using odroid go -> move lift
+//{
+//    if(udp_socket.hasPendingDatagrams())
+//    {
+//        QByteArray _buf;
+//        _buf.resize(udp_socket.pendingDatagramSize());
 
-        QHostAddress sender; quint16 senderPort;
-        udp_socket.readDatagram(_buf.data(), _buf.size(), &sender, &senderPort);
+//        QHostAddress sender; quint16 senderPort;
+//        udp_socket.readDatagram(_buf.data(), _buf.size(), &sender, &senderPort);
 
-        if(_buf.size() > 0)
-        {
-            buf.append(_buf);
+//        if(_buf.size() > 0)
+//        {
+//            buf.append(_buf);
 
-            if(buf.size() < 2)
-            {
-                return;
-            }
+//            if(buf.size() < 2)
+//            {
+//                return;
+//            }
 
-            bool is_header = false;
-            for(int p = 0; p < buf.size()-1; p++)
-            {
-                // header check
-                if(buf[p] == (char)0xFF && buf[p+1] == (char)0xFD)
-                {
-                    buf.remove(0, p);
-                    is_header = true;
-                    break;
-                }
-            }
+//            bool is_header = false;
+//            for(int p = 0; p < buf.size()-1; p++)
+//            {
+//                // header check
+//                if(buf[p] == (char)0xFF && buf[p+1] == (char)0xFD)
+//                {
+//                    buf.remove(0, p);
+//                    is_header = true;
+//                    break;
+//                }
+//            }
 
-            // 11 3*4 +8 20 25
-            const int packet_size = 28;
-            if(is_header && buf.size() >= packet_size)
-            {
-                if(buf[packet_size-2] == (char)0x01 && buf[packet_size-1] == (char)0x02)
-                {
-                    uchar* body = (uchar*)buf.data();
-                    // body parsing
-                    //uchar id = body[2];
-                    float lx, ly, rx, ry; uint8_t btn[8];
+//            // 11 3*4 +8 20 25
+//            const int packet_size = 28;
+//            if(is_header && buf.size() >= packet_size)
+//            {
+//                if(buf[packet_size-2] == (char)0x01 && buf[packet_size-1] == (char)0x02)
+//                {
+//                    uchar* body = (uchar*)buf.data();
+//                    // body parsing
+//                    //uchar id = body[2];
+//                    float lx, ly, rx, ry; uint8_t btn[8];
 
-                    memcpy(&lx, &body[2], 4);
-                    memcpy(&ly, &body[6], 4);
-                    memcpy(&rx, &body[10], 4);
-                    memcpy(&ry, &body[14], 4);
-                    memcpy(&btn, &body[18], 8);
+//                    memcpy(&lx, &body[2], 4);
+//                    memcpy(&ly, &body[6], 4);
+//                    memcpy(&rx, &body[10], 4);
+//                    memcpy(&ry, &body[14], 4);
+//                    memcpy(&btn, &body[18], 8);
 
-                    // remove current packet
-                    buf.remove(0, packet_size);
+//                    // remove current packet
+//                    buf.remove(0, packet_size);
 
-                    if(btn[6] == 1)
-                    {
-                        md_mot.move_rpm(1000);
-                    }
-                    else if(btn[7] == 1)
-                    {
-                        md_mot.move_rpm(-1000);
-                    }
-                    else if(btn[6] == 0 && btn[7] == 0)
-                    {
-                        md_mot.move_rpm(0);
-                    }
-                }
-            }
-        }
-    }
-}
+//                    if(btn[6] == 1)
+//                    {
+//                        md_mot.move_rpm(1000);
+//                    }
+//                    else if(btn[7] == 1)
+//                    {
+//                        md_mot.move_rpm(-1000);
+//                    }
+//                    else if(btn[6] == 0 && btn[7] == 0)
+//                    {
+//                        md_mot.move_rpm(0);
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
 void MainWindow::bt_connect()
 {
@@ -1794,10 +1796,6 @@ void MainWindow::barcode2_showUI_msg(QByteArray msg)
 
 //get detect point
 
-int old_tick=0;
-float old_keti_x;
-float old_keti_y;
-float old_keti_z;
 void MainWindow::timer_shared_memory_loop()
 {
     IPC::VISION_POSE vision_pose = ipc.get_point();
@@ -2102,20 +2100,6 @@ void MainWindow::on_bt_vision_high_get_out_clicked()
 
 void MainWindow::on_BTN_MOVE_JOINT_MID_clicked()
 {
-    /*
-    cobot.MoveJointBlend_Clear();
-    //    cobot.MoveJointBlend_AddPoint(6.02, 26.38, -96.59, -10.80, -90 ,-90, 2, -1);
-    //    cobot.MoveJointBlend_AddPoint(0.008,22.456,-82.356,35.00,-89.595,-90.000,2,-1);
-    //    cobot.MoveJointBlend_AddPoint(0.255,13.029,-56.390,-25.561,-89.925,-89.610);
-    cobot.MoveJointBlend_AddPoint(150.68,0.00,-97.41,-10.00,-90.00,-88.90, 2, -1);
-    cobot.MoveJointBlend_AddPoint(95.63,11.45,-97.41,10.00,-90.00,-88.90, 2, -1);
-    cobot.MoveJointBlend_AddPoint(25.32,26.38,-113.63,0.33,-90.00,-88.90, 2, -1);
-    cobot.MoveJointBlend_AddPoint(-3.24,36.00,-113.62,-12.40,-90.00,-88.90, 2, -1);
-    cobot.MoveJointBlend_AddPoint(0.58,21.38,-97.41,10.00,-90.00,-88.90, 2, -1);
-
-    cobot.MoveJointBlend_AddPoint(0.228,19.684,-73.543,-15.062,-89.891,-89.646, 2, -1);
-    cobot.MoveJointBlend_MovePoint();*/
-
     float spd = 180.0;
     float acc = 400.0;
     float blending_value = 0.2;
@@ -2126,7 +2110,11 @@ void MainWindow::on_BTN_MOVE_JOINT_MID_clicked()
 
     cobot.move_jb2_add(25.32,26.38,-113.63,0.33,-90.00,-88.90, spd, acc, blending_value);
     cobot.move_jb2_add(-3.24,36.00,-113.62,-12.40,-90.00,-88.90, spd, acc, blending_value);
-    cobot.move_jb2_add(0.228,19.684,-73.543,-15.062,-89.891,-89.646, spd, acc, blending_value);
+        cobot.move_jb2_add(0.228,19.684,-73.543,-15.062,-89.891,-89.646, spd, acc, blending_value);
+
+//    //for 홍보영상
+//    cobot.move_jb2_add(0.217986,-1.37101,-60.712,-37.0196,-89.9902,-89.6021, spd, acc, blending_value);
+
     cobot.move_jb2_run();
 
 }
@@ -3427,6 +3415,8 @@ void MainWindow::seqLoop()
                     lift_retry = 0;
                     ui->le_scenario->setStyleSheet("QLineEdit{background-color:green}");
                     qDebug()<<"lift Error";
+                    web.CMD_RESULT("faillure");
+                    web.pick_item_failure_count ++;
                 }
             }
         }
@@ -3575,7 +3565,9 @@ void MainWindow::seqLoop()
                     else
                     {
                         ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
-                        qDebug()<<"ERROR!!!!";
+                        qDebug()<<"GRIPPER ERROR!!!!";
+                        web.CMD_RESULT("faillure");
+                        web.pick_item_failure_count ++;
                         cur_step = ROBOT_STATE_NOT_READY;
                     }
                 }
@@ -3623,7 +3615,6 @@ void MainWindow::seqLoop()
             if(scene[0] == "robot mid left"||scene[0] == "robot mid right")
             {
                 QString vision_msg = ui->lb_keti_point->text();
-                qDebug()<<"aaaaaaaaa vision_msg : "<<vision_msg;
                 if(vision_msg != "OBJ_NONE")
                 {
                     QString gripper = ui->le_pick->styleSheet();
@@ -3638,14 +3629,16 @@ void MainWindow::seqLoop()
                     else
                     {
                         ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
-                        qDebug()<<"ERROR!!!!";
+                        qDebug()<<"RB5 ERROR!!!!";
+                        web.CMD_RESULT("faillure");
+                        web.pick_item_failure_count ++;
+
                         cobot.MotionHalt();
                         cur_step = ROBOT_STATE_NOT_READY;
                     }
                 }
                 else
                 {
-                    qDebug()<<"sssssssssssssssss";
                     cur_step = ROBOT_STATE_ROBOT_DONE;
                 }
             }
@@ -3729,6 +3722,7 @@ void MainWindow::seqLoop()
                     scene.prepend("robot mid left");
                     ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
                     web.CMD_RESULT("faillure");
+                    web.pick_item_failure_count ++;
                 }
             }
         }
@@ -3838,6 +3832,7 @@ void MainWindow::seqLoop()
             qDebug()<<"success";
             scene.pop_front();
             web.CMD_RESULT("success");
+            web.pick_item_success_count ++;
             cur_step = ROBOT_STATE_CHECK_SCENE;
             break;
         }
@@ -4190,7 +4185,7 @@ void MainWindow::set_ui_item_from_unimap()
     //clear
     ui->cb_sn_cmd->clear();
 
-    QDir dir("/home/rainbow/RB_MOBILE/maps");
+    QDir dir("/home/rainbow/maps");
     foreach(QFileInfo item, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries))
     {
         if(item.isDir())
@@ -4594,7 +4589,7 @@ void MainWindow::on_BTN_MOVE_JOINT_POP_clicked()
     }
     else
     {
-        cobot.MoveTCP(ui->LE_TCP_REF_X->text().toFloat()+100,ui->LE_TCP_REF_Y->text().toFloat(),ui->LE_TCP_REF_Z->text().toFloat()+100,
+        cobot.MoveTCP(ui->LE_TCP_REF_X->text().toFloat()+100,ui->LE_TCP_REF_Y->text().toFloat(),ui->LE_TCP_REF_Z->text().toFloat()+300,
                       ui->LE_TCP_REF_RX->text().toFloat(), ui->LE_TCP_REF_RY->text().toFloat(), ui->LE_TCP_REF_RZ->text().toFloat(), 2, -1);
     }
 }
@@ -4979,7 +4974,7 @@ void MainWindow::on_bt_cobot_move2object_approach_clicked()
         float move_ry_valo = ui->move_ry_val->text().toFloat();
         float move_rz_valo = ui->move_rz_val->text().toFloat();
 
-        //        qDebug()<<"ssss : "<<abs(ui->LE_TCP_REF_Y->text().toFloat()/1000)-abs(app_y);
+//        qDebug()<<"ssss : "<<abs(ui->LE_TCP_REF_Y->text().toFloat()/1000)-abs(app_y);
         if(abs(abs(ui->LE_TCP_REF_Y->text().toFloat()/1000)-abs(app_y))<300)
         {
             caution_flag = false;
@@ -4991,6 +4986,8 @@ void MainWindow::on_bt_cobot_move2object_approach_clicked()
             caution_flag = true;
             ui -> la_caution->setText("prohibited area!");
         }
+        //        ui -> la_caution->setText("");
+        //        cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
     }
     else if(color_list[1] == "red")
     {
@@ -5108,4 +5105,9 @@ void MainWindow::on_BTN_RETURN_MOVE_JOINT_BOX_CENTER_clicked()
     float move_ry_valo = ui->move_ry_val->text().toFloat();
     float move_rz_valo = ui->move_rz_val->text().toFloat();
     cobot.MoveTCP(move_x_valo,move_y_valo,move_z_valo, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
+}
+
+
+void MainWindow::vision_trigger(){
+    on_pb_shutter_clicked();
 }

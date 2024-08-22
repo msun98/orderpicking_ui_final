@@ -522,7 +522,7 @@ public:
     QPushButton *bt_rpmZero;
     QPushButton *bt_connect;
     QLabel *label_174;
-    QWidget *vison_gripper;
+    QWidget *tab1;
     QGroupBox *GR_KITECH;
     QLineEdit *LE_GRIPPER_CMD;
     QPushButton *BTN_GRIPPER_CMD_WRITE;
@@ -590,7 +590,6 @@ public:
     QPushButton *BTN_MOVE_TOTAL_2;
     QPushButton *BTN_MOVE_TOTAL_3;
     QPushButton *BTN_MOVE_TOTAL_4;
-    QPushButton *ALL_STOP;
     QPushButton *BTN_show;
     QWidget *tab_2;
     QLabel *label_143;
@@ -638,11 +637,6 @@ public:
     QPushButton *bt_save_all_annot_2;
     QPushButton *bt_delete_annot_2;
     QWidget *layoutWidget11;
-    QHBoxLayout *horizontalLayout;
-    QLabel *label_175;
-    QLabel *label_180;
-    QLabel *label_179;
-    QWidget *layoutWidget12;
     QVBoxLayout *verticalLayout_6;
     QVBoxLayout *verticalLayout_5;
     QHBoxLayout *horizontalLayout_9;
@@ -660,8 +654,12 @@ public:
     QSpacerItem *horizontalSpacer_12;
     QPushButton *bt_scen_resume;
     QLabel *te_status;
-    QMenuBar *menubar;
+    QPushButton *ALL_STOP;
+    QLabel *label_175;
+    QLabel *label_180;
+    QLabel *label_179;
     QStatusBar *statusbar;
+    QMenuBar *menubar;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -1076,10 +1074,10 @@ public:
         pb_file_choose->setGeometry(QRect(228, 124, 101, 31));
         groupBox_11 = new QGroupBox(tab);
         groupBox_11->setObjectName(QString::fromUtf8("groupBox_11"));
-        groupBox_11->setGeometry(QRect(1300, 60, 291, 451));
+        groupBox_11->setGeometry(QRect(1300, 60, 361, 461));
         te_websocket = new QTextEdit(groupBox_11);
         te_websocket->setObjectName(QString::fromUtf8("te_websocket"));
-        te_websocket->setGeometry(QRect(10, 30, 271, 411));
+        te_websocket->setGeometry(QRect(10, 30, 341, 421));
         le_barcode_connection = new QLineEdit(tab);
         le_barcode_connection->setObjectName(QString::fromUtf8("le_barcode_connection"));
         le_barcode_connection->setGeometry(QRect(360, 99, 40, 40));
@@ -3364,9 +3362,9 @@ public:
         label_174->setGeometry(QRect(30, 20, 251, 41));
         label_174->setTextFormat(Qt::RichText);
         scenario->addTab(lift_motor, QString());
-        vison_gripper = new QWidget();
-        vison_gripper->setObjectName(QString::fromUtf8("vison_gripper"));
-        GR_KITECH = new QGroupBox(vison_gripper);
+        tab1 = new QWidget();
+        tab1->setObjectName(QString::fromUtf8("tab1"));
+        GR_KITECH = new QGroupBox(tab1);
         GR_KITECH->setObjectName(QString::fromUtf8("GR_KITECH"));
         GR_KITECH->setGeometry(QRect(576, 168, 591, 411));
         GR_KITECH->setFont(font1);
@@ -3560,62 +3558,62 @@ public:
         BTN_GRIPPER_OPEN->setObjectName(QString::fromUtf8("BTN_GRIPPER_OPEN"));
         BTN_GRIPPER_OPEN->setGeometry(QRect(110, 100, 81, 30));
         BTN_GRIPPER_OPEN->setFont(font12);
-        notice_kitech = new QTextEdit(vison_gripper);
+        notice_kitech = new QTextEdit(tab1);
         notice_kitech->setObjectName(QString::fromUtf8("notice_kitech"));
         notice_kitech->setGeometry(QRect(576, 120, 591, 31));
         notice_kitech->setStyleSheet(QString::fromUtf8("    border-style: outset;\n"
 "    border-width: 1px;\n"
 "    border-color: black;\n"
 "background-color:rgb(255,255,255)"));
-        label_131 = new QLabel(vison_gripper);
+        label_131 = new QLabel(tab1);
         label_131->setObjectName(QString::fromUtf8("label_131"));
         label_131->setGeometry(QRect(50, 80, 67, 17));
-        le_keti = new QLineEdit(vison_gripper);
+        le_keti = new QLineEdit(tab1);
         le_keti->setObjectName(QString::fromUtf8("le_keti"));
         le_keti->setGeometry(QRect(90, 70, 31, 31));
         le_keti->setCursor(QCursor(Qt::BlankCursor));
         le_keti->setStyleSheet(QString::fromUtf8("    border-style: outset;\n"
 "    border-width: 1px;\n"
 "    border-color: black;"));
-        lb_keti_point = new QLabel(vison_gripper);
+        lb_keti_point = new QLabel(tab1);
         lb_keti_point->setObjectName(QString::fromUtf8("lb_keti_point"));
         lb_keti_point->setGeometry(QRect(30, 120, 481, 31));
         lb_keti_point->setStyleSheet(QString::fromUtf8("    border-style: outset;\n"
 "    border-width: 1px;\n"
 "    border-color: black;\n"
 "background-color:rgb(255,255,255)"));
-        le_kitech = new QLineEdit(vison_gripper);
+        le_kitech = new QLineEdit(tab1);
         le_kitech->setObjectName(QString::fromUtf8("le_kitech"));
         le_kitech->setGeometry(QRect(630, 70, 31, 31));
         le_kitech->setCursor(QCursor(Qt::BlankCursor));
         le_kitech->setStyleSheet(QString::fromUtf8("    border-style: outset;\n"
 "    border-width: 1px;\n"
 "    border-color: black;"));
-        label_133 = new QLabel(vison_gripper);
+        label_133 = new QLabel(tab1);
         label_133->setObjectName(QString::fromUtf8("label_133"));
         label_133->setGeometry(QRect(580, 80, 67, 17));
-        label_134 = new QLabel(vison_gripper);
+        label_134 = new QLabel(tab1);
         label_134->setObjectName(QString::fromUtf8("label_134"));
         label_134->setGeometry(QRect(30, 20, 251, 41));
         label_134->setTextFormat(Qt::RichText);
-        label_135 = new QLabel(vison_gripper);
+        label_135 = new QLabel(tab1);
         label_135->setObjectName(QString::fromUtf8("label_135"));
         label_135->setGeometry(QRect(30, 160, 171, 31));
         label_135->setTextFormat(Qt::RichText);
-        BTN_CONNECT_GRIPPER = new QPushButton(vison_gripper);
+        BTN_CONNECT_GRIPPER = new QPushButton(tab1);
         BTN_CONNECT_GRIPPER->setObjectName(QString::fromUtf8("BTN_CONNECT_GRIPPER"));
         BTN_CONNECT_GRIPPER->setGeometry(QRect(670, 70, 41, 30));
         BTN_CONNECT_GRIPPER->setFont(font7);
-        LE_KETI_IMG = new QLabel(vison_gripper);
+        LE_KETI_IMG = new QLabel(tab1);
         LE_KETI_IMG->setObjectName(QString::fromUtf8("LE_KETI_IMG"));
         LE_KETI_IMG->setGeometry(QRect(30, 200, 500, 300));
-        pb_shutter = new QPushButton(vison_gripper);
+        pb_shutter = new QPushButton(tab1);
         pb_shutter->setObjectName(QString::fromUtf8("pb_shutter"));
         pb_shutter->setGeometry(QRect(350, 71, 89, 30));
-        cb_get_object_id_vision = new QComboBox(vison_gripper);
+        cb_get_object_id_vision = new QComboBox(tab1);
         cb_get_object_id_vision->setObjectName(QString::fromUtf8("cb_get_object_id_vision"));
         cb_get_object_id_vision->setGeometry(QRect(140, 71, 191, 30));
-        scenario->addTab(vison_gripper, QString());
+        scenario->addTab(tab1, QString());
         barcode = new QWidget();
         barcode->setObjectName(QString::fromUtf8("barcode"));
         label_111 = new QLabel(barcode);
@@ -3689,17 +3687,6 @@ public:
         BTN_MOVE_TOTAL_4 = new QPushButton(barcode);
         BTN_MOVE_TOTAL_4->setObjectName(QString::fromUtf8("BTN_MOVE_TOTAL_4"));
         BTN_MOVE_TOTAL_4->setGeometry(QRect(830, 160, 111, 51));
-        ALL_STOP = new QPushButton(barcode);
-        ALL_STOP->setObjectName(QString::fromUtf8("ALL_STOP"));
-        ALL_STOP->setGeometry(QRect(730, 240, 191, 181));
-        QFont font14;
-        font14.setFamily(QString::fromUtf8("Ubuntu Condensed"));
-        font14.setPointSize(20);
-        font14.setBold(true);
-        font14.setItalic(true);
-        font14.setWeight(75);
-        ALL_STOP->setFont(font14);
-        ALL_STOP->setStyleSheet(QString::fromUtf8("background-color: rgb(245, 121, 0);"));
         BTN_show = new QPushButton(barcode);
         BTN_show->setObjectName(QString::fromUtf8("BTN_show"));
         BTN_show->setGeometry(QRect(990, 90, 111, 51));
@@ -3862,7 +3849,7 @@ public:
         bt_delete_annot->setGeometry(QRect(436, 130, 101, 41));
         bt_order = new QPushButton(tab_3);
         bt_order->setObjectName(QString::fromUtf8("bt_order"));
-        bt_order->setGeometry(QRect(1520, 60, 81, 71));
+        bt_order->setGeometry(QRect(1510, 70, 71, 51));
         label_173 = new QLabel(tab_3);
         label_173->setObjectName(QString::fromUtf8("label_173"));
         label_173->setGeometry(QRect(1190, 55, 50, 21));
@@ -3918,52 +3905,27 @@ public:
         bt_delete_annot_2->setGeometry(QRect(1020, 60, 101, 41));
         layoutWidget11 = new QWidget(tab_3);
         layoutWidget11->setObjectName(QString::fromUtf8("layoutWidget11"));
-        layoutWidget11->setGeometry(QRect(1250, 20, 251, 20));
-        horizontalLayout = new QHBoxLayout(layoutWidget11);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        label_175 = new QLabel(layoutWidget11);
-        label_175->setObjectName(QString::fromUtf8("label_175"));
-        label_175->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout->addWidget(label_175);
-
-        label_180 = new QLabel(layoutWidget11);
-        label_180->setObjectName(QString::fromUtf8("label_180"));
-        label_180->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout->addWidget(label_180);
-
-        label_179 = new QLabel(layoutWidget11);
-        label_179->setObjectName(QString::fromUtf8("label_179"));
-        label_179->setLayoutDirection(Qt::LeftToRight);
-        label_179->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout->addWidget(label_179);
-
-        layoutWidget12 = new QWidget(tab_3);
-        layoutWidget12->setObjectName(QString::fromUtf8("layoutWidget12"));
-        layoutWidget12->setGeometry(QRect(1250, 50, 253, 93));
-        verticalLayout_6 = new QVBoxLayout(layoutWidget12);
+        layoutWidget11->setGeometry(QRect(1250, 50, 253, 93));
+        verticalLayout_6 = new QVBoxLayout(layoutWidget11);
         verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
         verticalLayout_6->setContentsMargins(0, 0, 0, 0);
         verticalLayout_5 = new QVBoxLayout();
         verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         horizontalLayout_9 = new QHBoxLayout();
         horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
-        CB_shelf = new QComboBox(layoutWidget12);
+        CB_shelf = new QComboBox(layoutWidget11);
         CB_shelf->setObjectName(QString::fromUtf8("CB_shelf"));
 
         horizontalLayout_9->addWidget(CB_shelf);
 
-        cb_obj_direction_2 = new QComboBox(layoutWidget12);
+        cb_obj_direction_2 = new QComboBox(layoutWidget11);
         cb_obj_direction_2->addItem(QString());
         cb_obj_direction_2->addItem(QString());
         cb_obj_direction_2->setObjectName(QString::fromUtf8("cb_obj_direction_2"));
 
         horizontalLayout_9->addWidget(cb_obj_direction_2);
 
-        cb_get_object_id_2 = new QComboBox(layoutWidget12);
+        cb_get_object_id_2 = new QComboBox(layoutWidget11);
         cb_get_object_id_2->setObjectName(QString::fromUtf8("cb_get_object_id_2"));
 
         horizontalLayout_9->addWidget(cb_get_object_id_2);
@@ -3976,13 +3938,13 @@ public:
 
         gridLayout_16 = new QGridLayout();
         gridLayout_16->setObjectName(QString::fromUtf8("gridLayout_16"));
-        label_178 = new QLabel(layoutWidget12);
+        label_178 = new QLabel(layoutWidget11);
         label_178->setObjectName(QString::fromUtf8("label_178"));
         label_178->setAlignment(Qt::AlignCenter);
 
         gridLayout_16->addWidget(label_178, 0, 0, 1, 1);
 
-        label_176 = new QLabel(layoutWidget12);
+        label_176 = new QLabel(layoutWidget11);
         label_176->setObjectName(QString::fromUtf8("label_176"));
         label_176->setAlignment(Qt::AlignCenter);
 
@@ -3997,7 +3959,7 @@ public:
 
         horizontalLayout_2->addItem(horizontalSpacer_13);
 
-        le_shelf_hight = new QLineEdit(layoutWidget12);
+        le_shelf_hight = new QLineEdit(layoutWidget11);
         le_shelf_hight->setObjectName(QString::fromUtf8("le_shelf_hight"));
         le_shelf_hight->setEnabled(true);
         sizePolicy1.setHeightForWidth(le_shelf_hight->sizePolicy().hasHeightForWidth());
@@ -4011,7 +3973,7 @@ public:
 
         horizontalLayout_2->addItem(horizontalSpacer_11);
 
-        CB_gripper_num = new QComboBox(layoutWidget12);
+        CB_gripper_num = new QComboBox(layoutWidget11);
         CB_gripper_num->addItem(QString());
         CB_gripper_num->addItem(QString());
         CB_gripper_num->addItem(QString());
@@ -4041,26 +4003,50 @@ public:
 
         bt_scen_resume = new QPushButton(tab_3);
         bt_scen_resume->setObjectName(QString::fromUtf8("bt_scen_resume"));
-        bt_scen_resume->setGeometry(QRect(1610, 50, 101, 91));
+        bt_scen_resume->setGeometry(QRect(1590, 110, 101, 51));
+        QFont font14;
+        font14.setFamily(QString::fromUtf8("Ubuntu Condensed"));
+        font14.setPointSize(20);
+        font14.setBold(true);
+        font14.setItalic(true);
+        font14.setWeight(75);
         bt_scen_resume->setFont(font14);
         bt_scen_resume->setLayoutDirection(Qt::LeftToRight);
         bt_scen_resume->setStyleSheet(QString::fromUtf8("background-color: rgb(245, 121, 0);"));
         te_status = new QLabel(tab_3);
         te_status->setObjectName(QString::fromUtf8("te_status"));
         te_status->setGeometry(QRect(270, 34, 301, 23));
+        ALL_STOP = new QPushButton(tab_3);
+        ALL_STOP->setObjectName(QString::fromUtf8("ALL_STOP"));
+        ALL_STOP->setGeometry(QRect(1600, 10, 91, 91));
+        ALL_STOP->setFont(font14);
+        ALL_STOP->setStyleSheet(QString::fromUtf8("background-color: rgb(239, 41, 41);"));
+        label_175 = new QLabel(tab_3);
+        label_175->setObjectName(QString::fromUtf8("label_175"));
+        label_175->setGeometry(QRect(1251, 21, 34, 17));
+        label_175->setAlignment(Qt::AlignCenter);
+        label_180 = new QLabel(tab_3);
+        label_180->setObjectName(QString::fromUtf8("label_180"));
+        label_180->setGeometry(QRect(1300, 20, 61, 17));
+        label_180->setAlignment(Qt::AlignCenter);
+        label_179 = new QLabel(tab_3);
+        label_179->setObjectName(QString::fromUtf8("label_179"));
+        label_179->setGeometry(QRect(1390, 20, 65, 17));
+        label_179->setLayoutDirection(Qt::LeftToRight);
+        label_179->setAlignment(Qt::AlignCenter);
         scenario->addTab(tab_3, QString());
         MainWindow->setCentralWidget(centralwidget);
+        statusbar = new QStatusBar(MainWindow);
+        statusbar->setObjectName(QString::fromUtf8("statusbar"));
+        MainWindow->setStatusBar(statusbar);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 1767, 22));
         MainWindow->setMenuBar(menubar);
-        statusbar = new QStatusBar(MainWindow);
-        statusbar->setObjectName(QString::fromUtf8("statusbar"));
-        MainWindow->setStatusBar(statusbar);
 
         retranslateUi(MainWindow);
 
-        scenario->setCurrentIndex(2);
+        scenario->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -4499,7 +4485,7 @@ public:
         BTN_CONNECT_GRIPPER->setText(QApplication::translate("MainWindow", "conn.", nullptr));
         LE_KETI_IMG->setText(QApplication::translate("MainWindow", "IMG", nullptr));
         pb_shutter->setText(QApplication::translate("MainWindow", "Shutter", nullptr));
-        scenario->setTabText(scenario->indexOf(vison_gripper), QApplication::translate("MainWindow", "vison_gripper", nullptr));
+        scenario->setTabText(scenario->indexOf(tab1), QApplication::translate("MainWindow", "vison && gripper", nullptr));
         label_111->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#888a85;\">left</span></p></body></html>", nullptr));
         label_112->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#888a85;\">right</span></p></body></html>", nullptr));
         write->setText(QApplication::translate("MainWindow", "write", nullptr));
@@ -4512,7 +4498,6 @@ public:
         BTN_MOVE_TOTAL_2->setText(QApplication::translate("MainWindow", "\354\244\221 task2", nullptr));
         BTN_MOVE_TOTAL_3->setText(QApplication::translate("MainWindow", "\354\203\201 / \354\203\201 task3", nullptr));
         BTN_MOVE_TOTAL_4->setText(QApplication::translate("MainWindow", "\354\244\221 / \354\244\221 task4", nullptr));
-        ALL_STOP->setText(QApplication::translate("MainWindow", "ALL STOP!!!!!!!!!!!", nullptr));
         BTN_show->setText(QApplication::translate("MainWindow", "\354\213\234\354\227\260\354\232\251 FSM", nullptr));
         scenario->setTabText(scenario->indexOf(barcode), QApplication::translate("MainWindow", "barcode", nullptr));
         label_143->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">\353\260\233\354\235\200\353\251\224\354\213\234\354\247\200</span></p></body></html>", nullptr));
@@ -4594,9 +4579,6 @@ public:
         bt_save_all_annot_2->setText(QApplication::translate("MainWindow", "save ALL annotation", nullptr));
         bt_delete_annot_2->setText(QApplication::translate("MainWindow", "erase \n"
 "annotation", nullptr));
-        label_175->setText(QApplication::translate("MainWindow", "shelf", nullptr));
-        label_180->setText(QApplication::translate("MainWindow", "direction", nullptr));
-        label_179->setText(QApplication::translate("MainWindow", "object ID ", nullptr));
         cb_obj_direction_2->setItemText(0, QApplication::translate("MainWindow", "left", nullptr));
         cb_obj_direction_2->setItemText(1, QApplication::translate("MainWindow", "right", nullptr));
 
@@ -4615,6 +4597,10 @@ public:
 
         bt_scen_resume->setText(QApplication::translate("MainWindow", "RESUME", nullptr));
         te_status->setText(QApplication::translate("MainWindow", "status", nullptr));
+        ALL_STOP->setText(QApplication::translate("MainWindow", "ALL STOP!!!!!!!!!!!", nullptr));
+        label_175->setText(QApplication::translate("MainWindow", "shelf", nullptr));
+        label_180->setText(QApplication::translate("MainWindow", "direction", nullptr));
+        label_179->setText(QApplication::translate("MainWindow", "object ID ", nullptr));
         scenario->setTabText(scenario->indexOf(tab_3), QApplication::translate("MainWindow", "scenario", nullptr));
     } // retranslateUi
 

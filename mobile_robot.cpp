@@ -317,6 +317,8 @@ void mobile_robot::on_read_mobile_status() //get map data
 
             fsm_status = json_input["FSM STATUS"].toInt();
 
+
+
             if(fsm_status == 0)
             {
                 AMR_FSM_status = "STATE_AUTO_PATH_FINDING";
@@ -352,6 +354,9 @@ void mobile_robot::on_read_mobile_status() //get map data
                 }
                 else
                 {
+
+                    uuid = json_input["uuid"].toString();
+                    qDebug()<<"uuid : "<<uuid;
                     move_flag = true;
                 }
             }
@@ -664,7 +669,7 @@ void mobile_robot::readyRead_tcp()
         json_global["global"] = json_arr;
         json["path_plan"] = json_global;
         QString path_info = QJsonDocument(json).toJson(QJsonDocument::Compact);//보낸 내용 확인용
-//        qDebug() << path_info;
+        //        qDebug() << path_info;
     }
 }
 

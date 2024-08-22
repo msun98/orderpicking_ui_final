@@ -22,6 +22,7 @@ websocket::websocket(QObject *parent) : QObject(parent)
     {
         QSettings settings(setting_config_path, QSettings::IniFormat);
         map_id = settings.value("MAP/map_name").toString();
+        qDebug()<<map_id;
     }
 
     QString robot_config_path = QDir::homePath()+"/RB_MOBILE/config/robot_config.ini";
@@ -32,6 +33,9 @@ websocket::websocket(QObject *parent) : QObject(parent)
         robot_name = settings.value("SERVER/name").toString();
         robot_id = settings.value("SERVER/my_id").toString();
     }
+
+    QByteArray b_FILE_DATA="FILE_DATA";
+    //     qDebug()<<"b_FILE_DATA : "<<b_FILE_DATA;
 }
 
 websocket::~websocket()
@@ -109,7 +113,6 @@ void websocket::CMD_RESULT(QString result, QString Error)
         QJsonObject json;
         json["msg_type"] = "cmd_result";
         json["result"] = result;
-        qDebug()<<"result : "<<result;
 
         if (result == "failure")
         {
@@ -126,9 +129,9 @@ void websocket::CMD_RESULT(QString result, QString Error)
             QJsonObject json_data;
             json["result"] = result;
             //            json["error_info"] = QJsonValue::Null;
-            json_data["success_count"] = 1;
-            json_data["failure_count"] = 0;
-            json["data"]=json_data;
+            json_data["success_count"] = pick_item_success_count;
+            json_data["failure_count"] = pick_item_failure_count;
+            json["data"] = json_data;
         }
 
         else if (action == "set_position")
@@ -157,7 +160,16 @@ void websocket::CMD_RESULT(QString result, QString Error)
             pSocket->sendTextMessage(str_json);
         }
 
-        json["uuid"] = uuid;
+        if(move_finish_flag)
+        {
+            json["uuid"] = mb->uuid;
+            move_finish_flag = false;
+        }
+        else
+        {
+            json["uuid"] = uuid;
+        }
+
 
         QJsonDocument doc_json(json);
         QString str_json(doc_json.toJson(QJsonDocument::Indented));
@@ -202,7 +214,8 @@ void websocket::Feedback()
         //        qDebug()<<"move_flag :"<<move_flag;
         if (mb->move_flag)
         {
-            json["entry"] = "AMR";
+            json=mb->json;
+            json["entry"] = "robot";
             int mobile_FSM_status = mb->fsm_status;
             if (uuid != "")
             {
@@ -212,14 +225,15 @@ void websocket::Feedback()
                 }
                 else if(mobile_FSM_status == 5 || mobile_FSM_status == 6 ||mobile_FSM_status == 7)
                 {
-                    json_mb_status = "paused";
+                    json_mb_status = "pause";
                 }
 
                 json["feedback"] = json_mb_status;
                 json["msg_type"] = "cmd_feedback";
                 json["do"] = action;
                 json["seq_num"] = seq_num;
-                json["path_plan"] = mb->json;
+
+                //                json["path_plan"] = mb->json;
 
                 QJsonDocument doc_json(json);
                 QString str_json(doc_json.toJson(QJsonDocument::Indented));
@@ -236,6 +250,7 @@ void websocket::Feedback()
         }
         //////////////////////////rb5//////////////////////////
 
+        //        qDebug()<<"rb_status : "<<rb_status;
         if(rb_status == "moving")
         {
             json["entry"] = "cobot";
@@ -250,13 +265,10 @@ void websocket::Feedback()
             }
 
             json["msg_type"] = "cmd_feedback";
-            //            json = mb->json;
             json["do"] = action;
             json["feedback"] = cobot_status;
-
             json["seq_num"] = rb_seq_num;
             rb_seq_num++;
-            json["entry"] = "cobot";
         }
         else if(rb_status == "not moving")
         {
@@ -275,25 +287,13 @@ void websocket::Feedback()
             json["feedback"] = md_lift_status;
             json["seq_num"] = lift_seq_num;
             lift_seq_num++;
-
         }
         else if(lift_status == "not moving")
         {
             lift_seq_num=1;
         }
 
-        //        if (mobile_status == 2 || mobile_status == 4 )
-        //        {
-        //            json["entry"] = entry;
-        //            QJsonDocument doc_json(json);
-        //            //QString str_json(doc_json.toJson(QJsonDocument::Compact));
-        //            QString str_json(doc_json.toJson(QJsonDocument::Indented));
-        //            emit msgSendSignal(str_json);
-
-        //            qDebug()<<str_json;
-        //            pSocket->sendTextMessage(str_json);
-        //        }
-        if(rb_status == "moving" || rb_status == "paused" || lift_status == "moving")
+        if(rb_status == "moving" || rb_pause_status == "paused" || lift_status == "moving")
         {
             //            qDebug()<<"lift or rb is working";
             QJsonDocument doc_json(json);
@@ -308,7 +308,47 @@ void websocket::Feedback()
 void websocket::onBinaryMessageReceived(QByteArray message)
 {
     //    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
-    map_buf.append(message);
+    QByteArray b_FILE_DATA="FILE_DATA";
+    //    QByteArray header_buf;
+
+    if(message.size()>0)
+    {
+        map_buf.append(message);
+        if(map_buf.size() < b_FILE_DATA.size())
+        {
+            return;
+        }
+
+        bool is_header = false;
+        // map_buf에서 헤더를 찾기 위한 루프
+        for(int p = 0; p < map_buf.size()-b_FILE_DATA.size(); p++)
+        {
+            //            memcpy(header_buf,map_buf,9);
+            QByteArray header_buf = map_buf.mid(p,b_FILE_DATA.size());
+            // header check
+            if(header_buf == b_FILE_DATA)
+            {
+                map_buf.remove(0, p+b_FILE_DATA.size());
+                if (map_buf.size() == send_map_filesize)
+                {
+                    is_header = true;
+                }
+            }
+        }
+
+        // 헤더가 발견되었을 때, 나머지 데이터를 처리할 수 있음
+        if (is_header)
+        {
+            // 나머지 데이터를 처리하는 로직을 여기에 추가
+            // 예: send_map_name, send_map_filesize 등
+
+            QFile file(send_map_name);// bin file 생성
+
+            file.open(QIODevice::WriteOnly);
+            file.write(map_buf);
+            file.close();
+        }
+    }
 }
 
 //static bool move_status = false;
@@ -349,7 +389,9 @@ void websocket::moveCheck()
             {
                 if(uuid != "")
                 {
+                    move_finish_flag = true;
                     CMD_RESULT("success");
+
                 }
             }
             //            AMR_FSM_status = "STATE_AUTO_GOAL_REACHED";
@@ -418,6 +460,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                 action = json["do"].toString();
                 QJsonObject params = json["params"].toObject();
                 uuid = json["uuid"].toString();
+
                 sendAck(uuid);
 
                 if(action == "move")
@@ -427,16 +470,15 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     QString move_type = params["move_type"].toString();
 
                     QJsonObject json_output;
-                    qDebug()<<"Move type : "<<move_type;
-
+                    //                    qDebug()<<"Move type : "<<move_type;
+                    old_uuid = uuid;
                     if(move_type == "destination")
                     {
                         x = tempDest["x"].toDouble();
                         y = tempDest["y"].toDouble();
 
                         if (tempDest["theta"] == QJsonValue::Null)
-                        {
-                            cv::Vec2d now_pose = cv::Vec2d(mb->pose_x,mb->pose_y);
+                        {                            cv::Vec2d now_pose = cv::Vec2d(mb->pose_x,mb->pose_y);
                             theta = calc_theta(cv::Vec2d(x,y),now_pose);
                         }
                         else
@@ -449,6 +491,8 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                         json_output["POSE_x"] = x;
                         json_output["POSE_y"] = y;
                         json_output["POSE_theta"] = theta; ///yujin 에서는 라디안으로 줌.
+                        json_output["uuid"]=uuid;
+                        qDebug()<<"ddddddddddd : "<<uuid;
                     }
 
                     else if(move_type == "waypoint")
@@ -473,6 +517,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                                 pathObj["x"] = pose["x"].toDouble();
                                 pathObj["y"] = pose["y"].toDouble();
                                 pathObj["theta"] = pose["theta"].toDouble();
+                                json_output["uuid"]=uuid;
                             }
                             else
                             {
@@ -495,12 +540,14 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                                 pathObj["x"] = x;
                                 pathObj["y"] = y;
                                 pathObj["theta"] = theta;
+
                             }
                             pathArray.append(pathObj);
                         }
                         //                    qDebug()<<pose_pair;
                         json_output["MSG_TYPE"] = "MOVE_EXT";
                         json_output["PATH"] = pathArray;
+                        json_output["uuid"] = uuid;
                     }
                     //                    QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
 
@@ -540,7 +587,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     //4.4 Pause
                     //robot에 Pause 명령줘야함.
 
-                    qDebug()<<"Pause";
+                    //                    qDebug()<<"Pause";
                     QJsonObject json_output;
                     json_output["MSG_TYPE"] = "PAUSE";
 
@@ -550,21 +597,26 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     {
                         CMD_RESULT("success");
                         mb->cmdSendData(json_string);
+
+                        old_acton = action;
+
+                        //                        pause_uuid = old_uuid;
+
                     }
                     else if(old_mobile_status!="PAUSE")
                     {
                         CMD_RESULT("cancelled");
                     }
-                    else
-                    {
-                        CMD_RESULT("cancelled");
-                    }
+                    //                    else
+                    //                    {
+                    //                        CMD_RESULT("cancelled");
+                    //                    }
                 }
 
                 else if(action == "resume")
                 {
                     //4.5 Resume
-                    qDebug()<<"resume";
+                    //                    qDebug()<<"resume";
                     QJsonObject json_output;
                     json_output["MSG_TYPE"] = "RESUME";
 
@@ -573,8 +625,11 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
 
                     if(old_mobile_status=="PAUSE")
                     {
+                        //                        pause_flag = true;
                         CMD_RESULT("success");
                         mb->cmdSendData(json_string);
+
+                        old_acton = action;
                     }
                     else
                     {
@@ -742,9 +797,6 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                         QFileInfo config_info(config_path);
                         if(config_info.exists() && config_info.isFile())
                         {
-                            QSettings settings(config_path, QSettings::IniFormat);
-                            map_id = settings.value("MAP/map_name").toString();
-
                             json_data["map_id"] = map_id;
                             //                        json_data["filename"] = map_id;
                             json_data["data_type"] = params["data_type"].toString();
@@ -782,7 +834,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                         }
 
                         json_data["filesize"] = image_file_size;
-                        qDebug()<<"image : "<<image_file_size;
+                        //                        qDebug()<<"image : "<<image_file_size;
 
                         json["data"] = json_data;
 
@@ -925,40 +977,35 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                 {
                     //4.11 Set Map Data
 
+                    send_map_name = params["map_name"].toString();
+                    send_map_filesize = params["map_filesize"].toString();
                 }
 
                 else if(action == "get_robot_info")
                 {
                     //4.12 Get robot info
                     QJsonObject json_out;
-//                     QString robot_id;
-//                    QString robot_id,map_id;
+                    //                     QString robot_id;
+                    //                    QString robot_id,map_id;
                     QJsonObject json_data;
 
                     json_out["msg_type"] = "cmd_result";
                     json_out["result"] = "success";
                     json_out["error_info"] = QJsonValue::Null;
 
-//                    QString config_path = QDir::homePath()+"/robot_config.ini";
-//                    QFileInfo config_info(config_path);
-//                    if(config_info.exists() && config_info.isFile())
-//                    {
-//                        QSettings settings(config_path, QSettings::IniFormat);
-//                        robot_id = settings.value("ROBOT_SW/robot_id").toString();
-//                        map_id = settings.value("FLOOR/map_name").toString();
-                        QJsonObject json_map;
+                    QJsonObject json_map;
 
-                        json_map["map_id"] = map_id;
-                        json_map["map_name"] = map_id;
-                        json_data["map"] = json_map;
-                        //                    json_data =
+                    json_map["map_id"] = map_id;
+                    json_map["map_name"] = map_id;
+                    json_data["map"] = json_map;
+                    //                    json_data =
 
-                        //                    QJsonObject json_robot_id;
-                        json_data["robot_id"] = robot_name;
-                        json_data["robot_alias"] = robot_id;
-                        //                    json_data["map"]=json_robot_id;
+                    //                    QJsonObject json_robot_id;
+                    json_data["robot_id"] = robot_name;
+                    json_data["robot_alias"] = robot_id;
+                    //                    json_data["map"]=json_robot_id;
 
-//                    }
+                    //                    }
 
 
                     // check motor init
@@ -1009,7 +1056,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     //4.11 Set position (ini file 변경.)
 
                     QJsonObject json_out;
-                    QString map_id;
+                    //                    QString map_id;
 
                     json_out["msg_type"] = "cmd_result";
 
@@ -1018,38 +1065,26 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
 
                     QString yujin_map_id = params["map_id"].toString();
 
-                    QString config_path = QDir::homePath()+"/robot_config.ini";
-                    QFileInfo config_info(config_path);
-                    if(config_info.exists() && config_info.isFile())
+                    if(map_id == yujin_map_id)
                     {
-                        QSettings settings(config_path, QSettings::IniFormat);
-                        map_id = settings.value("FLOOR/map_name").toString();
-                        if(map_id == yujin_map_id)
-                        {
-                            json_out["result"] = "success";
-                        }
-                        else
-                        {
-                            //현재 사용하고 있는 map이 아닌 다른맵을 요청한다면 -> change ini 요청.
-                            QJsonObject json_output;
-                            json_output["MSG_TYPE"] = "CHANGE MAP";
-                            json_output["map_name"] = yujin_map_id;
-
-                            QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
-
-                            mb->cmdSendData(json_string);
-                        }
+                        qDebug()<<"Sss";
+                        json_out["result"] = "success";
                     }
+                    else
+                    {
+                        //현재 사용하고 있는 map이 아닌 다른맵을 요청한다면 -> change ini 요청.
+                        QJsonObject json_output;
+                        json_output["MSG_TYPE"] = "CHANGE MAP";
+                        json_output["map_name"] = yujin_map_id;
+
+                        QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
+
+                        mb->cmdSendData(json_string);
+                    }
+                    //                    }
 
                     QJsonDocument doc_json(json_out);
-                    //                QString str_json(doc_json.toJson(QJsonDocument::Indented));
                     QString str_json(doc_json.toJson(QJsonDocument::Indented));
-
-                    //                std::string rainbow_cmd(str_json.toStdString());
-                    //                IPC::WEB_commend RB_CMD;
-                    //                memcpy((uint8_t*)RB_CMD.json_cmd, rainbow_cmd.data(), 1000);
-                    //                RB_CMD.json_cmd_size = rainbow_cmd.size();
-                    //                std::cout<<RB_CMD.json_cmd_size<<std::endl;
 
                     emit msgSendSignal(str_json); //for debuging
                     pClient->sendTextMessage(str_json);
@@ -1067,15 +1102,12 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     x = tempDest["x"].toDouble();
                     y = tempDest["y"].toDouble();
                     theta = tempDest["theta"].toDouble();
+
                     ////////// send msg to mobile robot ////////////////
                     json_output["MSG_TYPE"] = "MOVE";
                     json_output["POSE_x"] = x;
                     json_output["POSE_y"] = y;
-                    json_output["POSE_theta"] = theta; ///yujin 에서는 라디안으로 줌.
-
-                    //                    qDebug()<<pose_pair;
-                    //                json_output["MSG_TYPE"] = "MOVE_EXT";
-
+                    json_output["POSE_theta"] = theta;
 
                     QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
 
@@ -1109,6 +1141,9 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     pClient->sendTextMessage(str_json);
                 }
             }
+
+
+            //            old_acton = action;
         }
     }
 }
@@ -1325,6 +1360,6 @@ double websocket::calc_theta(cv::Vec2d path, cv::Vec2d cur_path)
     double dy = path[1]-cur_path[1];
     double th = std::atan2(dy, dx);
 
-    qDebug()<<"경로상 헤딩 각도는 : "<<th;
+    //    qDebug()<<"경로상 헤딩 각도는 : "<<th;
     return th;
 }

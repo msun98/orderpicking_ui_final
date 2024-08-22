@@ -45,7 +45,7 @@ void Barcode::bt_usb1_con(QString bar1)
 
 
         //        ui->bt_usb1_con->setEnabled(false);
-        std::cout<<"LEFT barcode open : "<<bar1.toStdString()<<std::endl;
+//        std::cout<<"LEFT barcode open : "<<bar1.toStdString()<<std::endl;
 
         //show ui open msg
         msg1 = "usb1 on";
@@ -81,7 +81,7 @@ void Barcode::bt_usb2_con(QString bar2)
 
 
         //        ui->bt_usb2_con->setEnabled(false);
-        std::cout<<"RIGHT barcode open : "<<bar2.toStdString()<<std::endl;
+//        std::cout<<"RIGHT barcode open : "<<bar2.toStdString()<<std::endl;
         //        ui->bt_usb2_dis->setEnabled(true);
 
         //show ui open msg

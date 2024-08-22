@@ -277,6 +277,9 @@ public:
 
     int lift_clicked = 3;
 
+    int old_tick=0;
+    int old_keti_x, old_keti_y, old_keti_z;
+
 private:
     Ui::MainWindow *ui;
     QTimer  updateTimer;
@@ -284,8 +287,11 @@ private:
     QTimer auto_homming_timer;
     QTimer vision_capture_timer;
 
+    QTimer vision_trigger_timer;
+
+
     //    QTimer  robotStatusTimer;
-    QUdpSocket udp_socket;
+//    QUdpSocket udp_socket;
     //    QTcpSocket *clientSocket;//for robot arrived check
 
 public slots:
@@ -353,6 +359,8 @@ public slots:
     void yujin_order(QJsonObject json);
     void yujin_order_check();
 
+    void vision_trigger();
+
     //    void sendData();
 
 private slots:
@@ -383,7 +391,7 @@ private slots:
     //    void connected_seiral();
     //    void disconnected_seiral();
 
-    void readyRead_udp();
+//    void readyRead_udp();
     //    void connected_udp();
     //    void disconnected_udp();
 

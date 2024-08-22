@@ -39,7 +39,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -1341,8 +1341,8 @@
        <rect>
         <x>1300</x>
         <y>60</y>
-        <width>291</width>
-        <height>451</height>
+        <width>361</width>
+        <height>461</height>
        </rect>
       </property>
       <property name="title">
@@ -1353,8 +1353,8 @@
         <rect>
          <x>10</x>
          <y>30</y>
-         <width>271</width>
-         <height>411</height>
+         <width>341</width>
+         <height>421</height>
         </rect>
        </property>
       </widget>
@@ -7030,9 +7030,9 @@ homing</string>
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="vison_gripper">
+    <widget class="QWidget" name="tab">
      <attribute name="title">
-      <string>vison_gripper</string>
+      <string>vison &amp;&amp; gripper</string>
      </attribute>
      <widget class="QGroupBox" name="GR_KITECH">
       <property name="geometry">
@@ -8098,31 +8098,6 @@ background-color:rgb(255,255,255)</string>
        <string>중 / 중 task4</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="ALL_STOP">
-      <property name="geometry">
-       <rect>
-        <x>730</x>
-        <y>240</y>
-        <width>191</width>
-        <height>181</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Ubuntu Condensed</family>
-        <pointsize>20</pointsize>
-        <weight>75</weight>
-        <italic>true</italic>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(245, 121, 0);</string>
-      </property>
-      <property name="text">
-       <string>ALL STOP!!!!!!!!!!!</string>
-      </property>
-     </widget>
      <widget class="QPushButton" name="BTN_show">
       <property name="geometry">
        <rect>
@@ -8666,10 +8641,10 @@ annotation</string>
      <widget class="QPushButton" name="bt_order">
       <property name="geometry">
        <rect>
-        <x>1520</x>
-        <y>60</y>
-        <width>81</width>
-        <height>71</height>
+        <x>1510</x>
+        <y>70</y>
+        <width>71</width>
+        <height>51</height>
        </rect>
       </property>
       <property name="text">
@@ -8834,51 +8809,6 @@ annotation</string>
        <string>erase 
 annotation</string>
       </property>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>1250</x>
-        <y>20</y>
-        <width>251</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QLabel" name="label_175">
-         <property name="text">
-          <string>shelf</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_180">
-         <property name="text">
-          <string>direction</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_179">
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string>object ID </string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </widget>
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
@@ -9081,10 +9011,10 @@ annotation</string>
      <widget class="QPushButton" name="bt_scen_resume">
       <property name="geometry">
        <rect>
-        <x>1610</x>
-        <y>50</y>
+        <x>1590</x>
+        <y>110</y>
         <width>101</width>
-        <height>91</height>
+        <height>51</height>
        </rect>
       </property>
       <property name="font">
@@ -9119,9 +9049,86 @@ annotation</string>
        <string>status</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="ALL_STOP">
+      <property name="geometry">
+       <rect>
+        <x>1600</x>
+        <y>10</y>
+        <width>91</width>
+        <height>91</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Ubuntu Condensed</family>
+        <pointsize>20</pointsize>
+        <weight>75</weight>
+        <italic>true</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(239, 41, 41);</string>
+      </property>
+      <property name="text">
+       <string>ALL STOP!!!!!!!!!!!</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_175">
+      <property name="geometry">
+       <rect>
+        <x>1251</x>
+        <y>21</y>
+        <width>34</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>shelf</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_180">
+      <property name="geometry">
+       <rect>
+        <x>1300</x>
+        <y>20</y>
+        <width>61</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>direction</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_179">
+      <property name="geometry">
+       <rect>
+        <x>1390</x>
+        <y>20</y>
+        <width>65</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string>object ID </string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -9132,7 +9139,6 @@ annotation</string>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <customwidgets>
   <customwidget>
