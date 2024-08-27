@@ -237,6 +237,10 @@ MainWindow::MainWindow(QWidget *parent)
     // 기본
     vision.TCP2cam = cam_config.RB_TF_SENSOR;
 
+//    QString aaa = QString::number(172, 16);
+//    qDebug()<<aaa;
+//    const char* p = aaa.toStdString().c_str();
+//    qDebug()<<p;
     //    connect(&vision_trigger_timer,SIGNAL(timeout()),this,SLOT(vision_trigger()));
     //    vision_trigger_timer.start(5000);
 }
