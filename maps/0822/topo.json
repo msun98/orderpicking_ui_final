@@ -1,0 +1,83 @@
+[
+    {
+        "attrib": "Serving",
+        "id": "0:Default:0:Serving0",
+        "linked": [
+            "0:Default:3:Serving3"
+        ],
+        "pose": [
+            0,
+            0,
+            0
+        ]
+    },
+    {
+        "attrib": "Serving",
+        "id": "0:Default:1:Serving1",
+        "linked": [
+        ],
+        "pose": [
+            0,
+            0,
+            0
+        ]
+    },
+    {
+        "attrib": "Serving",
+        "id": "0:Default:2:Serving2",
+        "linked": [
+        ],
+        "pose": [
+            0,
+            0,
+            0
+        ]
+    },
+    {
+        "attrib": "Serving",
+        "id": "0:Default:3:Serving3",
+        "linked": [
+            "0:Default:4:Serving4"
+        ],
+        "pose": [
+            3.4373520457849716,
+            0,
+            0
+        ]
+    },
+    {
+        "attrib": "Serving",
+        "id": "0:Default:4:Serving4",
+        "linked": [
+            "0:Default:5:Serving5"
+        ],
+        "pose": [
+            3.417181311905356,
+            2.1587670620221653,
+            3.1045725344845265
+        ]
+    },
+    {
+        "attrib": "Serving",
+        "id": "0:Default:5:Serving5",
+        "linked": [
+            "0:Default:6:Serving6"
+        ],
+        "pose": [
+            0.927709355241363,
+            2.1587670620221653,
+            3.141592653589793
+        ]
+    },
+    {
+        "attrib": "Serving",
+        "id": "0:Default:6:Serving6",
+        "linked": [
+        ],
+        "pose": [
+            0.927709355241363,
+            3.909604635056812,
+            1.541393041158253
+        ]
+    }
+]
