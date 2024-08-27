@@ -185,16 +185,16 @@ void websocket::CMD_RESULT(QString result, QString Error)
         }
         else
         {
-                json["msg_type"] = "cmd_result";
-                json["result"] = result;
-                json["uuid"] = uuid;
-                move_finish_flag = false;
+            json["msg_type"] = "cmd_result";
+            json["result"] = result;
+            json["uuid"] = uuid;
+            move_finish_flag = false;
 
-                QJsonDocument doc_json(json);
-                //QString str_json(doc_json.toJson(QJsonDocument::Compact));
-                QString str_json(doc_json.toJson(QJsonDocument::Indented));
-                emit msgSendSignal(str_json);
-                pSocket->sendTextMessage(str_json);
+            QJsonDocument doc_json(json);
+            //QString str_json(doc_json.toJson(QJsonDocument::Compact));
+            QString str_json(doc_json.toJson(QJsonDocument::Indented));
+            emit msgSendSignal(str_json);
+            pSocket->sendTextMessage(str_json);
         }
     }
 }
@@ -225,11 +225,8 @@ void websocket::Feedback()
     for(int i=0; i<clients.size(); i++)
     {
         QJsonObject json;
-        //        int mobile_ui_status = mb->status;
-        //        QString mobile_status = mb->AMR_FSM_status;
-
         QWebSocket *pSocket = clients[i];
-        //        qDebug()<<"move_flag :"<<move_flag;
+
         if (mb->move_flag)
         {
             json=mb->json;
@@ -413,8 +410,6 @@ void websocket::moveCheck()
 
                 }
             }
-            //            AMR_FSM_status = "STATE_AUTO_GOAL_REACHED";
-            //            emit mobile_run("false");
 
             mobile_status ="not moving";
         }
@@ -542,7 +537,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                                 x = pose["x"].toDouble();
                                 y = pose["y"].toDouble();
 
-                                if(p==0)
+                                if(p == 0)
                                 {
                                     cv::Vec2d now_pose = cv::Vec2d(mb -> pose_x, mb -> pose_y);
                                     theta = calc_theta(cv::Vec2d(x,y),now_pose);
@@ -1001,8 +996,6 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                 {
                     //4.12 Get robot info
                     QJsonObject json_out;
-                    //                     QString robot_id;
-                    //                    QString robot_id,map_id;
                     QJsonObject json_data;
 
                     json_out["msg_type"] = "cmd_result";
@@ -1019,16 +1012,6 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     //                    QJsonObject json_robot_id;
                     json_data["robot_id"] = robot_name;
                     json_data["robot_alias"] = robot_id;
-                    //                    json_data["map"]=json_robot_id;
-
-                    //                    }
-
-
-                    // check motor init
-                    // 모터 상태 입력받을 구조체 (global_defines에 있음.)
-                    //                MOBILE_STATUS mobile_status ;
-                    //                        '= ipc.get_status();
-
 
                     QJsonObject json_pose;
                     json_pose["x"] = mb->pose_x;
@@ -1152,9 +1135,6 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     pClient->sendTextMessage(str_json);
                 }
             }
-
-
-            //            old_acton = action;
         }
     }
 }

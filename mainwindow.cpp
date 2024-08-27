@@ -4971,15 +4971,13 @@ void MainWindow::on_bt_cobot_move2object_approach_clicked()
 
     QString color = ui->le_vision_connection->styleSheet();
     QStringList color_list = color.split(":");
-
     if(color_list[1] == "green")
     {
         float move_rx_valo = ui->move_rx_val->text().toFloat();
         float move_ry_valo = ui->move_ry_val->text().toFloat();
         float move_rz_valo = ui->move_rz_val->text().toFloat();
 
-//        qDebug()<<"ssss : "<<abs(ui->LE_TCP_REF_Y->text().toFloat()/1000)-abs(app_y);
-        if(abs(abs(ui->LE_TCP_REF_Y->text().toFloat()/1000)-abs(app_y))<300)
+        if(abs(abs(ui->LE_TCP_REF_X->text().toFloat())-abs(app_x))<250)
         {
             caution_flag = false;
             ui -> la_caution->setText("");
@@ -5002,13 +5000,6 @@ void MainWindow::on_bt_cobot_move2object_approach_clicked()
         cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
 
     }
-    //        float move_rx_valo = ui->move_rx_val->text().toFloat();
-    //        float move_ry_valo = ui->move_ry_val->text().toFloat();
-    //        float move_rz_valo = ui->move_rz_val->text().toFloat();
-
-    //        cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
-    //    }
-    //    cobot.ControlBoxDigitalOut(1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 }
 
 void MainWindow::on_BTN_MOVEL_rel_clicked()

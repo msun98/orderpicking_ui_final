@@ -4,7 +4,7 @@ Keti_vision::Keti_vision(QObject *parent) : QObject(parent)
 {
     Keti_Client = new QTcpSocket(this);
     IP_VISION.ip = "192.168.2.209";
-//        IP_VISION.ip = "10.108.2.210";
+    //        IP_VISION.ip = "10.108.2.210";
     IP_VISION.port = 7777;
 
     connect(Keti_Client, SIGNAL(connected()), this, SLOT(onKetiConnected()));
@@ -312,13 +312,13 @@ void Keti_vision::c_p2c_tcp(QString str)
         double tz = list[2].toDouble();
 
         //for using keti normal vector!!
-//                double rx = list[3].toDouble();
-//                double ry = list[4].toDouble();
-//                double rz = list[5].toDouble();
+        double rx = list[3].toDouble();
+        double ry = list[4].toDouble();
+        double rz = list[5].toDouble();
 
-        double rx = 0.0;
-        double ry = 0.0;
-        double rz = 1.0;
+        //        double rx = 0.0;
+        //        double ry = 0.0;
+        //        double rz = 1.0;
 
         Eigen::Vector3d P(tx,ty,tz);
         Eigen::Vector3d _P = TCP2cam.block(0,0,3,3)*P+TCP2cam.block(0,3,3,1);
@@ -351,7 +351,6 @@ void Keti_vision::c_p2c_tcp(QString str)
         qDebug()<<value;
         //    std::cout<<"TCP2cam : "<<TCP2cam<<std::endl;
     }
-
 }
 
 

@@ -39,7 +39,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -3810,7 +3810,7 @@ Halt</string>
          <x>160</x>
          <y>620</y>
          <width>134</width>
-         <height>70</height>
+         <height>71</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_9">
@@ -5998,7 +5998,7 @@ Halt</string>
         <rect>
          <x>12</x>
          <y>620</y>
-         <width>131</width>
+         <width>179</width>
          <height>71</height>
         </rect>
        </property>
@@ -7933,19 +7933,6 @@ background-color:rgb(255,255,255)</string>
         <width>111</width>
         <height>25</height>
        </rect>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="write">
-      <property name="geometry">
-       <rect>
-        <x>520</x>
-        <y>30</y>
-        <width>89</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>write</string>
       </property>
      </widget>
      <widget class="QTextEdit" name="te_usb1">
