@@ -703,11 +703,12 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                             json_arr.insert(0,data);//대괄호 조건에 맞추기 위함. data를 수집하여 QJsonArray 에 담아줌.
                             json_out["data"] = json_arr;
                             json_out["uuid"] = uuid;
-                            QString map_info = QJsonDocument(json_out).toJson(QJsonDocument::Indented);//보낸 내용 확인용
-                            emit msgSendSignal(map_info);
-                            pClient->sendTextMessage(map_info);
+
                         }
                     }
+                    QString map_info = QJsonDocument(json_out).toJson(QJsonDocument::Indented);//보낸 내용 확인용
+                    emit msgSendSignal(map_info);
+                    pClient->sendTextMessage(map_info);
                 }
 
                 else if(action == "get_map_info")
