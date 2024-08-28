@@ -227,6 +227,7 @@ void websocket::Feedback()
         QJsonObject json;
         QWebSocket *pSocket = clients[i];
 
+        // AMR moving feedback
         if (mb->move_flag)
         {
             json=mb->json;
@@ -240,12 +241,12 @@ void websocket::Feedback()
                 }
                 else if(mobile_FSM_status == 5 || mobile_FSM_status == 6 ||mobile_FSM_status == 7)
                 {
-                    json_mb_status = "pause";
+                    json_mb_status = "paused";
                 }
 
                 json["feedback"] = json_mb_status;
                 json["msg_type"] = "cmd_feedback";
-                json["do"] = action;
+                json["do"] = "move";
                 json["seq_num"] = seq_num;
 
                 //                json["path_plan"] = mb->json;
@@ -280,7 +281,7 @@ void websocket::Feedback()
             }
 
             json["msg_type"] = "cmd_feedback";
-            json["do"] = action;
+            json["do"] = "pick";
             json["feedback"] = cobot_status;
             json["seq_num"] = rb_seq_num;
             rb_seq_num++;
@@ -298,7 +299,7 @@ void websocket::Feedback()
             json["entry"] = "lift";
             md_lift_status = "running";
             json["msg_type"] = "cmd_feedback";
-            json["do"] = action;
+            json["do"] = "lift";
             json["feedback"] = md_lift_status;
             json["seq_num"] = lift_seq_num;
             lift_seq_num++;
@@ -740,11 +741,11 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     else
                     {
                         //for get map name
-                        map_id = params["map_id"].toString();
-                        json_data["map_id"] = map_id;
+                        QString new_map_id = params["map_id"].toString();
+                        json_data["map_id"] = new_map_id;
 
                         //for get map info
-                        map_config_path = QDir::homePath()+"/maps/"+map_id+"/map_meta.ini";
+                        map_config_path = QDir::homePath()+"/maps/"+new_map_id+"/map_meta.ini";
                         //                    qDebug()<< map_config_path;
 
                         QFileInfo map_config_info(map_config_path);
@@ -862,8 +863,8 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                     else
                     {
                         //만약 리스트안에 없는 파일을 달라고 하면 터지지 않도록 예외처리 해주어야함.
-                        map_id = id;
-                        qDebug()<<"요청 받은 맵의 map id : "<<map_id;
+                        QString new_map_id = id;
+                        qDebug()<<"요청 받은 맵의 map id : "<<new_map_id;
 
                         QString map_path = QDir::homePath()+"/maps/";
                         //                    file = new QFile(map_path);
@@ -899,7 +900,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                                 if (params["data_type"].toString() == "map_image_png")
                                 {
                                     //for get map name
-                                    map_config_path = QDir::homePath()+"/maps/"+map_id+"/changed_map.png";
+                                    map_config_path = QDir::homePath()+"/maps/"+new_map_id+"/changed_map.png";
                                     qDebug()<<"요청 받은 map의 path : "<<map_config_path;
                                     //                                qDebug()<<"map_config_path :"<<map_config_path;
 
@@ -913,9 +914,9 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                                         fileData_byte = file->readAll();
                                         image_file_size = fileData_byte.size();
 
-                                        fileName = map_id+".png";
-                                        json_data["map_id"] = map_id+".png";
-                                        json_data["filename"] = map_id+".png";
+                                        fileName = new_map_id+".png";
+                                        json_data["map_id"] = new_map_id+".png";
+                                        json_data["filename"] = new_map_id+".png";
                                         json_data["data_type"] = params["data_type"].toString();
                                         json_data["filesize"] = image_file_size;
                                         qDebug()<<"image : "<<image_file_size;
@@ -939,8 +940,8 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                                 else if (params["data_type"].toString() == "map_package")
                                 {
                                     //for get map name
-                                    json_data["filename"] = map_id+".tar.xz";
-                                    map_config_path = QDir::homePath()+"/maps/"+map_id+".tar.xz";
+                                    json_data["filename"] = new_map_id+".tar.xz";
+                                    map_config_path = QDir::homePath()+"/maps/"+new_map_id+".tar.xz";
                                     qDebug()<<"요청 받은 map의 path : "<<map_config_path;
 
                                     bool exist_file = QFile::exists(map_config_path);
@@ -953,9 +954,9 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                                         image_file_size = fileData_byte.size();
 
                                         //                        map_id = id;
-                                        fileName = map_id+".tar.xz";
-                                        json_data["map_id"] = map_id+".tar.xz";
-                                        json_data["filename"] = map_id+".tar.xz";
+                                        fileName = new_map_id+".tar.xz";
+                                        json_data["map_id"] = new_map_id+".tar.xz";
+                                        json_data["filename"] = new_map_id+".tar.xz";
                                         json_data["data_type"] = params["data_type"].toString();
                                         json_data["filesize"] = image_file_size;
                                         qDebug()<<"image : "<<image_file_size;
@@ -1254,7 +1255,7 @@ void websocket::sendNotice(QWebSocket *client_socket)
         {
             if(uuid != "")
             {
-                json_mb_status = "moving";
+                json_mb_status = "running";
             }
         }
         else if(mobile_FSM_status == 5 || mobile_FSM_status == 6 ||mobile_FSM_status == 7)
