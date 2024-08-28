@@ -163,10 +163,22 @@ void websocket::CMD_RESULT(QString result, QString Error)
             pSocket->sendTextMessage(str_json);
         }
 
+        qDebug()<<"move_finish_flag :"<<move_finish_flag;
         if(move_finish_flag)
         {
             if (old_acton == "stop")
             {
+                qDebug()<<"ssssssssssssssss";
+                json["msg_type"] = "cmd_result";
+                json["result"] = "cancelled";
+                json["uuid"] = mb->uuid;
+                qDebug()<<"ssss uuid :"<< mb->uuid;
+
+                QJsonDocument doc_json(json);
+                QString str_json(doc_json.toJson(QJsonDocument::Indented));
+                emit msgSendSignal(str_json);
+                pSocket->sendTextMessage(str_json);
+
                 move_finish_flag = false;
             }
             else
@@ -374,31 +386,31 @@ void websocket::moveCheck()
     if(mb->move_flag)
     {
         //        AUTO_FSM_STATE auto_fsm_state;
-        if(mb->fsm_status == 0)
+        if(mb->fsm_status == STATE_AUTO_PATH_FINDING)
         {
             mobile_fsm_status = "STATE_AUTO_PATH_FINDING";
             mobile_status ="not moving";
         }
 
-        else if(mb->fsm_status == 1)
+        else if(mb->fsm_status == STATE_AUTO_FIRST_ALIGN)
         {
             mobile_fsm_status = "STATE_AUTO_FIRST_ALIGN";
             mobile_status ="MOVING";
         }
-        else if(mb->fsm_status == 2)
+        else if(mb->fsm_status == STATE_AUTO_PURE_PURSUIT)
         {
             mobile_fsm_status = "STATE_AUTO_PURE_PURSUIT";
             mobile_status = "MOVING";
             mb->new_start = false;
             //            emit mobile_run("true");
         }
-        else if(mb->fsm_status == 3)
+        else if(mb->fsm_status == STATE_AUTO_FINAL_ALIGN)
         {
             mobile_fsm_status ="STATE_AUTO_FINAL_ALIGN";
             mobile_status = "MOVING";
             //            emit mobile_run("true");
         }
-        else if(mb->fsm_status == 4)
+        else if(mb->fsm_status == STATE_AUTO_GOAL_REACHED)
         {
             mobile_fsm_status = "STATE_AUTO_GOAL_REACHED";
 
@@ -407,6 +419,7 @@ void websocket::moveCheck()
                 if(uuid != "")
                 {
                     move_finish_flag = true;
+                    qDebug()<<"aaaaaaaaaaaaa";
                     CMD_RESULT("success");
 
                 }
@@ -414,20 +427,20 @@ void websocket::moveCheck()
 
             mobile_status ="not moving";
         }
-        else if(mb->fsm_status == 5)
+        else if(mb->fsm_status == STATE_AUTO_OBSTACLE)
         {
             mobile_status ="not moving";
             mobile_fsm_status = "STATE_AUTO_OBSTACLE";
             QString Error = "STATE_AUTO_OBSTACLE";
             CMD_RESULT("failure",Error);
         }
-        else if(mb->fsm_status == 6)
+        else if(mb->fsm_status == STATE_AUTO_PAUSE)
         {
             mobile_status ="PAUSE";
             mobile_fsm_status = "STATE_AUTO_PAUSE";
             //            emit mobile_run("true");
         }
-        else if(mb->fsm_status == 7)
+        else if(mb->fsm_status == STATE_AUTO_FAILED)
         {
             mobile_status ="not moving";
             mobile_fsm_status =  "STATE_AUTO_FAILED";
@@ -658,7 +671,7 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
 
                     QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
                     mb->cmdSendData(json_string);
-                    CMD_RESULT("cancelled");
+                    CMD_RESULT("success");
                     old_acton = action;
                 }
 
