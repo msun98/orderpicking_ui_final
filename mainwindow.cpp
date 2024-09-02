@@ -3246,53 +3246,8 @@ void MainWindow::seqLoop()
             break;
 
         //        qDebug()<<"wwwwwwwwww";
-        if(scene.size() > 0){
-            if(scene[0] == "mobile move1"){
-
-                QJsonObject json_output;
-                json_output["MSG_TYPE"] = "MOVE";
-                json_output["POSE_x"] = 4.92;
-                json_output["POSE_y"] = 1.79;
-                json_output["POSE_theta"] = 0.0; ///yujin 에서는 라디안으로 줌.
-                QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
-                mb.cmdSendData(json_string);
-
-                ui->le_mobile_move_status->setStyleSheet("QLineEdit{background-color:red}");
-                ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
-                //                mobile_moving_flag=true;
-                qDebug()<<"mobile working";
-            }
-            else if(scene[0] == "mobile move2"){
-
-                QJsonObject json_output;
-                json_output["MSG_TYPE"] = "MOVE";
-                json_output["POSE_x"] = 5.09;
-                json_output["POSE_y"] = 0.47;
-                json_output["POSE_theta"] = 0.0; ///yujin 에서는 라디안으로 줌.
-                QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
-                mb.cmdSendData(json_string);
-
-                ui->le_mobile_move_status->setStyleSheet("QLineEdit{background-color:red}");
-                ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
-                //                mobile_moving_flag = true;
-                qDebug()<<"mobile working";
-            }
-            else if(scene[0] == "mobile move2"){
-
-                QJsonObject json_output;
-                json_output["MSG_TYPE"] = "MOVE";
-                json_output["POSE_x"] = 5.09;
-                json_output["POSE_y"] = 0.47;
-                json_output["POSE_theta"] = 0.0; ///yujin 에서는 라디안으로 줌.
-                QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
-                mb.cmdSendData(json_string);
-
-                ui->le_mobile_move_status->setStyleSheet("QLineEdit{background-color:red}");
-                ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
-                //                mobile_moving_flag = true;
-                qDebug()<<"mobile working";
-            }
-
+        if(scene.size() > 0)
+        {
             bool json_amr_val = scene[0].contains(",", Qt::CaseInsensitive);
             if(json_amr_val)
             {
@@ -3317,15 +3272,64 @@ void MainWindow::seqLoop()
                 }
             }
 
-        }
 
-        cur_step = ROBOT_STATE_AMR_MOVE_CHECK;
-    }
+            else if(scene[0] == "mobile move1")
+            {
+
+                QJsonObject json_output;
+                json_output["MSG_TYPE"] = "MOVE";
+                json_output["POSE_x"] = 4.92;
+                json_output["POSE_y"] = 1.79;
+                json_output["POSE_theta"] = 0.0; ///yujin 에서는 라디안으로 줌.
+                QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
+                mb.cmdSendData(json_string);
+
+                ui->le_mobile_move_status->setStyleSheet("QLineEdit{background-color:red}");
+                ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
+                //                mobile_moving_flag=true;
+                qDebug()<<"mobile working";
+            }
+            else if(scene[0] == "mobile move2")
+            {
+
+                QJsonObject json_output;
+                json_output["MSG_TYPE"] = "MOVE";
+                json_output["POSE_x"] = 5.09;
+                json_output["POSE_y"] = 0.47;
+                json_output["POSE_theta"] = 0.0; ///yujin 에서는 라디안으로 줌.
+                QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
+                mb.cmdSendData(json_string);
+
+                ui->le_mobile_move_status->setStyleSheet("QLineEdit{background-color:red}");
+                ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
+                //                mobile_moving_flag = true;
+                qDebug()<<"mobile working";
+            }
+            else if(scene[0] == "mobile move2")
+            {
+
+                QJsonObject json_output;
+                json_output["MSG_TYPE"] = "MOVE";
+                json_output["POSE_x"] = 5.09;
+                json_output["POSE_y"] = 0.47;
+                json_output["POSE_theta"] = 0.0; ///yujin 에서는 라디안으로 줌.
+                QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
+                mb.cmdSendData(json_string);
+
+                ui->le_mobile_move_status->setStyleSheet("QLineEdit{background-color:red}");
+                ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
+                //                mobile_moving_flag = true;
+                qDebug()<<"mobile working";
+            }
+
+
+            cur_step = ROBOT_STATE_AMR_MOVE_CHECK;
+        }
         else
-    {
-        qDebug() << "SCENE DONE";
-        cur_step = ROBOT_STATE_NOT_READY;
-    }
+        {
+            qDebug() << "SCENE DONE";
+            cur_step = ROBOT_STATE_NOT_READY;
+        }
         timeout = 1000/200;
         cur_step = ROBOT_STATE_AMR_MOVE_CHECK;
         break;
@@ -3594,20 +3598,7 @@ void MainWindow::seqLoop()
         if(cobot.systemStat.sdata.robot_state == 3){
             qDebug() << "robot moving check";
             if(scene[0] == "robot mid left"||scene[0] == "robot mid right")
-            {else if(json_input["MSG_TYPE"] == "MOVE"){
-                    double move_x = json_input["POSE_x"].toDouble();
-                    double move_y = json_input["POSE_y"].toDouble();
-                    double move_th = json_input["POSE_theta"].toDouble();
-
-                    ctrl->uuid = json_input["uuid"].toString();
-
-                    //yujin robot get preset_idx
-
-                    int preset_idx = PRESET_SPEED_NORMAL;
-                    ctrl->run_pick(cv::Vec3d(move_x,move_y,move_th), preset_idx);
-
-                    qDebug()<<move_x<<move_y<<move_th;
-                }
+            {
                 QString vision_msg = ui->lb_keti_point->text();
                 qDebug()<<"aaaaaaaaa vision_msg : "<<vision_msg;
                 if(vision_msg != "OBJ_NONE")
@@ -3898,7 +3889,7 @@ void MainWindow::seqLoop()
 
         }
         //*/
-}
+    }
 }
 
 void MainWindow::bt_auto_homing()
