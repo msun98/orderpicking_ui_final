@@ -3,8 +3,8 @@
 Keti_vision::Keti_vision(QObject *parent) : QObject(parent)
 {
     Keti_Client = new QTcpSocket(this);
-    IP_VISION.ip = "192.168.2.209";
-    //        IP_VISION.ip = "10.108.2.210";
+//    IP_VISION.ip = "192.168.2.210";
+            IP_VISION.ip = "10.108.2.210";
     IP_VISION.port = 7777;
 
     connect(Keti_Client, SIGNAL(connected()), this, SLOT(onKetiConnected()));
@@ -122,7 +122,7 @@ void Keti_vision::onReadyCmdRead()
                 QString rstr;
                 rstr.sprintf("%.3f, %.3f, %.3f",res_rx.toFloat(),res_ry.toFloat(),-1*res_rz.toFloat());
                 c_p2c_tcp(str+", "+rstr);
-                keti_img_point(str+", "+rstr);
+                emit keti_img_point(str+", "+rstr);
                 //        Read_Data.remove(0, Read_Data.size());
                 Read_Data.clear();
             }
@@ -142,7 +142,7 @@ void Keti_vision::onReadyCmdRead()
                 //            c_p2c_tcp(str);
 
                 c_p2c_tcp(str);
-                keti_img_point(str);
+                emit keti_img_point(str);
                 //        Read_Data.remove(0, Read_Data.size());
                 Read_Data.clear();
             }
@@ -199,7 +199,7 @@ void Keti_vision::onReadyCmdRead()
 
             qDebug()<<"box_cent_value : "<<box_cent_value;
 
-            keti_img_point(str+", "+rstr);
+            emit keti_img_point(str+", "+rstr);
             Read_Data.clear();
         }
     }
@@ -208,7 +208,7 @@ void Keti_vision::onReadyCmdRead()
     {
         if(old_timeString != timeString)
         {
-            keti_img_point(buf);
+            emit keti_img_point(buf);
         }
     }
     else

@@ -237,10 +237,10 @@ MainWindow::MainWindow(QWidget *parent)
     // 기본
     vision.TCP2cam = cam_config.RB_TF_SENSOR;
 
-//    QString aaa = QString::number(172, 16);
-//    qDebug()<<aaa;
-//    const char* p = aaa.toStdString().c_str();
-//    qDebug()<<p;
+    //    QString aaa = QString::number(172, 16);
+    //    qDebug()<<aaa;
+    //    const char* p = aaa.toStdString().c_str();
+    //    qDebug()<<p;
     //    connect(&vision_trigger_timer,SIGNAL(timeout()),this,SLOT(vision_trigger()));
     //    vision_trigger_timer.start(5000);
 }
@@ -2114,10 +2114,10 @@ void MainWindow::on_BTN_MOVE_JOINT_MID_clicked()
 
     cobot.move_jb2_add(25.32,26.38,-113.63,0.33,-90.00,-88.90, spd, acc, blending_value);
     cobot.move_jb2_add(-3.24,36.00,-113.62,-12.40,-90.00,-88.90, spd, acc, blending_value);
-        cobot.move_jb2_add(0.228,19.684,-73.543,-15.062,-89.891,-89.646, spd, acc, blending_value);
+    cobot.move_jb2_add(0.228,19.684,-73.543,-15.062,-89.891,-89.646, spd, acc, blending_value);
 
-//    //for 홍보영상
-//    cobot.move_jb2_add(0.217986,-1.37101,-60.712,-37.0196,-89.9902,-89.6021, spd, acc, blending_value);
+    //    //for 홍보영상
+    //    cobot.move_jb2_add(0.217986,-1.37101,-60.712,-37.0196,-89.9902,-89.6021, spd, acc, blending_value);
 
     cobot.move_jb2_run();
 
@@ -3277,13 +3277,55 @@ void MainWindow::seqLoop()
                 //                mobile_moving_flag = true;
                 qDebug()<<"mobile working";
             }
-            cur_step = ROBOT_STATE_AMR_MOVE_CHECK;
+            else if(scene[0] == "mobile move2"){
+
+                QJsonObject json_output;
+                json_output["MSG_TYPE"] = "MOVE";
+                json_output["POSE_x"] = 5.09;
+                json_output["POSE_y"] = 0.47;
+                json_output["POSE_theta"] = 0.0; ///yujin 에서는 라디안으로 줌.
+                QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
+                mb.cmdSendData(json_string);
+
+                ui->le_mobile_move_status->setStyleSheet("QLineEdit{background-color:red}");
+                ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
+                //                mobile_moving_flag = true;
+                qDebug()<<"mobile working";
+            }
+
+            bool json_amr_val = scene[0].contains(",", Qt::CaseInsensitive);
+            if(json_amr_val)
+            {
+                QStringList amr = scene[0].split(",");
+                cv::Vec6d amr_pose;
+                for(int a=1; a<3; a++) // get from saved json file
+                {
+                    amr_pose[a-1] = amr[a].toDouble();
+                }
+
+                if(amr[0] == "mobile move")
+                {
+                    qDebug()<<amr_pose[0]<<amr_pose[1]<<amr_pose[2];
+
+                    QJsonObject json_output;
+                    ////////// send msg to mobile robot ////////////////
+                    json_output["MSG_TYPE"] = "MOVE_TRAVEL_LINE";
+                    json_output["POSE_x"] = amr_pose[0];
+                    json_output["POSE_y"] = amr_pose[1];
+                    json_output["POSE_theta"] = amr_pose[2];
+                    mb.cmdSendData(QJsonDocument(json_output).toJson(QJsonDocument::Compact));
+                }
+            }
+
         }
+
+        cur_step = ROBOT_STATE_AMR_MOVE_CHECK;
+    }
         else
-        {
-            qDebug() << "SCENE DONE";
-            cur_step = ROBOT_STATE_NOT_READY;
-        }
+    {
+        qDebug() << "SCENE DONE";
+        cur_step = ROBOT_STATE_NOT_READY;
+    }
         timeout = 1000/200;
         cur_step = ROBOT_STATE_AMR_MOVE_CHECK;
         break;
@@ -3552,7 +3594,20 @@ void MainWindow::seqLoop()
         if(cobot.systemStat.sdata.robot_state == 3){
             qDebug() << "robot moving check";
             if(scene[0] == "robot mid left"||scene[0] == "robot mid right")
-            {
+            {else if(json_input["MSG_TYPE"] == "MOVE"){
+                    double move_x = json_input["POSE_x"].toDouble();
+                    double move_y = json_input["POSE_y"].toDouble();
+                    double move_th = json_input["POSE_theta"].toDouble();
+
+                    ctrl->uuid = json_input["uuid"].toString();
+
+                    //yujin robot get preset_idx
+
+                    int preset_idx = PRESET_SPEED_NORMAL;
+                    ctrl->run_pick(cv::Vec3d(move_x,move_y,move_th), preset_idx);
+
+                    qDebug()<<move_x<<move_y<<move_th;
+                }
                 QString vision_msg = ui->lb_keti_point->text();
                 qDebug()<<"aaaaaaaaa vision_msg : "<<vision_msg;
                 if(vision_msg != "OBJ_NONE")
@@ -3843,7 +3898,7 @@ void MainWindow::seqLoop()
 
         }
         //*/
-    }
+}
 }
 
 void MainWindow::bt_auto_homing()
@@ -4473,8 +4528,18 @@ void MainWindow::bt_order_check()
                 QString lift_high = "lift_high,"+QString::number(shelve_height);
                 order_msg.append(lift_high);//리프트 이동
 
+                // AMR pose
+                QString AMR_pose = "mobile move,"+QString::number(it.second->AMR_pose[0])+","+QString::number(it.second->RB_5_pose[1])+","
+                        +QString::number(it.second->RB_5_pose[2]);
+
+                order_msg.append(AMR_pose);
+
+
                 // vision robot pose -> robot pose blend
-                QString robot_vision = "robot vision,"+QString::number(it.second->RB_5_pose[0])+","+QString::number(it.second->RB_5_pose[1])+","+QString::number(it.second->RB_5_pose[2])+","+QString::number(it.second->RB_5_pose[3])+","+QString::number(it.second->RB_5_pose[4])+","+QString::number(it.second->RB_5_pose[5]);
+                QString robot_vision = "robot vision,"+QString::number(it.second->RB_5_pose[0])+","+QString::number(it.second->RB_5_pose[1])+","
+                        +QString::number(it.second->RB_5_pose[2])+","+QString::number(it.second->RB_5_pose[3])+
+                        ","+QString::number(it.second->RB_5_pose[4])+","+QString::number(it.second->RB_5_pose[5]);
+
                 //                qDebug()<<"robot moving :" <<robot_vision;
                 order_msg.append(robot_vision);
                 //                                order_msg.append("robot_high_vision");

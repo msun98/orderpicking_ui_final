@@ -152,6 +152,8 @@ public:
     QString old_uuid,pause_uuid,old_acton;
     bool move_finish_flag = false;
 
+    bool move_pause_flag = false;
+
 signals:
 
     void msgSignal(bool msg);

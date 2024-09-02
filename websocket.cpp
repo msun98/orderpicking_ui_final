@@ -44,7 +44,7 @@ websocket::~websocket()
 void websocket::open()
 {
     server = new QWebSocketServer("rb_websocket", QWebSocketServer::NonSecureMode, this);
-    if(server->listen(QHostAddress::Any, 38081)) //서버가 들어오는 연결을 수신하기 위해 listen을 호출(yujin -> client, rainbow -> server)
+    if(server->listen(QHostAddress::Any, 38082)) //서버가 들어오는 연결을 수신하기 위해 listen을 호출(yujin -> client, rainbow -> server)
     {
         connect(server, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
     }
@@ -168,11 +168,9 @@ void websocket::CMD_RESULT(QString result, QString Error)
         {
             if (old_acton == "stop")
             {
-                qDebug()<<"ssssssssssssssss";
                 json["msg_type"] = "cmd_result";
                 json["result"] = "cancelled";
                 json["uuid"] = mb->uuid;
-                qDebug()<<"ssss uuid :"<< mb->uuid;
 
                 QJsonDocument doc_json(json);
                 QString str_json(doc_json.toJson(QJsonDocument::Indented));
@@ -186,9 +184,40 @@ void websocket::CMD_RESULT(QString result, QString Error)
                 json["msg_type"] = "cmd_result";
                 json["result"] = result;
                 json["uuid"] = mb->uuid;
+
                 move_finish_flag = false;
 
                 QJsonDocument doc_json(json);
+                QString str_json(doc_json.toJson(QJsonDocument::Indented));
+                emit msgSendSignal(str_json);
+                pSocket->sendTextMessage(str_json);
+            }
+        }
+
+        else if(move_pause_flag)
+        {
+            if (old_acton == "stop")
+            {
+                json["msg_type"] = "cmd_result";
+                json["result"] = "cancelled";
+                json["uuid"] = mb->uuid;
+
+                QJsonDocument doc_json(json);
+                QString str_json(doc_json.toJson(QJsonDocument::Indented));
+                emit msgSendSignal(str_json);
+                pSocket->sendTextMessage(str_json);
+
+                move_pause_flag = false;
+            }
+            else
+            {
+                json["msg_type"] = "cmd_result";
+                json["result"] = result;
+                json["uuid"] = uuid;
+                move_finish_flag = false;
+
+                QJsonDocument doc_json(json);
+                //QString str_json(doc_json.toJson(QJsonDocument::Compact));
                 QString str_json(doc_json.toJson(QJsonDocument::Indented));
                 emit msgSendSignal(str_json);
                 pSocket->sendTextMessage(str_json);
@@ -436,6 +465,8 @@ void websocket::moveCheck()
         }
         else if(mb->fsm_status == STATE_AUTO_PAUSE)
         {
+            move_pause_flag = true;
+
             mobile_status ="PAUSE";
             mobile_fsm_status = "STATE_AUTO_PAUSE";
             //            emit mobile_run("true");
@@ -698,14 +729,12 @@ void websocket::cmd_loop(QWebSocket *pClient_address)
                             QString filelist = item.baseName();
                             json_data["data"] = data("Rainbow","get_map_info_list","RB200", "RB", filelist);
                             QJsonObject data = json_data["data"].toObject();
-
-                            //                        qDebug()<<"data : "<<data;
                             json_arr.insert(0,data);//대괄호 조건에 맞추기 위함. data를 수집하여 QJsonArray 에 담아줌.
-                            json_out["data"] = json_arr;
-                            json_out["uuid"] = uuid;
-
                         }
                     }
+
+                    json_out["data"] = json_arr;
+                    json_out["uuid"] = uuid;
                     QString map_info = QJsonDocument(json_out).toJson(QJsonDocument::Indented);//보낸 내용 확인용
                     emit msgSendSignal(map_info);
                     pClient->sendTextMessage(map_info);
