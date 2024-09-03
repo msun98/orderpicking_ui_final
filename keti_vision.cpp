@@ -3,8 +3,7 @@
 Keti_vision::Keti_vision(QObject *parent) : QObject(parent)
 {
     Keti_Client = new QTcpSocket(this);
-//    IP_VISION.ip = "192.168.2.210";
-            IP_VISION.ip = "10.108.2.210";
+    IP_VISION.ip = "192.168.2.208";
     IP_VISION.port = 7777;
 
     connect(Keti_Client, SIGNAL(connected()), this, SLOT(onKetiConnected()));

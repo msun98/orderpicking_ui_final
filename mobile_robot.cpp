@@ -282,32 +282,32 @@ void mobile_robot::on_read_mobile_status() //get map data
                 if (status == 0)
                 {
                     AMR_status="UI_LOC_NOT_READY";
-                    //                emit mobile_run("false");
+                    emit mobile_run("false");
                 }
                 else if(status == 1)
                 {
                     AMR_status = "UI_LOC_BUSY";
-                    //                emit mobile_run("false");
+                    emit mobile_run("false");
                 }
                 else if(status == 2)
                 {
                     AMR_status="UI_LOC_GOOD";
-                    //                emit mobile_run("true");
+                    emit mobile_run("true");
                 }
                 else if(status == 3)
                 {
                     AMR_status = "UI_LOC_FAIL";
-                    //                emit mobile_run("true");
+                    emit mobile_run("true");
                 }
                 else if(status == 4)
                 {
                     AMR_status = "UI_LOC_MANUAL";
-                    //                emit mobile_run("false");
+                    emit mobile_run("false");
                 }
                 else if(status == 5)
                 {
                     AMR_status = "UI_LOC_GOOD_BUT_FAR_WAY";
-                    //                emit mobile_run("false");
+                    emit mobile_run("false");
                 }
                 //배터리 정보도 받아와야 함.
                 pose_x = json_input["Pose_x"].toDouble();
