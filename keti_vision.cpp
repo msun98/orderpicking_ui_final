@@ -3,7 +3,8 @@
 Keti_vision::Keti_vision(QObject *parent) : QObject(parent)
 {
     Keti_Client = new QTcpSocket(this);
-    IP_VISION.ip = "192.168.2.208";
+    //    IP_VISION.ip = "192.168.2.208";
+    IP_VISION.ip = "10.108.2.208";
     IP_VISION.port = 7777;
 
     connect(Keti_Client, SIGNAL(connected()), this, SLOT(onKetiConnected()));
@@ -168,38 +169,41 @@ void Keti_vision::onReadyCmdRead()
             res_rz = list[6];
             //        new_buf.remove(0, Read_Data.size());
 
+            if(list[1] != "0" && list[2] != "0" && list[3] != "0" && list[4] != "0" && list[5] != "0" && list[6] != "0")
+            {
+                QString str;
+                str.sprintf("%.3f, %.3f, %.3f",res_x.toFloat(),res_y.toFloat(),res_z.toFloat()-0.50);
 
-            QString str;
-            str.sprintf("%.3f, %.3f, %.3f",res_x.toFloat(),res_y.toFloat(),res_z.toFloat()-0.50);
+                QString rstr;
+                rstr.sprintf("%.3f, %.3f, %.3f",res_rx.toFloat(),res_ry.toFloat(),res_rz.toFloat());
 
-            QString rstr;
-            rstr.sprintf("%.3f, %.3f, %.3f",res_rx.toFloat(),res_ry.toFloat(),res_rz.toFloat());
+                qDebug()<<"BOX_CENT "+str+", "+rstr;
+                Eigen::Matrix4d cam2box_center_tf = BoxCent(str+", "+rstr);
 
-            qDebug()<<"BOX_CENT "+str+", "+rstr;
-            Eigen::Matrix4d cam2box_center_tf = BoxCent(str+", "+rstr);
+                cv::Mat cam2box_center;
+                cv::eigen2cv(cam2box_center_tf,cam2box_center);
+                //            std::cout<<cam2box_center<<std::endl;
 
-            cv::Mat cam2box_center;
-            cv::eigen2cv(cam2box_center_tf,cam2box_center);
-            //            std::cout<<cam2box_center<<std::endl;
+                cv::Mat TCP2cam_cv;
+                cv::eigen2cv(TCP2cam,TCP2cam_cv);
 
-            cv::Mat TCP2cam_cv;
-            cv::eigen2cv(TCP2cam,TCP2cam_cv);
+                double data3[]={0,0,0,1};
+                cv::Mat my_mat(4,1,CV_64FC1,data3);
 
-            double data3[]={0,0,0,1};
-            cv::Mat my_mat(4,1,CV_64FC1,data3);
+                cv::Mat box_center_qr2cam = TCP2cam_cv*cam2box_center*TCP2cam_cv.inv()*my_mat;
 
-            cv::Mat box_center_qr2cam = TCP2cam_cv*cam2box_center*TCP2cam_cv.inv()*my_mat;
+                keti_x = box_center_qr2cam.ptr<double>(0)[0];
+                keti_y = box_center_qr2cam.ptr<double>(0)[1];
+                keti_z = box_center_qr2cam.ptr<double>(0)[2];
+                //        std::cout<<"box_center_qr2cam : "<<box_center_qr2cam<<std::endl;
+                box_cent_value = true;
 
-            keti_x = box_center_qr2cam.ptr<double>(0)[0];
-            keti_y = box_center_qr2cam.ptr<double>(0)[1];
-            keti_z = box_center_qr2cam.ptr<double>(0)[2];
-            //        std::cout<<"box_center_qr2cam : "<<box_center_qr2cam<<std::endl;
-            box_cent_value = true;
+                qDebug()<<"box_cent_value : "<<box_cent_value;
 
-            qDebug()<<"box_cent_value : "<<box_cent_value;
-
-            emit keti_img_point(str+", "+rstr);
+                emit keti_img_point(str+", "+rstr);
+            }
             Read_Data.clear();
+
         }
     }
 

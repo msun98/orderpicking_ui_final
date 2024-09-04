@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.0, 2024-09-03T15:40:49. -->
+<!-- Written by QtCreator 4.11.0, 2024-09-04T18:31:31. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -114,7 +114,7 @@
     <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">2</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/rainbow/CODE/2024_orderpicking_code/build-LIFT_PROG_d435f-Desktop-Debug</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/rainbow/CODE/2024_orderpicking_code/build-LIFT_PROG_d435f-Desktop-Release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -294,7 +294,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/rainbow/CODE/2024_orderpicking_code/build-LIFT_PROG_d435f-Desktop-Debug</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/rainbow/CODE/2024_orderpicking_code/build-LIFT_PROG_d435f-Desktop-Release</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

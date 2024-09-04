@@ -1,0 +1,1 @@
+/home/rainbow/CODE/2024_orderpicking_code/LIFT_PROG_yunjin_vision/99-usb-serial.rules

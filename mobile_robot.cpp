@@ -414,6 +414,10 @@ void mobile_robot::on_read_mobile_status() //get map data
         }
         old_AMR_FSM_status = AMR_FSM_status;
     }
+    else
+    {
+        qDebug()<<"AMR data is not uploaded!";
+    }
 }
 
 void mobile_robot::png_change()
