@@ -88,7 +88,9 @@ void Keti_vision::onReadyCmdRead()
 {
     QByteArray Read_Data = Keti_Client->readAll();
     QString buf = QString(Read_Data);
+
     QStringList list = buf.split(", ");
+//    qDebug()<<"keti buf : "<<list[1];
 
     QTime time = QTime::currentTime();
     QString timeString = time.toString();

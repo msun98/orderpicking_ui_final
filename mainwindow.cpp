@@ -473,7 +473,7 @@ void MainWindow::kitech_msg(QString msg)
         grip = true;
         ui->le_pick->setStyleSheet("QLineEdit{background-color:red}");
     }
-    ui ->notice_kitech ->setText(msg);
+    ui -> notice_kitech ->setText(msg);
 }
 
 void MainWindow::status_loop()
@@ -3503,7 +3503,7 @@ void MainWindow::seqLoop()
     }
 
     case ROBOT_STATE_ROBOT_START:{
-        qDebug() << "ROBOT_STATE_ROBOT_START";
+        //        qDebug() << "ROBOT_STATE_ROBOT_START";
 
         bool json_rb_val = scene[0].contains(",", Qt::CaseInsensitive);
         if(json_rb_val)
@@ -3608,6 +3608,7 @@ void MainWindow::seqLoop()
 
             cobot.MoveJoint(-15, 41, -128, 87, -74 ,0 , -1, -1);
         }
+
         cur_step = ROBOT_STATE_ROBOT_MOVE_CHECK;
         break;
     }
@@ -3638,8 +3639,8 @@ void MainWindow::seqLoop()
                 qDebug()<<"vision_msg : "<<vision_msg;
                 if(vision_msg != "OBJ_NONE")
                 {
-                    QString gripper = ui->le_pick->styleSheet();
-                    bool gripper_state = gripper.contains("red", Qt::CaseInsensitive);
+                    QString _gripper = ui->le_pick->styleSheet();
+                    bool gripper_state = _gripper.contains("red", Qt::CaseInsensitive);
                     //                qDebug()<<"moving to basket : "<<gripper_state;
 
                     if(gripper_state)
@@ -3649,11 +3650,24 @@ void MainWindow::seqLoop()
                     }
                     else
                     {
-                        ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
-                        qDebug()<<"GRIPPER ERROR!!!!";
-                        web.CMD_RESULT("faillure");
-                        web.pick_item_failure_count ++;
-                        cur_step = ROBOT_STATE_NOT_READY;
+                        //물체 감지가 일어나지 않은 경우 손가락 위치로 파지 확인(check 3 times)
+                        if(gripper_cnt < 3)
+                        {
+                            QString txt = "S1";
+                            QByteArray br = txt.toUtf8();
+                            gripper.Kitech_Client->write(br);
+                            cur_step = ROBOT_STATE_ROBOT_MOVE_CHECK;
+                            gripper_cnt++;
+                        }
+                        else
+                        {
+                            ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
+                            qDebug()<<"GRIPPER ERROR!!!!";
+                            web.CMD_RESULT("faillure");
+                            web.pick_item_failure_count ++;
+                            cur_step = ROBOT_STATE_NOT_READY;
+                            gripper_cnt = 0;
+                        }
                     }
                 }
                 else
@@ -3703,8 +3717,8 @@ void MainWindow::seqLoop()
                 QString vision_msg = ui->lb_keti_point->text();
                 if(vision_msg != "OBJ_NONE")
                 {
-                    QString gripper = ui->le_pick->styleSheet();
-                    bool gripper_state = gripper.contains("red", Qt::CaseInsensitive);
+                    QString _gripper = ui->le_pick->styleSheet();
+                    bool gripper_state = _gripper.contains("red", Qt::CaseInsensitive);
                     //                qDebug()<<"moving to basket : "<<gripper_state;
 
                     if(gripper_state)
@@ -3714,14 +3728,35 @@ void MainWindow::seqLoop()
                     }
                     else
                     {
-                        ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
-                        qDebug()<<"RB5 ERROR!!!!";
-                        web.CMD_RESULT("faillure");
-                        web.pick_item_failure_count ++;
-
-                        cobot.MotionHalt();
-                        cur_step = ROBOT_STATE_NOT_READY;
+                        //물체 감지가 일어나지 않은 경우 손가락 위치로 파지 확인(check 3 times)
+                        if(gripper_cnt < 3)
+                        {
+                            QString txt = "S1";
+                            QByteArray br = txt.toUtf8();
+                            gripper.Kitech_Client->write(br);
+                            cur_step = ROBOT_STATE_ROBOT_MOVE_CHECK;
+                            gripper_cnt++;
+                        }
+                        else
+                        {
+                            ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
+                            qDebug()<<"GRIPPER ERROR!!!!";
+                            web.CMD_RESULT("faillure");
+                            web.pick_item_failure_count ++;
+                            cur_step = ROBOT_STATE_NOT_READY;
+                            gripper_cnt = 0;
+                        }
                     }
+                    //                    else
+                    //                    {
+                    //                        ui->le_scenario->setStyleSheet("QLineEdit{background-color:red}");
+                    //                        qDebug()<<"RB5 ERROR!!!!";
+                    //                        web.CMD_RESULT("faillure");
+                    //                        web.pick_item_failure_count ++;
+
+                    //                        cobot.MotionHalt();
+                    //                        cur_step = ROBOT_STATE_NOT_READY;
+                    //                    }
                 }
                 else
                 {
@@ -3826,8 +3861,18 @@ void MainWindow::seqLoop()
         bool json_rb_val = scene[0].contains(",", Qt::CaseInsensitive);
         if(json_rb_val)
         {
+
             QStringList grip_order = scene[0].split(",");
-            QString text = grip_order[1]+grip_order[2];
+            QString text;
+            if(grip_order.size()<5)
+            {
+                text = grip_order[1]+grip_order[2];
+            }
+            else
+            {
+                text = grip_order[1]+grip_order[2]+grip_order[3];
+            }
+            qDebug()<<text;
             QByteArray br = text.toUtf8();
             gripper.Kitech_Client->write(br);
         }
@@ -3838,7 +3883,7 @@ void MainWindow::seqLoop()
         }
 
         cur_step = ROBOT_STATE_GRIPPER_MOVE_CHECK;
-        timeout = 200/100;
+        timeout = 1000/100;
         break;
 
     }
@@ -4596,14 +4641,17 @@ void MainWindow::bt_order_check()
                     QString grasp_ready = "grasp ready,"+it.second->obj_ready_grap_pose;
                     //                qDebug()<<"robot moving :" <<robot_vision;
                     order_msg.append(grasp_ready);
-                    order_msg.append("wait");
+                    //                    order_msg.append("wait");
                     //                    order_msg.append("robot pump on");
 
                     QString real_grasp = "grasp real,"+it.second->obj_grap_pose;
                     //                qDebug()<<"robot moving :" <<robot_vision;
                     order_msg.append(real_grasp);
                     order_msg.append("robot pop");
-                    order_msg.append("robot box center");
+                    if(shelve_height < 600)
+                    {
+                        order_msg.append("robot box center");
+                    }
                     order_msg.append("robot mid left");
 
                     QString lift_down = "lift_high,400";
@@ -5058,16 +5106,33 @@ void MainWindow::on_bt_cobot_move2object_approach_clicked()
         float move_ry_valo = ui->move_ry_val->text().toFloat();
         float move_rz_valo = ui->move_rz_val->text().toFloat();
 
-        if(abs(abs(ui->LE_TCP_REF_X->text().toFloat())-abs(app_x))<250)
+        if(lift_pos<500)
         {
-            caution_flag = false;
-            ui -> la_caution->setText("");
-            cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
+            if(abs(abs(ui->LE_TCP_REF_X->text().toFloat())-abs(app_x))<250)
+            {
+                caution_flag = false;
+                ui -> la_caution->setText("");
+                cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
+            }
+            else
+            {
+                caution_flag = true;
+                ui -> la_caution->setText("prohibited area!");
+            }
         }
         else
         {
-            caution_flag = true;
-            ui -> la_caution->setText("prohibited area!");
+            if(abs(abs(ui->LE_TCP_REF_X->text().toFloat())-abs(app_x))<500)
+            {
+                caution_flag = false;
+                ui -> la_caution->setText("");
+                cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
+            }
+            else
+            {
+                caution_flag = true;
+                ui -> la_caution->setText("prohibited area!");
+            }
         }
         //        ui -> la_caution->setText("");
         //        cobot.MoveTCP(app_x,app_y,app_z, move_rx_valo, move_ry_valo, move_rz_valo, 0.5, -1);
