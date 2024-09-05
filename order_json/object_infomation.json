@@ -1,22 +1,17 @@
 [
     {
-        "obj_id": "cheese",
-        "ready_Gripping": "g,g",
-        "real_Gripping": "R,g,0,ON"
-    },
+        "dateString": "화 9월 3 2024",
+        "obj_id": "PARMESAN",
+        "ready_Gripping": "g,6",
+        "real_Gripping": "G,g,4,ON",
+        "timeString": "17:58:54"
+    }
+,
     {
-        "obj_id": "pringles",
-        "ready_Gripping": "g,g",
-        "real_Gripping": "R,g,0,ON"
-    },
-    {
-        "obj_id": "hair wax",
-        "ready_Gripping": "g,g",
-        "real_Gripping": "R,g,0,ON"
-    },
-    {
-        "obj_id": "filter",
-        "ready_Gripping": "g,g",
-        "real_Gripping": "R,g,0,ON"
+        "dateString": "수 9월 4 2024",
+        "obj_id": "SHELF",
+        "ready_Gripping": "R,p,0",
+        "real_Gripping": "G,p,7,ON",
+        "timeString": "18:14:09"
     }
 ]
