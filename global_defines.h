@@ -198,6 +198,7 @@ struct MOTOR_MAIN_DATA
     int   motor_position = 0;
     char  motor_brake_duty = char(0);
     char  motor_temperature = 0;
+    char  motor_status2 = char(0);
 
     MOTOR_MAIN_DATA()
     {}
@@ -213,6 +214,7 @@ struct MOTOR_MAIN_DATA
         motor_position = p.motor_position;
         motor_brake_duty = p.motor_brake_duty;
         motor_temperature = p.motor_temperature;
+        motor_status2 = p.motor_status2;
     }
 
 };
@@ -371,6 +373,15 @@ struct motor_cmd
         REQ_MAIN_DATA[4] = 0x01;
         REQ_MAIN_DATA[5] = 0xc1;
         REQ_MAIN_DATA[6] = 0xd6;
+
+//        REQ_MAIN_DATA.resize(7);
+//        REQ_MAIN_DATA[0] = 0xb7;
+//        REQ_MAIN_DATA[1] = 0xac;
+//        REQ_MAIN_DATA[2] = 0x01;
+//        REQ_MAIN_DATA[3] = 0x0a; // PID 4
+//        REQ_MAIN_DATA[4] = 0x01;
+//        REQ_MAIN_DATA[5] = 0x0b;
+//        REQ_MAIN_DATA[6] = 0x86;
 
         // PID_FUNC_CMD_TYPE (for homing)
         INIT_SET.resize(8);

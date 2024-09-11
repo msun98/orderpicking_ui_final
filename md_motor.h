@@ -4,9 +4,8 @@
 #include <QObject>
 #include <QSerialPort>
 #include <QSerialPortInfo>
-#include <QTimer>
 #include <QtDebug>
-
+#include <QCoreApplication>
 #include <iostream>
 #include "common_header.h"
 #include "global_defines.h"
@@ -19,19 +18,8 @@ class MD_MOTOR : public QObject
 public:
     explicit MD_MOTOR(QObject *parent = nullptr);
 
-//    mobile_robot mb;
-    QSerialPort motor;
-
-    bool move_poisition_flag=false;
-    bool init_flag = true;
-    int rev_data_size = 0;
-    QByteArray buf;
-    MOTOR_MAIN_DATA main_data;
-
-    int pose;
-
-    void open(QString port);
-    void req_data();
+    void open(const QString &port);
+    //    void req_data();
     void test_pid();
 
     void set_maxVel_pos(unsigned short val);
@@ -47,6 +35,23 @@ public:
 
     MOTOR_MAIN_DATA get_main_data();
 
+    void handleError(QSerialPort::SerialPortError error);
+
+
+    //    mobile_robot mb;
+    QSerialPort motor;
+
+    QString motor_port;
+
+    bool move_poisition_flag=false;
+    bool init_flag = true;
+    int rev_data_size = 0;
+    QByteArray buf;
+    MOTOR_MAIN_DATA main_data;
+
+    QTimer lift_status_timer;
+
+        void req_data();
 
 signals:
     void rev_DATA(QByteArray data);
@@ -59,6 +64,10 @@ signals:
 
 private slots:
     void onReadyCmdRead();
+//    void req_data();
+
+
+
 };
 
 #endif // MD_MOTOR_H

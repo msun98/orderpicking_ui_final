@@ -186,7 +186,7 @@ void mobile_robot::sendData()
 
             json_output["lift_rpm"] = md_status.motor_rpm;
             json_output["lift_state"] = _lift_State;
-            json_output["lift_hight"] = md_status.motor_position*680/2700+1;
+            json_output["lift_hight"] = md_status.motor_position*620/2700+1;
 
             QByteArray json_string = QJsonDocument(json_output).toJson(QJsonDocument::Compact);
 
@@ -282,32 +282,32 @@ void mobile_robot::on_read_mobile_status() //get map data
                 if (status == 0)
                 {
                     AMR_status="UI_LOC_NOT_READY";
-                    emit mobile_run("false");
+                    //                emit mobile_run("false");
                 }
                 else if(status == 1)
                 {
                     AMR_status = "UI_LOC_BUSY";
-                    emit mobile_run("false");
+                    //                emit mobile_run("false");
                 }
                 else if(status == 2)
                 {
                     AMR_status="UI_LOC_GOOD";
-                    emit mobile_run("true");
+                    //                emit mobile_run("true");
                 }
                 else if(status == 3)
                 {
                     AMR_status = "UI_LOC_FAIL";
-                    emit mobile_run("true");
+                    //                emit mobile_run("true");
                 }
                 else if(status == 4)
                 {
                     AMR_status = "UI_LOC_MANUAL";
-                    emit mobile_run("false");
+                    //                emit mobile_run("false");
                 }
                 else if(status == 5)
                 {
                     AMR_status = "UI_LOC_GOOD_BUT_FAR_WAY";
-                    emit mobile_run("false");
+                    //                emit mobile_run("false");
                 }
                 //배터리 정보도 받아와야 함.
                 pose_x = json_input["Pose_x"].toDouble();
@@ -413,10 +413,6 @@ void mobile_robot::on_read_mobile_status() //get map data
             }
         }
         old_AMR_FSM_status = AMR_FSM_status;
-    }
-    else
-    {
-        qDebug()<<"AMR data is not uploaded!";
     }
 }
 

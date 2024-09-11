@@ -280,8 +280,6 @@ public:
     int old_tick=0;
     int old_keti_x, old_keti_y, old_keti_z;
 
-    int gripper_cnt = 0;
-
 private:
     Ui::MainWindow *ui;
     QTimer  updateTimer;

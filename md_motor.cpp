@@ -2,13 +2,15 @@
 
 //usb 권힌 에러 발생 시 해결 코드
 // sudo adduser $USER dialout
+// sudo chmod 666 /dev/ttyUSB0
 
 MD_MOTOR::MD_MOTOR(QObject *parent) : QObject(parent)
 {
     connect(&motor, SIGNAL(readyRead()), this, SLOT(onReadyCmdRead()));
+    connect(&motor, &QSerialPort::errorOccurred, this, &MD_MOTOR::handleError);
 }
 
-void MD_MOTOR::open(QString port)
+void MD_MOTOR::open(const QString &port)
 {
     if(motor.isOpen())
     {
@@ -31,24 +33,54 @@ void MD_MOTOR::open(QString port)
     else
     {
         printf("motor connection successed.\n");
-        write_log(QString("motor connection successed.\n"));
-        usleep(100*100);
+        emit write_log(QString("motor connection successed.\n"));
+        //        usleep(100*100);
+        QThread::msleep(100);
         motor.write(MD_CMD.RELEASE_LIMIT_SW);
+
+
 
         QString msg = "true";
         //        qDebug()<<msg;
         emit LiftMSG(msg);
+//        req_data();
+
+//        connect(&lift_status_timer, SIGNAL(timeout()), this, SLOT(req_data()));
+//        lift_status_timer.start(100);
+    }
+}
+
+void MD_MOTOR::handleError(QSerialPort::SerialPortError error)
+{
+    // when occured error -> change move state true
+    if (error == QSerialPort::ResourceError)
+    {
+        qWarning() << "Critical error occurred:" << motor.errorString();
+        // Attempt to reconnect or notify the user
+        motor.close();
+//        qDebug()<<motor_port;
+//        open(motor_port);
+        QTimer::singleShot(1000, this, [this]() {open(motor_port);});
+        move_poisition_flag = true;
+
+    }
+    if (motor.errorString() == "No such file or directory")
+    {
+        QTimer::singleShot(1000, this, [this]() {open(motor_port);});
+//        open(motor_port);
+    }
+    else
+    {
+        qWarning() << "Serial port error:" << motor.errorString();
     }
 }
 
 void MD_MOTOR::req_data()
 {
-    if(!motor.isOpen())
+    if(motor.isOpen())
     {
-        return;
+        motor.write(MD_CMD.REQ_MAIN_DATA);
     }
-
-    motor.write(MD_CMD.REQ_MAIN_DATA);
 }
 
 void MD_MOTOR::set_maxVel_pos(unsigned short val)
@@ -65,7 +97,7 @@ void MD_MOTOR::set_maxVel_pos(unsigned short val)
     memcpy(POSI_MAX_VEL.data() + 5, &val, 2); //183, TMID, ID, 176, 2, D1, D2, CHK (2byte)
     checkSum(POSI_MAX_VEL);
     motor.write(POSI_MAX_VEL);
-    qDebug() << POSI_MAX_VEL;
+//    qDebug() << POSI_MAX_VEL;
 }
 
 void MD_MOTOR::move_position(int val)
@@ -86,10 +118,10 @@ void MD_MOTOR::move_position(int val)
     {
         val = 0;
     }
-    val = val*4700/620;
+    val = val*(4700)/620;
 
-    if (val > 4700){
-        val = 4700;
+    if (val > (4700)){
+        val = (4700);
     }
     else if(val < 0){
         val = 0;
@@ -108,8 +140,9 @@ void MD_MOTOR::move_position(int val)
     motor.write(move);
 
     QString str = "motor run, POS : " + QString::number(val);
-    //    qDebug()<<str;
-    write_log(str);
+    //    qDebug()<<"val : "<<val;
+    qDebug()<<str;
+    //    write_log(str);
 }
 
 void MD_MOTOR::homing(int dir)
@@ -148,10 +181,11 @@ void MD_MOTOR::onReadyCmdRead()
 {
     // this fucn act only PID 193
     QByteArray _buf = motor.readAll();
+//        qDebug()<<_buf;
     if(_buf.size() > 0)
     {
         buf.append(_buf);
-
+        //        qDebug()<<_buf;
         if(buf.size() < 5)
         {
             return;
@@ -160,6 +194,7 @@ void MD_MOTOR::onReadyCmdRead()
         bool is_header = false;
         for(int p = 0; p < buf.size()-1; p++)
         {
+
             // header check
             if(buf[p] == (char)0xac && buf[p+1] == (char)0xb7
                     && buf[p+2] == (char)0x01 && buf[p+3] == (char)0xc1 && buf[p+4] == (char)0x11)
@@ -168,7 +203,7 @@ void MD_MOTOR::onReadyCmdRead()
                 is_header = true;
 
                 // 172,183,1,193,17,D1, ..., D17,CHK -> size:23
-                const int packet_size = 23;
+                const int packet_size = 24;
                 if(is_header && buf.size() >= packet_size)
                 {
                     uchar* body = (uchar*)buf.data();
@@ -183,10 +218,11 @@ void MD_MOTOR::onReadyCmdRead()
                     memcpy(&_main_data.motor_position, &body[15], 4);
                     memcpy(&_main_data.motor_brake_duty, &body[19], 1);
                     memcpy(&_main_data.motor_temperature, &body[20], 1);
+                    memcpy(&_main_data.motor_status2, &body[21], 1);
+//                    qDebug()<<"motor_status2 : "<<_main_data.motor_status2;
 
                     buf.remove(0, buf.size());
 
-                    pose = _main_data.motor_position*680/2700;
 
                     main_data = _main_data;
                     //                break;
@@ -204,7 +240,7 @@ void MD_MOTOR::onReadyCmdRead()
                 {
                     uchar* body = (uchar*)buf.data();
 
-//                    MOTOR_MAIN_DATA _main_data;
+                    //                    MOTOR_MAIN_DATA _main_data;
                     int status;
                     memcpy(&status, &body[5], 1);
                 }
@@ -240,7 +276,7 @@ void MD_MOTOR::move_rpm(short val)
 
     if(!motor.isOpen())
     {
-        write_log(QString("motor not connected."));
+        emit write_log(QString("motor not connected."));
         return;
     }
 
@@ -258,7 +294,7 @@ void MD_MOTOR::move_rpm(short val)
     //qDebug() << move;
     motor.write(move);
     //    QString str = "motor run, RPM : " + QString::number(val);
-    write_log(move);
+    emit write_log(move.toHex());
 }
 
 void MD_MOTOR::test_pid()
