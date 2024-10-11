@@ -3,16 +3,6 @@
 
 // QT
 #include <QMainWindow>
-//#include <QDebug>
-//#include <QTimer>
-//#include <QUdpSocket>
-//#include <QTcpServer>
-//#include <QTcpSocket>
-//#include <QtNetwork>
-//#include <QScrollBar>
-//#include <QLineEdit>
-//#include <QFileDialog>
-//#include <iostream>
 
 //// my
 #include "common_header.h"
@@ -27,13 +17,6 @@
 #include "websocket.h"
 #include "mobile_robot.h"
 #include "cv_to_qt.h"
-
-////for using linux socket
-//#include <sys/socket.h>
-//#include <netinet/in.h>
-//#include <arpa/inet.h>
-
-//#include <time.h> //몇 초 후에 값을 주기 위함.
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -68,24 +51,8 @@ public:
     robot_status status;
     float Joint_info_now[6];
 
-    //        QTcpSocket cmdSocket;
-    //        QTcpSocket dataSocket;
     systemCONFIG systemConfig;
     systemPOPUP  systemPopup;
-
-    //    int cmdConfirmFlag;
-    //    int moveCmdFlag;
-    //    int moveCmdCnt;
-
-    //    posInfo initPos;
-    //    posInfo visionPos;
-    //    posInfo readyGripperPos;
-    //    posInfo grapsGripperPos;
-
-    //    posInfo putdown1Pos;
-    //    posInfo putdown2Pos;
-    //    posInfo readyGripper2Pos;
-    //    posInfo grapsGripper2Pos;
 
     QByteArray recvBuf;
     QTimer timer;
@@ -150,6 +117,8 @@ public:
     QTimer *time_seq;
 
     QStringList scene;
+    QStringList scene_cpy;
+
     QStringList yujin_scene;
 
     QStringList yujin_list;
@@ -266,7 +235,7 @@ public:
 
     bool grip = false;
     void save_log(QString log);
-//    bool lift_working = false;
+    //    bool lift_working = false;
 
     bool old_connect_flag=false;
     QString old_rb5_msg;
@@ -279,6 +248,9 @@ public:
 
     int old_tick=0;
     int old_keti_x, old_keti_y, old_keti_z;
+    int gripper_cnt = 0;
+
+    bool lift_move = false;
 
 private:
     Ui::MainWindow *ui;
@@ -291,7 +263,7 @@ private:
 
 
     //    QTimer  robotStatusTimer;
-//    QUdpSocket udp_socket;
+    //    QUdpSocket udp_socket;
     //    QTcpSocket *clientSocket;//for robot arrived check
 
 public slots:
@@ -391,7 +363,7 @@ private slots:
     //    void connected_seiral();
     //    void disconnected_seiral();
 
-//    void readyRead_udp();
+    //    void readyRead_udp();
     //    void connected_udp();
     //    void disconnected_udp();
 
@@ -456,15 +428,10 @@ private slots:
     void on_btn_pump_2_clicked();
     void on_bt_TCP_Blend_clicked();
     void on_BTN_MOVE_JOINT_LOW_clicked();
-    void on_BTN_MOVE_JOINT_INIT_7_clicked();
     void on_bt_lift_top_clicked();
     void on_bt_lift_MID_clicked();
     void on_bt_lift_Low_clicked();
-    void on_bt_low_get_out_clicked();
-    void on_bt_vision_water_clicked();
-    void on_bt_vision_high_get_out_clicked();
     void on_BTN_MOVE_JOINT_MID_clicked();
-    void on_bt_vision_rael_more_move_clicked();
 
     void on_BTN_MOVE_TOTAL_clicked();
     void on_pb_shutter_clicked();
@@ -507,5 +474,6 @@ private slots:
     void on_BTN_GRIPPER_OPEN_clicked();
     void on_BTN_MOVE_JOINT_LOW_LEFT_clicked();
     void on_BTN_RETURN_MOVE_JOINT_BOX_CENTER_clicked();
+    void on_BTN_MOVE_JOINT_LITTLE_POP_clicked();
 };
 #endif // MAINWINDOW_H

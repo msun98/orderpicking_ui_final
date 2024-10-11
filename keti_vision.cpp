@@ -3,8 +3,8 @@
 Keti_vision::Keti_vision(QObject *parent) : QObject(parent)
 {
     Keti_Client = new QTcpSocket(this);
-//    IP_VISION.ip = "192.168.2.210";
-            IP_VISION.ip = "10.108.2.210";
+    //    IP_VISION.ip = "192.168.2.210";
+    IP_VISION.ip = "10.108.2.210";
     IP_VISION.port = 7777;
 
     connect(Keti_Client, SIGNAL(connected()), this, SLOT(onKetiConnected()));
@@ -88,6 +88,7 @@ void Keti_vision::onReadyCmdRead()
 {
     QByteArray Read_Data = Keti_Client->readAll();
     QString buf = QString(Read_Data);
+    //    qDebug()<<"buf : "<<buf;
     QStringList list = buf.split(", ");
 
     QTime time = QTime::currentTime();
@@ -103,6 +104,7 @@ void Keti_vision::onReadyCmdRead()
                 //                            qDebug()<<list;
                 qDebug()<<"coordinate : "<<list[1]<<","<<list[2]<<","<<list[3]<<","<<list[4]<<","<<list[5]<<","<<list[6]<<","<<list[7];
 
+
                 res_x = list[1];
                 res_y = list[2];
                 res_z = list[3];
@@ -114,16 +116,18 @@ void Keti_vision::onReadyCmdRead()
 
                 res_wrist_rot = list[7];
                 //        new_buf.remove(0, Read_Data.size());
+                if(res_x != 0 && res_y != 0 && res_z != 0)
+                {
+                    QString str;
+                    str.sprintf("%.3f, %.3f, %.3f",res_x.toFloat(),res_y.toFloat(),res_z.toFloat());
+                    //            c_p2c_tcp(str);
 
-                QString str;
-                str.sprintf("%.3f, %.3f, %.3f",res_x.toFloat(),res_y.toFloat(),res_z.toFloat());
-                //            c_p2c_tcp(str);
-
-                QString rstr;
-                rstr.sprintf("%.3f, %.3f, %.3f",res_rx.toFloat(),res_ry.toFloat(),-1*res_rz.toFloat());
-                c_p2c_tcp(str+", "+rstr);
-                emit keti_img_point(str+", "+rstr);
-                //        Read_Data.remove(0, Read_Data.size());
+                    QString rstr;
+                    rstr.sprintf("%.3f, %.3f, %.3f",res_rx.toFloat(),res_ry.toFloat(),-1*res_rz.toFloat());
+                    c_p2c_tcp(str+", "+rstr);
+                    emit keti_img_point(str+", "+rstr);
+                    //        Read_Data.remove(0, Read_Data.size());
+                }
                 Read_Data.clear();
             }
             else
@@ -154,52 +158,74 @@ void Keti_vision::onReadyCmdRead()
         if(old_timeString != timeString)
         {
 
-            //        qDebug()<<"coordinate : "<<list[1]<<","<<list[2]<<","<<list[3]<<","<<list[4]<<","<<list[5]<<","<<list[6];
-            //        qDebug()<<"BOX_CENT coordinate : "<<list[1]<<","<<list[2]<<","<<list[3];
-            res_x = list[1];
-            res_y = list[2];
-            // 로봇의 높이
-            res_z = list[3];
-            //            float zz = res_z.toFloat()-0.5;
-            //            float new_zz = res_z.toFloat()-zz;
-            //            res_z = "0.10";
+            if(list.size()>5)
+            {
+                //                    qDebug()<<"coordinate : "<<list[1]<<","<<list[2]<<","<<list[3]<<","<<list[4]<<","<<list[5]<<","<<list[6];
+                //        qDebug()<<"BOX_CENT coordinate : "<<list[1]<<","<<list[2]<<","<<list[3];
+                res_x = list[1];
+                res_y = list[2];
+                // 로봇의 높이
+                res_z = list[3];
+                //            float zz = res_z.toFloat()-0.5;
+                //            float new_zz = res_z.toFloat()-zz;
+                //            res_z = "0.10";
 
-            res_rx = list[4];
-            res_ry = list[5];
-            res_rz = list[6];
-            //        new_buf.remove(0, Read_Data.size());
+                res_rx = list[4];
+                res_ry = list[5];
+                res_rz = list[6];
+                //        new_buf.remove(0, Read_Data.size());
 
+                //        new_buf.remove(0, Read_Data.size());
+                if(res_x.toFloat() != 0 && res_y.toFloat() != 0 && res_z.toFloat() != 0)
+                {
+                    qDebug()<<"ssssssssssss";
+                    QString str;
+                    str.sprintf("%.3f, %.3f, %.3f",res_x.toFloat(),res_y.toFloat(),res_z.toFloat()-0.50);
 
-            QString str;
-            str.sprintf("%.3f, %.3f, %.3f",res_x.toFloat(),res_y.toFloat(),res_z.toFloat()-0.50);
+                    QString rstr;
+                    rstr.sprintf("%.3f, %.3f, %.3f",res_rx.toFloat(),res_ry.toFloat(),res_rz.toFloat());
 
-            QString rstr;
-            rstr.sprintf("%.3f, %.3f, %.3f",res_rx.toFloat(),res_ry.toFloat(),res_rz.toFloat());
+                    qDebug()<<"BOX_CENT "+str+", "+rstr;
+                    Eigen::Matrix4d cam2box_center_tf = BoxCent(str+", "+rstr);
 
-            qDebug()<<"BOX_CENT "+str+", "+rstr;
-            Eigen::Matrix4d cam2box_center_tf = BoxCent(str+", "+rstr);
+                    cv::Mat cam2box_center;
+                    cv::eigen2cv(cam2box_center_tf,cam2box_center);
+                    //            std::cout<<cam2box_center<<std::endl;
 
-            cv::Mat cam2box_center;
-            cv::eigen2cv(cam2box_center_tf,cam2box_center);
-            //            std::cout<<cam2box_center<<std::endl;
+                    cv::Mat TCP2cam_cv;
+                    cv::eigen2cv(TCP2cam,TCP2cam_cv);
 
-            cv::Mat TCP2cam_cv;
-            cv::eigen2cv(TCP2cam,TCP2cam_cv);
+                    double data3[]={0,0,0,1};
+                    cv::Mat my_mat(4,1,CV_64FC1,data3);
 
-            double data3[]={0,0,0,1};
-            cv::Mat my_mat(4,1,CV_64FC1,data3);
+                    cv::Mat box_center_qr2cam = TCP2cam_cv*cam2box_center*TCP2cam_cv.inv()*my_mat;
 
-            cv::Mat box_center_qr2cam = TCP2cam_cv*cam2box_center*TCP2cam_cv.inv()*my_mat;
+                    keti_x = box_center_qr2cam.ptr<double>(0)[0];
+                    keti_y = box_center_qr2cam.ptr<double>(0)[1];
+                    keti_z = box_center_qr2cam.ptr<double>(0)[2];
+                    //        std::cout<<"box_center_qr2cam : "<<box_center_qr2cam<<std::endl;
+                    box_cent_value = true;
 
-            keti_x = box_center_qr2cam.ptr<double>(0)[0];
-            keti_y = box_center_qr2cam.ptr<double>(0)[1];
-            keti_z = box_center_qr2cam.ptr<double>(0)[2];
-            //        std::cout<<"box_center_qr2cam : "<<box_center_qr2cam<<std::endl;
-            box_cent_value = true;
+                    qDebug()<<"box_cent_value : "<<box_cent_value;
 
-            qDebug()<<"box_cent_value : "<<box_cent_value;
+                    emit keti_img_point(str+", "+rstr);
+                }
 
-            emit keti_img_point(str+", "+rstr);
+                else
+                {
+                    emit keti_img_point("AMR need move more!");
+                    qDebug()<<"AMR need move more!";
+                }
+            }
+            // box cent fail exeption
+            else if(list[1] == "FAIL")
+            {
+                if(old_timeString != timeString)
+                {
+                    emit keti_img_point("box center fail, move AMR adjust the shelf!");
+                }
+            }
+
             Read_Data.clear();
         }
     }
@@ -211,6 +237,7 @@ void Keti_vision::onReadyCmdRead()
             emit keti_img_point(buf);
         }
     }
+
     else
     {
         //        new_buf.clear();
@@ -306,19 +333,18 @@ void Keti_vision::c_p2c_tcp(QString str)
     }
     else
     {
-
         double tx = list[0].toDouble();
         double ty = list[1].toDouble();
         double tz = list[2].toDouble();
 
-        //for using keti normal vector!!
-        double rx = list[3].toDouble();
-        double ry = list[4].toDouble();
-        double rz = list[5].toDouble();
+        //        //for using keti normal vector!!
+        //        double rx = list[3].toDouble();
+        //        double ry = list[4].toDouble();
+        //        double rz = list[5].toDouble();
 
-        //        double rx = 0.0;
-        //        double ry = 0.0;
-        //        double rz = 1.0;
+        double rx = 0.0;
+        double ry = 0.0;
+        double rz = 1.0;
 
         Eigen::Vector3d P(tx,ty,tz);
         Eigen::Vector3d _P = TCP2cam.block(0,0,3,3)*P+TCP2cam.block(0,3,3,1);
@@ -331,12 +357,27 @@ void Keti_vision::c_p2c_tcp(QString str)
         //for approach
         double approach_tz = tz - 0.10;
         Eigen::Vector3d app_P(tx,ty,approach_tz);
+        Eigen::Vector3d app_trance_P = TCP2cam_REL.block(0,0,3,3)*app_P+TCP2cam.block(0,3,3,1);
+
+        std::cout<<"TCP2cam_REL\n"<<std::endl;
+        std::cout<<TCP2cam_REL<<std::endl;
+        keti_app_x = app_trance_P[0];
+        keti_app_y = app_trance_P[1];
+        keti_app_z = app_trance_P[2];
+        //////////////////////////////////////////////////////
+
+        /*
+        //////////////////////////////////////////////////////
+        //for approach
+        double approach_tz = tz - 0.10;
+        Eigen::Vector3d app_P(tx,ty,approach_tz);
         Eigen::Vector3d app_trance_P = TCP2cam.block(0,0,3,3)*app_P+TCP2cam.block(0,3,3,1);
 
         keti_app_x = app_trance_P[0];
         keti_app_y = app_trance_P[1];
         keti_app_z = app_trance_P[2];
         //////////////////////////////////////////////////////
+*/
 
         Eigen::Vector3d RP(rx,ry,rz);
         Eigen::Vector3d R_P = TCP2cam.block(0,0,3,3)*RP+TCP2cam.block(0,3,3,1);

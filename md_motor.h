@@ -29,7 +29,6 @@ public:
     void move_position(int val);
 
     void homing(int dir);
-    void write_data(int pid, int data);
 
     void checkSum(QByteArray &data);
 
@@ -54,7 +53,6 @@ public:
         void req_data();
 
 signals:
-    void rev_DATA(QByteArray data);
     void write_log(QString str);
 
     // ui에 connect됨을 확인하기 위함.

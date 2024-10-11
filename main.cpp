@@ -105,6 +105,10 @@ void update_order_config()
         QString KITECH_TF_SENSOR;
         KITECH_TF_SENSOR = settings.value("CALIB/KITECH_TF_SENSOR").toString();
         cam_config.KITECH_TF_SENSOR = string_to_TF(KITECH_TF_SENSOR);
+
+        QString KITECH_TF_SENSOR_REL;
+        KITECH_TF_SENSOR_REL = settings.value("CALIB/KITECH_TF_SENSOR_REL").toString();
+        cam_config.KITECH_TF_SENSOR_REL = string_to_TF(KITECH_TF_SENSOR_REL);
     }
 }
 

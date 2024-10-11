@@ -480,12 +480,14 @@ public:
 
     Eigen::Matrix4d RB_TF_SENSOR;
     Eigen::Matrix4d KITECH_TF_SENSOR;
+    Eigen::Matrix4d KITECH_TF_SENSOR_REL;
 
     CAM_CONFIG()
     {
         sn = "";
         RB_TF_SENSOR.setIdentity();
         KITECH_TF_SENSOR.setIdentity();
+        KITECH_TF_SENSOR_REL.setIdentity();
         exp = 0;
     }
     CAM_CONFIG(const CAM_CONFIG& p)
@@ -495,6 +497,7 @@ public:
         sn = p.sn;
         RB_TF_SENSOR = p.RB_TF_SENSOR;
         KITECH_TF_SENSOR = p.KITECH_TF_SENSOR;
+        KITECH_TF_SENSOR_REL = p.KITECH_TF_SENSOR_REL;
         exp = p.exp;
     }
 
@@ -505,6 +508,7 @@ public:
         sn = p.sn;
         RB_TF_SENSOR = p.RB_TF_SENSOR;
         KITECH_TF_SENSOR = p.KITECH_TF_SENSOR;
+        KITECH_TF_SENSOR_REL = p.KITECH_TF_SENSOR_REL;
         exp = p.exp;
         return *this;
     }
