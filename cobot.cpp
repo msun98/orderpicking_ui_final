@@ -146,7 +146,6 @@ void Cobot::onReadyDataRead()
             //             qDebug()<<size;
             if(size <= recvBuf.length() )
             {
-
                 int templen = recvBuf.length();
                 if(3 == recvBuf[3])
                 {
@@ -157,24 +156,8 @@ void Cobot::onReadyDataRead()
                     else
                     {
                         memcpy(&systemStat,recvBuf.data(),sizeof(systemSTAT));
-
                     }
                     recvBuf.remove(0,sizeof(systemSTAT));
-                    //                    qDebug()<<moveCmdFlag;
-                    //                    qDebug() << "***************** robot_state " <<  systemStat.sdata.robot_state ;
-
-                    //                                            float spd = systemStat.sdata.default_speed;
-                    ////                                            ui->HS_BASE_SPEED->setValue(spd*100);
-                    ////                                            ui->LB_BASE_SPEED->setText(QString().sprintf("%.1f%%", spd*100.0));
-
-                    //                                            char buf[256];
-                    //                                            sprintf(buf, "stat: %d, %d, %d", size, templen, sizeof(systemSTAT));
-                    //                    qDebug()<<"systemStat.sdata.program_mode : "<<systemStat.sdata.program_mode;
-                    //                                                                sprintf(buf, "pgmode, movecnt: %d, %d\n", systemStat.sdata.program_mode, moveCmdCnt);
-                    //                                            printf(buf);
-                    //                                            printf("systemStat Data Received\n");
-
-
                 }
                 else if(4 == recvBuf[3])
                 {
@@ -190,9 +173,7 @@ void Cobot::onReadyDataRead()
                 {
                     recvBuf.remove(0,1);
                 }
-
             }
-
         }
         else
         {
@@ -298,10 +279,11 @@ void Cobot::MoveTCP(float x, float y, float z, float rx, float ry, float rz, flo
 }
 
 
-void Cobot::MoveL_rel(float x, float y, float z, float rx, float ry, float rz, float spd, float acc)
+void Cobot::MoveL_rel(float x, float y, float z, float rx, float ry, float rz, float spd, float acc, int user_coordinate )
 {
     QString text;
-    text.sprintf("move_l_rel %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f", spd, acc, x, y, z, rx, ry, rz);
+    text.sprintf("move_l_rel(pnt[%.3f, %.3f, %.3f, %.3f, %.3f, %.3f], %.3f, %.3f, %d)", x, y, z, rx, ry, rz, spd, acc,user_coordinate);
+    qDebug()<<"text : "<<text;
     moveCmdFlag = true;
     cmdConfirmFlag = false;
     cmdSocket.write(text.toStdString().c_str(), text.toStdString().length());
@@ -526,7 +508,6 @@ void Cobot::onSliderChange_RB5_Speed(int val)
 
 void Cobot::RB5_Connect_and_initialzation()
 {
-    qDebug("zzzzzzzzzzzzzzzzz");
     write_log(Integrated_info, "[RB5] Connection start.\n");
     if(!Integrated_info.RB5_check_connection_CMD)
     {

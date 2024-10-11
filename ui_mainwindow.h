@@ -152,18 +152,12 @@ public:
     QLineEdit *move_ry_val;
     QLabel *move_rz;
     QLineEdit *move_rz_val;
-    QPushButton *bt_vision_cmd_capture_4;
     QPushButton *bt_TCP_Blend;
     QWidget *layoutWidget3;
     QGridLayout *gridLayout_14;
     QLabel *label_159;
     QTextEdit *te_log;
     QPushButton *bt_low_get_out;
-    QPushButton *bt_vision_water;
-    QPushButton *bt_avino_low_get_out_2;
-    QPushButton *bt_vision_high_get_out;
-    QPushButton *bt_vision_rael_more_move;
-    QPushButton *bt_low_get_out_2;
     QLineEdit *LE_INFO_MOVE_INFO_1;
     QLabel *label_139;
     QLabel *label_181;
@@ -477,6 +471,11 @@ public:
     QPushButton *BTN_MOVE_JOINT_LOW_LEFT;
     QPushButton *BTN_MOVE_JOINT_LOW_RIGHT;
     QPushButton *BTN_RETURN_MOVE_JOINT_BOX_CENTER;
+    QWidget *layoutWidget_9;
+    QHBoxLayout *horizontalLayout_17;
+    QPushButton *BTN_MOVE_JOINT_HIGH_LEFT;
+    QPushButton *BTN_MOVE_JOINT_HIGH_RIGHT;
+    QPushButton *BTN_MOVE_JOINT_LITTLE_POP;
     QWidget *lift_motor;
     QComboBox *cb_port;
     QGroupBox *groupBox_3;
@@ -507,7 +506,6 @@ public:
     QSpacerItem *horizontalSpacer_7;
     QLineEdit *le_pos;
     QTextEdit *te_data;
-    QPushButton *bt_test;
     QGroupBox *groupBox;
     QCheckBox *ch_dir;
     QPushButton *bt_homing;
@@ -573,7 +571,6 @@ public:
     QLabel *label_111;
     QLabel *label_112;
     QComboBox *cb_usb2;
-    QPushButton *write;
     QTextEdit *te_usb1;
     QWidget *layoutWidget_2;
     QVBoxLayout *verticalLayout_3;
@@ -737,10 +734,7 @@ public:
         le_gripper_connection = new QLineEdit(groupBox_5);
         le_gripper_connection->setObjectName(QString::fromUtf8("le_gripper_connection"));
         le_gripper_connection->setGeometry(QRect(219, 50, 40, 40));
-        le_gripper_connection->setStyleSheet(QString::fromUtf8("    border-style: outset;\n"
-"    border-width: 1px;\n"
-"    border-color: black;\n"
-"    background-color:rgb(255,255,255)"));
+        le_gripper_connection->setStyleSheet(QString::fromUtf8("background-color:red"));
         le_gripper_connection->setReadOnly(true);
         label_117 = new QLabel(groupBox_5);
         label_117->setObjectName(QString::fromUtf8("label_117"));
@@ -783,10 +777,7 @@ public:
         le_websocket_connection = new QLineEdit(groupBox_5);
         le_websocket_connection->setObjectName(QString::fromUtf8("le_websocket_connection"));
         le_websocket_connection->setGeometry(QRect(275, 50, 40, 40));
-        le_websocket_connection->setStyleSheet(QString::fromUtf8("    border-style: outset;\n"
-"    border-width: 1px;\n"
-"    border-color: black;\n"
-"    background-color:rgb(255,255,255)"));
+        le_websocket_connection->setStyleSheet(QString::fromUtf8("background-color:red"));
         le_websocket_connection->setReadOnly(true);
         label_148 = new QLabel(groupBox_5);
         label_148->setObjectName(QString::fromUtf8("label_148"));
@@ -810,19 +801,13 @@ public:
         le_mobile_move_status = new QLineEdit(GE_MOVE_INFO);
         le_mobile_move_status->setObjectName(QString::fromUtf8("le_mobile_move_status"));
         le_mobile_move_status->setGeometry(QRect(6, 50, 40, 40));
-        le_mobile_move_status->setStyleSheet(QString::fromUtf8("    border-style: outset;\n"
-"    border-width: 1px;\n"
-"    border-color: black;\n"
-"    background-color:rgb(255,255,255)"));
+        le_mobile_move_status->setStyleSheet(QString::fromUtf8("background-color:green"));
         le_mobile_move_status->setReadOnly(true);
         le_lift_move_status = new QLineEdit(GE_MOVE_INFO);
         le_lift_move_status->setObjectName(QString::fromUtf8("le_lift_move_status"));
         le_lift_move_status->setGeometry(QRect(52, 50, 40, 40));
         le_lift_move_status->setAutoFillBackground(false);
-        le_lift_move_status->setStyleSheet(QString::fromUtf8("    border-style: outset;\n"
-"    border-width: 1px;\n"
-"    border-color: black;\n"
-"    background-color:rgb(255,255,255)"));
+        le_lift_move_status->setStyleSheet(QString::fromUtf8("background-color:green"));
         le_lift_move_status->setReadOnly(true);
         le_rb5_move_status = new QLineEdit(GE_MOVE_INFO);
         le_rb5_move_status->setObjectName(QString::fromUtf8("le_rb5_move_status"));
@@ -1319,11 +1304,6 @@ public:
 
         gridLayout_13->addWidget(move_rz_val, 5, 1, 1, 1);
 
-        bt_vision_cmd_capture_4 = new QPushButton(tab);
-        bt_vision_cmd_capture_4->setObjectName(QString::fromUtf8("bt_vision_cmd_capture_4"));
-        bt_vision_cmd_capture_4->setGeometry(QRect(1520, 700, 101, 21));
-        bt_vision_cmd_capture_4->setContextMenuPolicy(Qt::DefaultContextMenu);
-        bt_vision_cmd_capture_4->setAutoFillBackground(false);
         bt_TCP_Blend = new QPushButton(tab);
         bt_TCP_Blend->setObjectName(QString::fromUtf8("bt_TCP_Blend"));
         bt_TCP_Blend->setGeometry(QRect(1160, 530, 101, 21));
@@ -1350,31 +1330,6 @@ public:
         bt_low_get_out->setGeometry(QRect(1520, 740, 101, 21));
         bt_low_get_out->setContextMenuPolicy(Qt::DefaultContextMenu);
         bt_low_get_out->setAutoFillBackground(false);
-        bt_vision_water = new QPushButton(tab);
-        bt_vision_water->setObjectName(QString::fromUtf8("bt_vision_water"));
-        bt_vision_water->setGeometry(QRect(1320, 840, 161, 21));
-        bt_vision_water->setContextMenuPolicy(Qt::DefaultContextMenu);
-        bt_vision_water->setAutoFillBackground(false);
-        bt_avino_low_get_out_2 = new QPushButton(tab);
-        bt_avino_low_get_out_2->setObjectName(QString::fromUtf8("bt_avino_low_get_out_2"));
-        bt_avino_low_get_out_2->setGeometry(QRect(1490, 890, 131, 21));
-        bt_avino_low_get_out_2->setContextMenuPolicy(Qt::DefaultContextMenu);
-        bt_avino_low_get_out_2->setAutoFillBackground(false);
-        bt_vision_high_get_out = new QPushButton(tab);
-        bt_vision_high_get_out->setObjectName(QString::fromUtf8("bt_vision_high_get_out"));
-        bt_vision_high_get_out->setGeometry(QRect(1320, 870, 101, 21));
-        bt_vision_high_get_out->setContextMenuPolicy(Qt::DefaultContextMenu);
-        bt_vision_high_get_out->setAutoFillBackground(false);
-        bt_vision_rael_more_move = new QPushButton(tab);
-        bt_vision_rael_more_move->setObjectName(QString::fromUtf8("bt_vision_rael_more_move"));
-        bt_vision_rael_more_move->setGeometry(QRect(1320, 900, 131, 21));
-        bt_vision_rael_more_move->setContextMenuPolicy(Qt::DefaultContextMenu);
-        bt_vision_rael_more_move->setAutoFillBackground(false);
-        bt_low_get_out_2 = new QPushButton(tab);
-        bt_low_get_out_2->setObjectName(QString::fromUtf8("bt_low_get_out_2"));
-        bt_low_get_out_2->setGeometry(QRect(1490, 840, 101, 21));
-        bt_low_get_out_2->setContextMenuPolicy(Qt::DefaultContextMenu);
-        bt_low_get_out_2->setAutoFillBackground(false);
         LE_INFO_MOVE_INFO_1 = new QLineEdit(tab);
         LE_INFO_MOVE_INFO_1->setObjectName(QString::fromUtf8("LE_INFO_MOVE_INFO_1"));
         LE_INFO_MOVE_INFO_1->setEnabled(false);
@@ -2020,7 +1975,7 @@ public:
 
         gridLayoutWidget_8 = new QWidget(FRAME_STATUS);
         gridLayoutWidget_8->setObjectName(QString::fromUtf8("gridLayoutWidget_8"));
-        gridLayoutWidget_8->setGeometry(QRect(500, 621, 121, 66));
+        gridLayoutWidget_8->setGeometry(QRect(500, 620, 121, 70));
         gridLayout_7 = new QGridLayout(gridLayoutWidget_8);
         gridLayout_7->setObjectName(QString::fromUtf8("gridLayout_7"));
         gridLayout_7->setContentsMargins(0, 0, 0, 0);
@@ -2050,7 +2005,7 @@ public:
 
         gridLayoutWidget_9 = new QWidget(FRAME_STATUS);
         gridLayoutWidget_9->setObjectName(QString::fromUtf8("gridLayoutWidget_9"));
-        gridLayoutWidget_9->setGeometry(QRect(160, 621, 134, 71));
+        gridLayoutWidget_9->setGeometry(QRect(160, 620, 134, 71));
         gridLayout_9 = new QGridLayout(gridLayoutWidget_9);
         gridLayout_9->setObjectName(QString::fromUtf8("gridLayout_9"));
         gridLayout_9->setContentsMargins(0, 0, 0, 0);
@@ -2949,7 +2904,7 @@ public:
 
         gridLayoutWidget_11 = new QWidget(FRAME_STATUS);
         gridLayoutWidget_11->setObjectName(QString::fromUtf8("gridLayoutWidget_11"));
-        gridLayoutWidget_11->setGeometry(QRect(10, 621, 179, 71));
+        gridLayoutWidget_11->setGeometry(QRect(12, 620, 179, 71));
         gridLayout_11 = new QGridLayout(gridLayoutWidget_11);
         gridLayout_11->setObjectName(QString::fromUtf8("gridLayout_11"));
         gridLayout_11->setContentsMargins(0, 0, 0, 0);
@@ -3132,7 +3087,7 @@ public:
 
         layoutWidget7 = new QWidget(rb_5);
         layoutWidget7->setObjectName(QString::fromUtf8("layoutWidget7"));
-        layoutWidget7->setGeometry(QRect(1410, 250, 260, 61));
+        layoutWidget7->setGeometry(QRect(1410, 276, 260, 61));
         horizontalLayout_15 = new QHBoxLayout(layoutWidget7);
         horizontalLayout_15->setObjectName(QString::fromUtf8("horizontalLayout_15"));
         horizontalLayout_15->setContentsMargins(0, 0, 0, 0);
@@ -3148,7 +3103,7 @@ public:
 
         layoutWidget_8 = new QWidget(rb_5);
         layoutWidget_8->setObjectName(QString::fromUtf8("layoutWidget_8"));
-        layoutWidget_8->setGeometry(QRect(1410, 350, 260, 61));
+        layoutWidget_8->setGeometry(QRect(1410, 346, 260, 61));
         horizontalLayout_16 = new QHBoxLayout(layoutWidget_8);
         horizontalLayout_16->setObjectName(QString::fromUtf8("horizontalLayout_16"));
         horizontalLayout_16->setContentsMargins(0, 0, 0, 0);
@@ -3165,15 +3120,34 @@ public:
         BTN_RETURN_MOVE_JOINT_BOX_CENTER = new QPushButton(rb_5);
         BTN_RETURN_MOVE_JOINT_BOX_CENTER->setObjectName(QString::fromUtf8("BTN_RETURN_MOVE_JOINT_BOX_CENTER"));
         BTN_RETURN_MOVE_JOINT_BOX_CENTER->setGeometry(QRect(1470, 100, 141, 71));
+        layoutWidget_9 = new QWidget(rb_5);
+        layoutWidget_9->setObjectName(QString::fromUtf8("layoutWidget_9"));
+        layoutWidget_9->setGeometry(QRect(1410, 205, 268, 61));
+        horizontalLayout_17 = new QHBoxLayout(layoutWidget_9);
+        horizontalLayout_17->setObjectName(QString::fromUtf8("horizontalLayout_17"));
+        horizontalLayout_17->setContentsMargins(0, 0, 0, 0);
+        BTN_MOVE_JOINT_HIGH_LEFT = new QPushButton(layoutWidget_9);
+        BTN_MOVE_JOINT_HIGH_LEFT->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_HIGH_LEFT"));
+
+        horizontalLayout_17->addWidget(BTN_MOVE_JOINT_HIGH_LEFT);
+
+        BTN_MOVE_JOINT_HIGH_RIGHT = new QPushButton(layoutWidget_9);
+        BTN_MOVE_JOINT_HIGH_RIGHT->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_HIGH_RIGHT"));
+
+        horizontalLayout_17->addWidget(BTN_MOVE_JOINT_HIGH_RIGHT);
+
+        BTN_MOVE_JOINT_LITTLE_POP = new QPushButton(rb_5);
+        BTN_MOVE_JOINT_LITTLE_POP->setObjectName(QString::fromUtf8("BTN_MOVE_JOINT_LITTLE_POP"));
+        BTN_MOVE_JOINT_LITTLE_POP->setGeometry(QRect(1090, 180, 141, 71));
         scenario->addTab(rb_5, QString());
         lift_motor = new QWidget();
         lift_motor->setObjectName(QString::fromUtf8("lift_motor"));
         cb_port = new QComboBox(lift_motor);
         cb_port->setObjectName(QString::fromUtf8("cb_port"));
-        cb_port->setGeometry(QRect(210, 70, 111, 31));
+        cb_port->setGeometry(QRect(310, 70, 111, 31));
         groupBox_3 = new QGroupBox(lift_motor);
         groupBox_3->setObjectName(QString::fromUtf8("groupBox_3"));
-        groupBox_3->setGeometry(QRect(440, 110, 251, 341));
+        groupBox_3->setGeometry(QRect(540, 110, 251, 341));
         layoutWidget_7 = new QWidget(groupBox_3);
         layoutWidget_7->setObjectName(QString::fromUtf8("layoutWidget_7"));
         layoutWidget_7->setGeometry(QRect(20, 40, 211, 271));
@@ -3301,13 +3275,10 @@ public:
 
         te_data = new QTextEdit(lift_motor);
         te_data->setObjectName(QString::fromUtf8("te_data"));
-        te_data->setGeometry(QRect(30, 70, 171, 301));
-        bt_test = new QPushButton(lift_motor);
-        bt_test->setObjectName(QString::fromUtf8("bt_test"));
-        bt_test->setGeometry(QRect(30, 380, 171, 71));
+        te_data->setGeometry(QRect(30, 70, 271, 381));
         groupBox = new QGroupBox(lift_motor);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        groupBox->setGeometry(QRect(210, 110, 221, 191));
+        groupBox->setGeometry(QRect(310, 110, 221, 191));
         ch_dir = new QCheckBox(groupBox);
         ch_dir->setObjectName(QString::fromUtf8("ch_dir"));
         ch_dir->setGeometry(QRect(10, 30, 71, 23));
@@ -3335,7 +3306,7 @@ public:
         bt_auto_homing->setGeometry(QRect(10, 60, 101, 41));
         groupBox_2 = new QGroupBox(lift_motor);
         groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
-        groupBox_2->setGeometry(QRect(210, 310, 221, 141));
+        groupBox_2->setGeometry(QRect(310, 310, 221, 141));
         sb_rpm = new QSpinBox(groupBox_2);
         sb_rpm->setObjectName(QString::fromUtf8("sb_rpm"));
         sb_rpm->setGeometry(QRect(10, 30, 111, 31));
@@ -3356,7 +3327,7 @@ public:
         bt_rpmZero->setStyleSheet(QString::fromUtf8("background-color:red"));
         bt_connect = new QPushButton(lift_motor);
         bt_connect->setObjectName(QString::fromUtf8("bt_connect"));
-        bt_connect->setGeometry(QRect(330, 70, 71, 31));
+        bt_connect->setGeometry(QRect(430, 70, 71, 31));
         label_174 = new QLabel(lift_motor);
         label_174->setObjectName(QString::fromUtf8("label_174"));
         label_174->setGeometry(QRect(30, 20, 251, 41));
@@ -3627,9 +3598,6 @@ public:
         cb_usb2 = new QComboBox(barcode);
         cb_usb2->setObjectName(QString::fromUtf8("cb_usb2"));
         cb_usb2->setGeometry(QRect(330, 130, 111, 25));
-        write = new QPushButton(barcode);
-        write->setObjectName(QString::fromUtf8("write"));
-        write->setGeometry(QRect(520, 30, 89, 25));
         te_usb1 = new QTextEdit(barcode);
         te_usb1->setObjectName(QString::fromUtf8("te_usb1"));
         te_usb1->setGeometry(QRect(30, 170, 231, 351));
@@ -4054,7 +4022,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Order Picking", nullptr));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Order Picking_06", nullptr));
         groupBox_5->setTitle(QApplication::translate("MainWindow", "Connection", nullptr));
         label_114->setText(QApplication::translate("MainWindow", "MOBILE", nullptr));
         label_115->setText(QApplication::translate("MainWindow", "GRIPPER", nullptr));
@@ -4127,10 +4095,6 @@ public:
         move_ry->setText(QApplication::translate("MainWindow", "RY", nullptr));
         move_rz->setText(QApplication::translate("MainWindow", "RZ", nullptr));
 #ifndef QT_NO_TOOLTIP
-        bt_vision_cmd_capture_4->setToolTip(QString());
-#endif // QT_NO_TOOLTIP
-        bt_vision_cmd_capture_4->setText(QApplication::translate("MainWindow", "high get out", nullptr));
-#ifndef QT_NO_TOOLTIP
         bt_TCP_Blend->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         bt_TCP_Blend->setText(QApplication::translate("MainWindow", "TCP Blend", nullptr));
@@ -4139,26 +4103,6 @@ public:
         bt_low_get_out->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         bt_low_get_out->setText(QApplication::translate("MainWindow", "low get out", nullptr));
-#ifndef QT_NO_TOOLTIP
-        bt_vision_water->setToolTip(QString());
-#endif // QT_NO_TOOLTIP
-        bt_vision_water->setText(QApplication::translate("MainWindow", "\354\210\230\353\217\204\354\225\240 more move", nullptr));
-#ifndef QT_NO_TOOLTIP
-        bt_avino_low_get_out_2->setToolTip(QString());
-#endif // QT_NO_TOOLTIP
-        bt_avino_low_get_out_2->setText(QApplication::translate("MainWindow", "\354\225\204\353\271\204\353\205\270 low get out", nullptr));
-#ifndef QT_NO_TOOLTIP
-        bt_vision_high_get_out->setToolTip(QString());
-#endif // QT_NO_TOOLTIP
-        bt_vision_high_get_out->setText(QApplication::translate("MainWindow", "high get out", nullptr));
-#ifndef QT_NO_TOOLTIP
-        bt_vision_rael_more_move->setToolTip(QString());
-#endif // QT_NO_TOOLTIP
-        bt_vision_rael_more_move->setText(QApplication::translate("MainWindow", "\353\235\274\354\227\230 more move", nullptr));
-#ifndef QT_NO_TOOLTIP
-        bt_low_get_out_2->setToolTip(QString());
-#endif // QT_NO_TOOLTIP
-        bt_low_get_out_2->setText(QApplication::translate("MainWindow", "low get out", nullptr));
         label_139->setText(QApplication::translate("MainWindow", "move", nullptr));
         label_181->setText(QApplication::translate("MainWindow", "Scenario", nullptr));
 #ifndef QT_NO_TOOLTIP
@@ -4315,8 +4259,7 @@ public:
         label_137->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:24pt; font-weight:600; color:#729fcf;\">RB_5</span></p><p><br/></p></body></html>", nullptr));
         BTN_MOVE_JOINT_INIT_3->setText(QApplication::translate("MainWindow", "Move joint\n"
 "adust pos", nullptr));
-        BTN_MOVE_JOINT_INIT_4->setText(QApplication::translate("MainWindow", "Move joint\n"
-"readyG2pos", nullptr));
+        BTN_MOVE_JOINT_INIT_4->setText(QApplication::translate("MainWindow", "45 deg", nullptr));
         BTN_MOVE_JOINT_INIT_5->setText(QApplication::translate("MainWindow", "Move joint\n"
 "G2 pos", nullptr));
         btn_pump->setText(QApplication::translate("MainWindow", "Pump on", nullptr));
@@ -4359,6 +4302,14 @@ public:
 "RIGHT\n"
 "putdown low pos", nullptr));
         BTN_RETURN_MOVE_JOINT_BOX_CENTER->setText(QApplication::translate("MainWindow", "RETRUN_box_cent", nullptr));
+        BTN_MOVE_JOINT_HIGH_LEFT->setText(QApplication::translate("MainWindow", "Move joint\n"
+"LEFT\n"
+"putdown high pos", nullptr));
+        BTN_MOVE_JOINT_HIGH_RIGHT->setText(QApplication::translate("MainWindow", "Move joint\n"
+"RIGHT\n"
+"putdown high pos", nullptr));
+        BTN_MOVE_JOINT_LITTLE_POP->setText(QApplication::translate("MainWindow", "Move joint\n"
+"little POP", nullptr));
         scenario->setTabText(scenario->indexOf(rb_5), QApplication::translate("MainWindow", "rb_5", nullptr));
         groupBox_3->setTitle(QApplication::translate("MainWindow", "Status", nullptr));
         label_7->setText(QApplication::translate("MainWindow", "temp", nullptr));
@@ -4372,7 +4323,6 @@ public:
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", nullptr));
-        bt_test->setText(QApplication::translate("MainWindow", "test", nullptr));
         groupBox->setTitle(QApplication::translate("MainWindow", "Position control", nullptr));
         ch_dir->setText(QApplication::translate("MainWindow", "CCW", nullptr));
         bt_homing->setText(QApplication::translate("MainWindow", "homing", nullptr));
@@ -4488,7 +4438,6 @@ public:
         scenario->setTabText(scenario->indexOf(tab1), QApplication::translate("MainWindow", "vison && gripper", nullptr));
         label_111->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#888a85;\">left</span></p></body></html>", nullptr));
         label_112->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#888a85;\">right</span></p></body></html>", nullptr));
-        write->setText(QApplication::translate("MainWindow", "write", nullptr));
         bt_usb2_dis->setText(QApplication::translate("MainWindow", "disconnect", nullptr));
         bt_usb2_con->setText(QApplication::translate("MainWindow", "connect", nullptr));
         bt_usb1_dis->setText(QApplication::translate("MainWindow", "disconnect", nullptr));

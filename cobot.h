@@ -88,7 +88,7 @@ public:
     void move_jb_clear();
     void move_jb_add(std::vector<float> myjoint);
     void move_jb_run(int a, int b) ;
-    void MoveL_rel(float x, float y, float z, float rx, float ry, float rz, float spd= -1, float acc= -1);
+    void MoveL_rel(float x, float y, float z, float rx, float ry, float rz, float spd= -1, float acc= -1, int user_coordinate =1);
 
     // <MoveTCP>
     // : move to target posture in cartesian coordinate
