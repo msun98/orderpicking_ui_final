@@ -49,6 +49,8 @@ public:
 
     Eigen::Matrix4d TCP2cam;
 
+    Eigen::Matrix4d TCP2cam_REL;
+
     QString res_x,res_y,res_z;
     QString res_rx,res_ry,res_rz,res_wrist_rot;
     QByteArray new_buf;

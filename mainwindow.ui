@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Order Picking</string>
+   <string>Order Picking_06</string>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Triangular</enum>
@@ -39,7 +39,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -214,10 +214,7 @@
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">    border-style: outset;
-    border-width: 1px;
-    border-color: black;
-    background-color:rgb(255,255,255)</string>
+        <string notr="true">background-color:red</string>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -358,10 +355,7 @@
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">    border-style: outset;
-    border-width: 1px;
-    border-color: black;
-    background-color:rgb(255,255,255)</string>
+        <string notr="true">background-color:red</string>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -442,10 +436,7 @@
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">    border-style: outset;
-    border-width: 1px;
-    border-color: black;
-    background-color:rgb(255,255,255)</string>
+        <string notr="true">background-color:green</string>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -464,10 +455,7 @@
         <bool>false</bool>
        </property>
        <property name="styleSheet">
-        <string notr="true">    border-style: outset;
-    border-width: 1px;
-    border-color: black;
-    background-color:rgb(255,255,255)</string>
+        <string notr="true">background-color:green</string>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -1837,28 +1825,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QPushButton" name="bt_vision_cmd_capture_4">
-      <property name="geometry">
-       <rect>
-        <x>1520</x>
-        <y>700</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::DefaultContextMenu</enum>
-      </property>
-      <property name="toolTip">
-       <string/>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string>high get out</string>
-      </property>
-     </widget>
      <widget class="QPushButton" name="bt_TCP_Blend">
       <property name="geometry">
        <rect>
@@ -1908,116 +1874,6 @@
        <rect>
         <x>1520</x>
         <y>740</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::DefaultContextMenu</enum>
-      </property>
-      <property name="toolTip">
-       <string/>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string>low get out</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="bt_vision_water">
-      <property name="geometry">
-       <rect>
-        <x>1320</x>
-        <y>840</y>
-        <width>161</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::DefaultContextMenu</enum>
-      </property>
-      <property name="toolTip">
-       <string/>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string>수도애 more move</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="bt_avino_low_get_out_2">
-      <property name="geometry">
-       <rect>
-        <x>1490</x>
-        <y>890</y>
-        <width>131</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::DefaultContextMenu</enum>
-      </property>
-      <property name="toolTip">
-       <string/>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string>아비노 low get out</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="bt_vision_high_get_out">
-      <property name="geometry">
-       <rect>
-        <x>1320</x>
-        <y>870</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::DefaultContextMenu</enum>
-      </property>
-      <property name="toolTip">
-       <string/>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string>high get out</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="bt_vision_rael_more_move">
-      <property name="geometry">
-       <rect>
-        <x>1320</x>
-        <y>900</y>
-        <width>131</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::DefaultContextMenu</enum>
-      </property>
-      <property name="toolTip">
-       <string/>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string>라엘 more move</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="bt_low_get_out_2">
-      <property name="geometry">
-       <rect>
-        <x>1490</x>
-        <y>840</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -6260,8 +6116,7 @@ adust pos</string>
        </rect>
       </property>
       <property name="text">
-       <string>Move joint
-readyG2pos</string>
+       <string>45 deg</string>
       </property>
      </widget>
      <widget class="QPushButton" name="BTN_MOVE_JOINT_INIT_5">
@@ -6513,7 +6368,7 @@ Vision pos</string>
       <property name="geometry">
        <rect>
         <x>1410</x>
-        <y>250</y>
+        <y>276</y>
         <width>260</width>
         <height>61</height>
        </rect>
@@ -6543,7 +6398,7 @@ putdown mid pos</string>
       <property name="geometry">
        <rect>
         <x>1410</x>
-        <y>350</y>
+        <y>346</y>
         <width>260</width>
         <height>61</height>
        </rect>
@@ -6582,6 +6437,50 @@ putdown low pos</string>
        <string>RETRUN_box_cent</string>
       </property>
      </widget>
+     <widget class="QWidget" name="layoutWidget_9">
+      <property name="geometry">
+       <rect>
+        <x>1410</x>
+        <y>205</y>
+        <width>268</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_17">
+       <item>
+        <widget class="QPushButton" name="BTN_MOVE_JOINT_HIGH_LEFT">
+         <property name="text">
+          <string>Move joint
+LEFT
+putdown high pos</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="BTN_MOVE_JOINT_HIGH_RIGHT">
+         <property name="text">
+          <string>Move joint
+RIGHT
+putdown high pos</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QPushButton" name="BTN_MOVE_JOINT_LITTLE_POP">
+      <property name="geometry">
+       <rect>
+        <x>1090</x>
+        <y>180</y>
+        <width>141</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Move joint
+little POP</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="lift_motor">
      <attribute name="title">
@@ -6590,7 +6489,7 @@ putdown low pos</string>
      <widget class="QComboBox" name="cb_port">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>310</x>
         <y>70</y>
         <width>111</width>
         <height>31</height>
@@ -6600,7 +6499,7 @@ putdown low pos</string>
      <widget class="QGroupBox" name="groupBox_3">
       <property name="geometry">
        <rect>
-        <x>440</x>
+        <x>540</x>
         <y>110</y>
         <width>251</width>
         <height>341</height>
@@ -6796,8 +6695,8 @@ putdown low pos</string>
        <rect>
         <x>30</x>
         <y>70</y>
-        <width>171</width>
-        <height>301</height>
+        <width>271</width>
+        <height>381</height>
        </rect>
       </property>
       <property name="html">
@@ -6808,23 +6707,10 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="bt_test">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>380</y>
-        <width>171</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>test</string>
-      </property>
-     </widget>
      <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>310</x>
         <y>110</y>
         <width>221</width>
         <height>191</height>
@@ -6935,7 +6821,7 @@ homing</string>
      <widget class="QGroupBox" name="groupBox_2">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>310</x>
         <y>310</y>
         <width>221</width>
         <height>141</height>
@@ -7003,7 +6889,7 @@ homing</string>
      <widget class="QPushButton" name="bt_connect">
       <property name="geometry">
        <rect>
-        <x>330</x>
+        <x>430</x>
         <y>70</y>
         <width>71</width>
         <height>31</height>

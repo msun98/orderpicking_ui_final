@@ -26,8 +26,8 @@ void MD_MOTOR::open(const QString &port)
     if(!motor.open(QIODevice::ReadWrite))
     {
         printf("motor connection failed.\n");
+
         QString msg = "false";
-        //        qDebug()<<msg;
         emit LiftMSG(msg);
     }
     else
@@ -35,18 +35,11 @@ void MD_MOTOR::open(const QString &port)
         printf("motor connection successed.\n");
         emit write_log(QString("motor connection successed.\n"));
         //        usleep(100*100);
-        QThread::msleep(100);
-        motor.write(MD_CMD.RELEASE_LIMIT_SW);
-
-
+//        QThread::msleep(100);
+//        motor.write(MD_CMD.RELEASE_LIMIT_SW);
 
         QString msg = "true";
-        //        qDebug()<<msg;
         emit LiftMSG(msg);
-//        req_data();
-
-//        connect(&lift_status_timer, SIGNAL(timeout()), this, SLOT(req_data()));
-//        lift_status_timer.start(100);
     }
 }
 
@@ -58,8 +51,8 @@ void MD_MOTOR::handleError(QSerialPort::SerialPortError error)
         qWarning() << "Critical error occurred:" << motor.errorString();
         // Attempt to reconnect or notify the user
         motor.close();
-//        qDebug()<<motor_port;
-//        open(motor_port);
+        //        qDebug()<<motor_port;
+        //        open(motor_port);
         QTimer::singleShot(1000, this, [this]() {open(motor_port);});
         move_poisition_flag = true;
 
@@ -67,7 +60,7 @@ void MD_MOTOR::handleError(QSerialPort::SerialPortError error)
     if (motor.errorString() == "No such file or directory")
     {
         QTimer::singleShot(1000, this, [this]() {open(motor_port);});
-//        open(motor_port);
+        //        open(motor_port);
     }
     else
     {
@@ -97,7 +90,7 @@ void MD_MOTOR::set_maxVel_pos(unsigned short val)
     memcpy(POSI_MAX_VEL.data() + 5, &val, 2); //183, TMID, ID, 176, 2, D1, D2, CHK (2byte)
     checkSum(POSI_MAX_VEL);
     motor.write(POSI_MAX_VEL);
-//    qDebug() << POSI_MAX_VEL;
+    //    qDebug() << POSI_MAX_VEL;
 }
 
 void MD_MOTOR::move_position(int val)
@@ -140,8 +133,23 @@ void MD_MOTOR::move_position(int val)
     motor.write(move);
 
     QString str = "motor run, POS : " + QString::number(val);
-    //    qDebug()<<"val : "<<val;
     qDebug()<<str;
+
+    // 결과 문자열
+    QString formatted_hex;
+    QString move_hex(move.toHex().toUpper());
+    int data_size = move_hex.size();
+    for(int i = 0;i<data_size; i +=2)
+    {
+        if (i > 0)
+        {
+            formatted_hex.append(", ");
+        }
+        formatted_hex.append(move_hex.mid(i, 2));
+    }
+
+//    qDebug()<<"move_hex : "<<formatted_hex;
+    emit write_log(formatted_hex);
     //    write_log(str);
 }
 
@@ -172,16 +180,11 @@ void MD_MOTOR::homing(int dir)
     emit homingEnd("homing end");
 }
 
-void MD_MOTOR::write_data(int pid, int data)
-{
-
-}
-
 void MD_MOTOR::onReadyCmdRead()
 {
     // this fucn act only PID 193
     QByteArray _buf = motor.readAll();
-//        qDebug()<<_buf;
+    //        qDebug()<<_buf;
     if(_buf.size() > 0)
     {
         buf.append(_buf);
@@ -219,7 +222,7 @@ void MD_MOTOR::onReadyCmdRead()
                     memcpy(&_main_data.motor_brake_duty, &body[19], 1);
                     memcpy(&_main_data.motor_temperature, &body[20], 1);
                     memcpy(&_main_data.motor_status2, &body[21], 1);
-//                    qDebug()<<"motor_status2 : "<<_main_data.motor_status2;
+                    //                    qDebug()<<"motor_status2 : "<<_main_data.motor_status2;
 
                     buf.remove(0, buf.size());
 
@@ -294,7 +297,21 @@ void MD_MOTOR::move_rpm(short val)
     //qDebug() << move;
     motor.write(move);
     //    QString str = "motor run, RPM : " + QString::number(val);
-    emit write_log(move.toHex());
+    // 결과 문자열
+    QString formatted_hex;
+    QString move_hex(move.toHex().toUpper());
+    int data_size = move_hex.size();
+    for(int i = 0;i<data_size; i +=2)
+    {
+        if (i > 0)
+        {
+            formatted_hex.append(", ");
+        }
+        formatted_hex.append(move_hex.mid(i, 2));
+    }
+
+//    qDebug()<<"move_hex : "<<formatted_hex;
+    emit write_log(formatted_hex);
 }
 
 void MD_MOTOR::test_pid()

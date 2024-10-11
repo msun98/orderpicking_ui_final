@@ -63,7 +63,6 @@ void mobile_robot::newConnection_tcp()
         //        connect(mobile_status_socket, SIGNAL(readyRead()), this, SLOT(on_read_file()));
         connect(mobile_status_socket, SIGNAL(readyRead()), this, SLOT(on_read_mobile_status()));
         connect(mobile_status_socket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
-
     }
 
     while (tcpServer_map->hasPendingConnections())
@@ -75,7 +74,6 @@ void mobile_robot::newConnection_tcp()
         //        connect(mobile_status_socket, SIGNAL(readyRead()), this, SLOT(on_read_file()));
         connect(map_Socket, SIGNAL(readyRead()), this, SLOT(on_map_read_command()));
         connect(map_Socket, SIGNAL(disconnected()), this, SLOT(disConnection_tcp()));
-
     }
 }
 
@@ -198,8 +196,10 @@ void mobile_robot::sendData()
 
 void mobile_robot::getData(QString msg) //get file data from odroid
 {
-    if(mobile_status_socket != nullptr){
-        if(mobile_status_socket->isWritable()){
+    if(mobile_status_socket != nullptr)
+    {
+        if(mobile_status_socket->isWritable())
+        {
             QJsonObject json_output;
             QByteArray json_string;
             get_somthing_msg = msg;
@@ -317,14 +317,11 @@ void mobile_robot::on_read_mobile_status() //get map data
 
                 fsm_status = json_input["FSM STATUS"].toInt();
 
-
-
                 if(fsm_status == 0)
                 {
                     AMR_FSM_status = "STATE_AUTO_PATH_FINDING";
                     move_flag = true;
                 }
-
                 else if(fsm_status == 1)
                 {
                     AMR_FSM_status = "STATE_AUTO_FIRST_ALIGN";
@@ -354,7 +351,6 @@ void mobile_robot::on_read_mobile_status() //get map data
                     }
                     else
                     {
-
                         uuid = json_input["uuid"].toString();
                         qDebug()<<"uuid : "<<uuid;
                         move_flag = true;
